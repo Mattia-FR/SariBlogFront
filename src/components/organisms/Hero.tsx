@@ -1,11 +1,16 @@
+import heroImg from "../../assets/hero.jpg";
+import Image from "../atoms/Image";
+
 import "./Hero.css";
 
 function Hero() {
   return (
     <section>
-      <h1>Titre</h1>
-      <p>Ici on est dans Hero.</p>
-      {/* Au final, il va falloir une grande image, une catch phrase et une invitation au scroll ici. */}
+      <Image src={heroImg} alt={"Dessin en noir et blanc d'une poupée"} />
+      <h2>Catch phrase</h2>
+      <p>
+        scroll <br />▼
+      </p>
     </section>
   );
 }
