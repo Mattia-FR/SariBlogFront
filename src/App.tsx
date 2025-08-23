@@ -1,11 +1,15 @@
 import { Outlet } from "react-router-dom";
 import "./App.css";
+import Header from "./components/organisms/Header";
 
 function App() {
   return (
-    <main>
-      <Outlet />
-    </main>
+    <>
+      <Header />
+      <main>
+        <Outlet />
+      </main>
+    </>
   );
 }
 
