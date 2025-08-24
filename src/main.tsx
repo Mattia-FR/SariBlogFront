@@ -13,7 +13,7 @@ import "./index.css";
 // Configuration SWR avec fetch
 // const fetcher = (...args) => fetch(...args).then(res => res.json());
 // Configuration SWR globale mais avec axios :
-const fetcher = (url: string) => api.get(url).then((r) => r.data);
+const fetcher = (url: string) => api.get(url).then((res) => res.data);
 
 // Loader spécifique pour la page d'accueil
 const homePageLoader = async () => {

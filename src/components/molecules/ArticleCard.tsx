@@ -1,0 +1,27 @@
+import type { ArticleCardProps } from "../../types/article";
+import Tag from "../atoms/Tag";
+import "./ArticleCard.css";
+
+function ArticleCard({ article }: ArticleCardProps) {
+  return (
+    <article className="article-card">
+      {/* Il faudrait peut-être créer un alt pour les images en dB */}
+      {/* Ici && agit comme une ternaire et on affiche l'image si le premier segment est true */}
+      {article.image && <img src={article.image} alt={article.title} />}
+      <h3>{article.title}</h3>
+      {article.excerpt && <p>{article.excerpt}</p>}
+      {article.tags && (
+        <section className="article-tags">
+          {/* Comme il peut y avoir plusieurs tags, on split, et on map() pour les afficher */}
+          {article.tags.split(", ").map((tag, index) => (
+            // On crée une clé unique avec l'id et l'index, c'est plus propre
+            <Tag key={`${article.id}-tag-${index}`} name={tag} />
+          ))}
+        </section>
+      )}
+      <p>{article.created_at}</p>
+    </article>
+  );
+}
+
+export default ArticleCard;
