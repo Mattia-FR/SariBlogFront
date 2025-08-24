@@ -18,7 +18,8 @@ const fetcher = (url: string) => api.get(url).then((res) => res.data);
 // Loader spécifique pour la page d'accueil
 const homePageLoader = async () => {
   const articles = await api.get("/articles/latest?limit=4");
-  return articles.data;
+  // Donc on récupère response.data.data pour avoir le tableau d'articles
+  return articles.data.data;
 };
 
 const router = createBrowserRouter([
