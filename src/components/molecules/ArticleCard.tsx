@@ -3,11 +3,15 @@ import Tag from "../atoms/Tag";
 import "./ArticleCard.css";
 
 function ArticleCard({ article }: ArticleCardProps) {
+  const imageUrl = article.image
+    ? `http://localhost:4242/images/${article.image}`
+    : null;
+
   return (
     <article className="article-card">
       {/* Il faudrait peut-être créer un alt pour les images en dB */}
       {/* Ici && agit comme une ternaire et on affiche l'image si le premier segment est true */}
-      {article.image && <img src={article.image} alt={article.title} />}
+      {imageUrl && <img src={imageUrl} alt={article.title} />}
       <h3>{article.title}</h3>
       {article.excerpt && <p>{article.excerpt}</p>}
       {article.tags && (

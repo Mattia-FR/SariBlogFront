@@ -8,7 +8,10 @@ function ArticlesPreview({ articles }: ArticlesPreviewProps) {
       <h2>Derniers Articles</h2>
       <section className="articles-grid">
         {articles.map((article) => (
-          <ArticleCard key={article.id} article={article} />
+          <ArticleCard
+            key={`articles-preview-article-${article.id}`}
+            article={article}
+          />
         ))}
       </section>
     </section>
