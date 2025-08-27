@@ -1,3 +1,6 @@
+/* On importe les fonts */
+@import url("https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300..700;1,300..700&family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&display=swap");
+
 /* Pour poser une base propre */
 * {
   margin: 0;
@@ -10,6 +13,10 @@
   --color-one: #122b2e;
   --color-two: #f1f0dc;
   --color-three: #7ba8a8;
+  --color-four: #d4a574;
+  --color-five: #8b5a3c;
+  --font-one: "Cormorant Garamond", serif;
+  --font-two: "Inter", sans-serif;
 }
 
 /* On définit la couleur de fond sur tout le site */
@@ -24,26 +31,42 @@ main {
   padding: 0 clamp(16px, 4vw, 32px);
 }
 
+a {
+  text-decoration: none;
+  color: var(--color-five);
+}
+
+a:hover {
+  text-decoration: underline;
+  color: var(--color-four);
+}
+
 h1 {
   font-size: 4rem;
+  font-family: var(--font-one);
 }
 
 h2 {
   font-size: 3rem;
+  font-family: var(--font-one);
 }
 
 h3 {
   font-size: 2rem;
+  font-family: var(--font-one);
 }
 
 h4 {
   font-size: 1.5rem;
+  font-family: var(--font-one);
 }
 
 h5 {
   font-size: 1.125rem;
+  font-family: var(--font-one);
 }
 
 p {
   font-size: 1rem;
+  font-family: var(--font-two);
 }

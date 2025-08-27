@@ -12,7 +12,7 @@ function ArticleCard({ article }: ArticleCardProps) {
       {/* Il faudrait peut-être créer un alt pour les images en dB */}
       {/* Ici && agit comme une ternaire et on affiche l'image si le premier segment est true */}
       {imageUrl && <img src={imageUrl} alt={article.title} />}
-      <h3>{article.title}</h3>
+      <h4>{article.title}</h4>
       {article.excerpt && <p>{article.excerpt}</p>}
       {article.tags && (
         <section className="article-tags">

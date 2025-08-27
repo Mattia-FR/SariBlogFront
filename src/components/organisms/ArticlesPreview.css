@@ -1,9 +1,22 @@
 .articles-preview {
+  display: flex;
+  flex-direction: column;
+  margin: clamp(10px, 2vw, 20px) 0;
   img {
-    width: 200px;
-    height: 200px;
+    width: clamp(150px, 25vw, 200px);
+    height: clamp(150px, 25vw, 200px);
     object-fit: cover;
-    border-radius: 10px;
-    box-shadow: 0 0 10px 0 rgba(0, 0, 0, 0.1);
+    border-radius: 15px;
   }
+  h2 {
+    margin: clamp(5px, 1vw, 10px) auto;
+  }
+}
+
+.articles-grid {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: clamp(20px, 4vw, 40px);
+  max-width: 100%;
 }
