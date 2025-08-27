@@ -9,14 +9,14 @@ function GalleryPreview({
   return (
     <section className="gallery-preview">
       <h2>{title}</h2>
-      <div style={{ display: "flex", gap: "12px", overflowX: "auto" }}>
+      <section className="gallery-illustrations">
         {illustrations.map((illustration) => (
           <IllustrationCard
             key={`gallery-preview-illustration-${illustration.id}`}
             illustration={illustration}
           />
         ))}
-      </div>
+      </section>
     </section>
   );
 }

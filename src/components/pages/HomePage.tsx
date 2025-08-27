@@ -7,21 +7,27 @@ import GalleryPreview from "../organisms/GalleryPreview";
 import Hero from "../organisms/Hero";
 
 import "./HomePage.css";
+import type { About } from "../../types/about";
+import ContactCTA from "../molecules/ContactCTA";
+import AboutPreview from "../organisms/AboutPreview";
 
 type HomePageData = {
   articles: Article[];
   illustrations: Illustration[];
+  about: About;
 };
 
 function HomePage() {
-  const { articles, illustrations } = useLoaderData() as HomePageData;
+  const { articles, illustrations, about } = useLoaderData() as HomePageData;
 
   return (
-    <div className="home-page">
+    <section className="home-page">
       <Hero />
       <ArticlesPreview articles={articles} />
       <GalleryPreview illustrations={illustrations} />
-    </div>
+      <AboutPreview about={about} />
+      <ContactCTA />
+    </section>
   );
 }
 

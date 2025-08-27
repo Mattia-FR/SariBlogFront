@@ -8,8 +8,6 @@ import HomePage from "./components/pages/HomePage.tsx";
 // On importe "axios" ainsi
 import { api } from "./lib/api.ts";
 
-import "./index.css";
-
 // Configuration SWR avec fetch
 // const fetcher = (...args) => fetch(...args).then(res => res.json());
 // Configuration SWR globale mais avec axios :
@@ -21,8 +19,9 @@ const homePageLoader = async () => {
   const { data: illustrations } = await api.get(
     "/illustrations/gallery-preview",
   );
+  const { data: about } = await api.get("/about/about-preview");
 
-  return { articles, illustrations };
+  return { articles, illustrations, about };
 };
 
 const router = createBrowserRouter([

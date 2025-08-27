@@ -1,0 +1,49 @@
+/* Pour poser une base propre */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+/* On définit les variables */
+:root {
+  --color-one: #122b2e;
+  --color-two: #f1f0dc;
+  --color-three: #7ba8a8;
+}
+
+/* On définit la couleur de fond sur tout le site */
+body {
+  background-color: var(--color-one);
+}
+
+/* On centre tout, avec clamp pour que ce soit responsive */
+main {
+  max-width: clamp(320px, 90vw, 1200px);
+  margin: 0 auto;
+  padding: 0 clamp(16px, 4vw, 32px);
+}
+
+h1 {
+  font-size: 4rem;
+}
+
+h2 {
+  font-size: 3rem;
+}
+
+h3 {
+  font-size: 2rem;
+}
+
+h4 {
+  font-size: 1.5rem;
+}
+
+h5 {
+  font-size: 1.125rem;
+}
+
+p {
+  font-size: 1rem;
+}
