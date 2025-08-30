@@ -10,11 +10,12 @@
 
 /* On définit les variables */
 :root {
-  --color-one: #122b2e;
-  --color-two: #f1f0dc;
-  --color-three: #7ba8a8;
-  --color-four: #d4a574;
-  --color-five: #8b5a3c;
+  --color-one: #272627;
+  --color-two: #ffeae5;
+  --color-three: #f08f85;
+  --color-four: #800000;
+  --color-five: #b33a34;
+  --color-six: #f05357;
   --font-one: "Cormorant Garamond", serif;
   --font-two: "Inter", sans-serif;
 }
@@ -38,7 +39,7 @@ a {
 
 a:hover {
   text-decoration: underline;
-  color: var(--color-four);
+  color: var(--color-six);
 }
 
 h1 {

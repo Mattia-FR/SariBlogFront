@@ -1,15 +1,31 @@
-import heroImg from "../../assets/hero.jpg";
-
 import "./Hero.css";
 
 function Hero() {
+  const scrollToNext = () => {
+    const navbarHeight = 60;
+    const scrollDistance = window.innerHeight - navbarHeight;
+
+    window.scrollTo({
+      top: scrollDistance,
+      behavior: "smooth",
+    });
+  };
+
   return (
-    <section>
-      <img src={heroImg} alt={"Dessin en noir et blanc d'une poupée"} />
-      <h2>Catch phrase</h2>
-      <p>
+    <section className="hero-full">
+      <h2>
+        "Un peu gluant mais appétissant !"
+        <br />
+        Nelson Mandela
+      </h2>
+      <button
+        type="button"
+        onClick={scrollToNext}
+        className="scroll-button"
+        aria-label="Défiler vers le contenu suivant"
+      >
         scroll <br />▼
-      </p>
+      </button>
     </section>
   );
 }

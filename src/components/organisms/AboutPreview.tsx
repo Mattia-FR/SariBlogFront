@@ -10,8 +10,6 @@ function AboutPreview({ about }: AboutPreviewProps) {
           <img
             src={`http://localhost:4242/images/${about.image}`}
             alt="Portrait de l'artiste"
-            width={200}
-            height={200}
           />
         </section>
         <section className="about-text">
