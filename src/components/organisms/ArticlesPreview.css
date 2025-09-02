@@ -1,7 +1,8 @@
 .articles-preview {
   display: flex;
   flex-direction: column;
-  margin: clamp(10px, 2vw, 20px) 0;
+  padding: clamp(10px, 2vw, 20px) 0;
+  height: calc(100vh - 60px);
   img {
     width: clamp(150px, 25vw, 200px);
     height: clamp(150px, 25vw, 200px);
@@ -10,6 +11,7 @@
   }
   h2 {
     margin: clamp(5px, 1vw, 10px) auto;
+    padding-bottom: clamp(10px, 2vw, 20px);
   }
 }
 

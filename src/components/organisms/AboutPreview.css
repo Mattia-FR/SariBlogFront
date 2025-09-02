@@ -1,0 +1,11 @@
+.about-preview {
+  display: flex;
+  flex-direction: row;
+  gap: clamp(20px, 4vw, 40px);
+  img {
+    width: clamp(150px, 25vw, 200px);
+    height: clamp(150px, 25vw, 200px);
+    object-fit: cover;
+    border-radius: 500px;
+  }
+}

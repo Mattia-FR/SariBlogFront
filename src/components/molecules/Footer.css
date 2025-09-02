@@ -1,0 +1,17 @@
+.footer {
+  display: flex;
+  flex-direction: column;
+  padding: clamp(10px, 2vw, 20px);
+}
+
+.footer-bottom {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+}
+
+.legal-links {
+  display: flex;
+  flex-direction: row;
+  gap: clamp(10px, 2vw, 20px);
+}
