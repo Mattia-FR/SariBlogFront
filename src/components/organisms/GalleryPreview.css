@@ -1,31 +1,89 @@
 .gallery-preview {
   display: flex;
   flex-direction: column;
-  justify-content: space-between;
-  height: clamp(200px, 40vw, 400px);
+  align-items: center;
+  padding: clamp(20px, 4vw, 40px) 0;
+  /* background-color: var(--color-two);
   width: 100vw;
-  padding: clamp(10px, 2vw, 20px) 0;
-  margin-left: calc(-50vw + 50%);
-  background-color: var(--color-two);
+  margin-left: calc(-50vw + 50%); */
+  border-radius: 15px;
+  box-shadow: 0px 0px 15px 5px rgba(255, 234, 229, 0.25);
   h2 {
-    margin: 0 auto;
-    color: var(--color-one);
+    padding-bottom: clamp(20px, 4vw, 40px);
+    color: var(--color-two);
+    text-align: center;
   }
 }
 
-.gallery-illustrations {
+.carousel-container {
   display: flex;
-  flex-direction: row;
+  align-items: center;
   justify-content: center;
   gap: clamp(20px, 4vw, 40px);
-  padding-bottom: clamp(10px, 2vw, 20px);
-  img {
-    width: clamp(150px, 25vw, 200px);
-    height: clamp(150px, 25vw, 200px);
-    object-fit: cover;
-    border-radius: 15px;
+  width: 100%;
+  max-width: 1200px;
+}
+
+.carousel-wrapper {
+  width: 100%;
+  max-width: 800px;
+  overflow: hidden;
+  border-radius: 15px;
+}
+
+.carousel-track {
+  display: flex;
+  transition: transform 0.5s ease-in-out;
+}
+
+.carousel-slide {
+  min-width: 100%;
+  flex-shrink: 0;
+  display: flex;
+  justify-content: center;
+}
+
+.carousel-btn {
+  background: var(--color-one);
+  color: var(--color-two);
+  border: 1px solid var(--color-two);
+  border-radius: 50%;
+  width: clamp(40px, 8vw, 60px);
+  height: clamp(40px, 8vw, 60px);
+  font-size: clamp(20px, 4vw, 30px);
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.3s ease;
+
+  &:hover {
+    background: var(--color-five);
+    transform: scale(1.1);
   }
-  h5 {
-    text-align: center;
+}
+
+.carousel-indicators {
+  display: flex;
+  gap: clamp(8px, 2vw, 15px);
+  margin-top: clamp(20px, 4vw, 40px);
+}
+
+.indicator {
+  width: clamp(10px, 2vw, 15px);
+  height: clamp(10px, 2vw, 15px);
+  border-radius: 50%;
+  border: none;
+  background: var(--color-three);
+  cursor: pointer;
+  transition: all 0.3s ease;
+
+  &.active {
+    background: var(--color-five);
+    transform: scale(1.2);
+  }
+
+  &:hover {
+    background: var(--color-six);
   }
 }
