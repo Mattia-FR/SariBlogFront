@@ -1,14 +1,9 @@
 .articles-preview {
   display: flex;
   flex-direction: column;
-  padding: clamp(20px, 4vw, 40px) 0;
+  padding-top: clamp(20px, 4vw, 40px);
+  margin-bottom: clamp(40px, 8vw, 80px);
   height: calc(100vh - 60px);
-  img {
-    width: clamp(150px, 25vw, 200px);
-    height: clamp(150px, 25vw, 200px);
-    object-fit: cover;
-    border-radius: 15px;
-  }
   h2 {
     margin: clamp(5px, 1vw, 10px) auto;
     padding-bottom: clamp(10px, 2vw, 20px);

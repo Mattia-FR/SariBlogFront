@@ -25,8 +25,10 @@ function HomePage() {
       <Hero />
       <ArticlesPreview articles={articles} />
       <GalleryPreview illustrations={illustrations} />
-      <AboutPreview about={about} />
-      <ContactCTA />
+      <section className="home-bottom">
+        <AboutPreview about={about} />
+        <ContactCTA />
+      </section>
     </section>
   );
 }

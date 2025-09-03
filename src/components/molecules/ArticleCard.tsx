@@ -14,6 +14,7 @@ function ArticleCard({ article }: ArticleCardProps) {
       {imageUrl && <img src={imageUrl} alt={article.title} />}
       <h4>{article.title}</h4>
       {article.excerpt && <p>{article.excerpt}</p>}
+      <p className="article-date">{article.created_at}</p>
       {article.tags && (
         <section className="article-tags">
           {/* Comme il peut y avoir plusieurs tags, on split, et on map() pour les afficher */}
@@ -23,7 +24,6 @@ function ArticleCard({ article }: ArticleCardProps) {
           ))}
         </section>
       )}
-      <p>{article.created_at}</p>
     </article>
   );
 }
