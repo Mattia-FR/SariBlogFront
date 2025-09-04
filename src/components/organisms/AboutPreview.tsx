@@ -15,7 +15,7 @@ function AboutPreview({ about }: AboutPreviewProps) {
         <h2>À propos</h2>
         <p>{about.content}</p>
         <Link to="/about" className="about-link">
-          En savoir plus →
+          En savoir plus
         </Link>
       </section>
     </section>

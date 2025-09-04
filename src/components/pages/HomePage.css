@@ -32,6 +32,5 @@ h4 {
 }
 
 .home-bottom > * {
-  flex: 1 1 300px; /* grow shrink basis */
-  /* Minimum 300px, sinon ils passent à la ligne */
+  flex: 1 1 300px;
 }

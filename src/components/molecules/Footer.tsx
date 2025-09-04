@@ -4,7 +4,7 @@ import "./Footer.css";
 function Footer() {
   return (
     <footer className="footer">
-      <hr />
+      {/* <hr /> */}
       <section className="footer-content">
         <h3>Contact</h3>
         <p>Email: contact@sariblog.com</p>

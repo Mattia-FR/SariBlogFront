@@ -7,7 +7,7 @@ function ContactCTA() {
       <h2>Un projet en tête ?</h2>
       <p>Discutons de vos idées et créons quelque chose d'unique ensemble.</p>
       <Link to="/contact" className="cta-button">
-        Me contacter →
+        Me contacter
       </Link>
     </section>
   );
