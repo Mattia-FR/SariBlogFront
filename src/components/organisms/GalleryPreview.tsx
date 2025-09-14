@@ -1,8 +1,7 @@
+import { MoveLeft, MoveRight } from "lucide-react";
 import { useCallback, useEffect, useState } from "react";
 import type { GalleryPreviewProps } from "../../types/illustration";
 import IllustrationCard from "../molecules/IllustrationCard";
-import { MoveLeft } from "lucide-react";
-import { MoveRight } from "lucide-react";
 import "./GalleryPreview.css";
 
 function GalleryPreview({

@@ -3,11 +3,19 @@ import type { AboutPreviewProps } from "../../types/about";
 import "./AboutPreview.css";
 
 function AboutPreview({ about }: AboutPreviewProps) {
+  if (!about) {
+    return (
+      <section className="about-preview">
+        <p>Chargement...</p>
+      </section>
+    );
+  }
+
   return (
     <section className="about-preview">
       <section className="about-image">
         <img
-          src={`http://localhost:4242/images/${about.image}`}
+          src={`${import.meta.env.VITE_API_URL}/images/${about.image}`}
           alt="Portrait de l'artiste"
         />
       </section>

@@ -10,7 +10,7 @@ function Navbar() {
         </Link>
       </p>
       <p>
-        <Link to="" className="">
+        <Link to="/blog" className="">
           Blog
         </Link>
       </p>

@@ -1,21 +1,12 @@
 import { useLoaderData } from "react-router-dom";
-import type { Article } from "../../types/article";
-import type { Illustration } from "../../types/illustration";
-
+import type { HomePageData } from "../../types/homePage";
+import ContactCTA from "../molecules/ContactCTA";
+import AboutPreview from "../organisms/AboutPreview";
 import ArticlesPreview from "../organisms/ArticlesPreview";
 import GalleryPreview from "../organisms/GalleryPreview";
 import Hero from "../organisms/Hero";
 
 import "./HomePage.css";
-import type { About } from "../../types/about";
-import ContactCTA from "../molecules/ContactCTA";
-import AboutPreview from "../organisms/AboutPreview";
-
-type HomePageData = {
-  articles: Article[];
-  illustrations: Illustration[];
-  about: About;
-};
 
 function HomePage() {
   const { articles, illustrations, about } = useLoaderData() as HomePageData;

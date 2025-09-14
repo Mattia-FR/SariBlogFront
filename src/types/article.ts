@@ -10,6 +10,7 @@ export type Article = {
 
 export type ArticleCardProps = {
   article: Article;
+  isClickable?: boolean;
 };
 
 export type ArticlesPreviewProps = {

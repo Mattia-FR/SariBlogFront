@@ -7,7 +7,9 @@ function Footer() {
       {/* <hr /> */}
       <section className="footer-content">
         <h3>Contact</h3>
-        <p>Email: contact@sariblog.com</p>
+        <p>
+          Email: {import.meta.env.VITE_CONTACT_EMAIL || "contact@sariblog.com"}
+        </p>
       </section>
 
       <section className="footer-bottom">
