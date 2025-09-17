@@ -5,5 +5,5 @@ import type { Illustration } from "./illustration";
 export type HomePageData = {
   articles: Article[];
   illustrations: Illustration[];
-  about: About;
+  about: About | null;
 };

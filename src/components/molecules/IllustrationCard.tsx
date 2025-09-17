@@ -9,6 +9,9 @@ function IllustrationCard({ illustration }: IllustrationCardProps) {
         alt={illustration.alt_text}
       />
       <h5>{illustration.title}</h5>
+      {illustration.description && (
+        <p className="illustration-description">{illustration.description}</p>
+      )}
     </article>
   );
 }

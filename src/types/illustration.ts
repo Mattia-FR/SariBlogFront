@@ -3,6 +3,8 @@ export type Illustration = {
   title: string;
   image: string;
   alt_text: string;
+  description?: string;
+  created_at?: string;
 };
 
 export type IllustrationCardProps = {

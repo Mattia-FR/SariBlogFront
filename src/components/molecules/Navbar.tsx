@@ -15,17 +15,17 @@ function Navbar() {
         </Link>
       </p>
       <p>
-        <Link to="" className="">
+        <Link to="/gallery" className="">
           Galerie
         </Link>
       </p>
       <p>
-        <Link to="" className="">
+        <Link to="/about" className="">
           À propos
         </Link>
       </p>
       <p>
-        <Link to="" className="">
+        <Link to="/contact" className="">
           Contact
         </Link>
       </p>

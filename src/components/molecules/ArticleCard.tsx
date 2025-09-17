@@ -16,8 +16,8 @@ function ArticleCard({ article, isClickable = false }: ArticleCardProps) {
       <p className="article-date">{article.created_at}</p>
       {article.tags && (
         <section className="article-tags">
-          {article.tags.split(", ").map((tag, index) => (
-            <Tag key={`${article.id}-tag-${index}`} name={tag} />
+          {article.tags.split(", ").map((tag) => (
+            <Tag key={`${article.id}-tag-${tag}`} name={tag} />
           ))}
         </section>
       )}
