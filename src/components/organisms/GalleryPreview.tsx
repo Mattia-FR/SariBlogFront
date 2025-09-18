@@ -58,7 +58,10 @@ function GalleryPreview({
                 key={`gallery-slide-${illustration.id}-${index}`}
                 className="carousel-slide"
               >
-                <IllustrationCard illustration={illustration} />
+                <IllustrationCard
+                  illustration={illustration}
+                  isClickable={true}
+                />
               </article>
             ))}
           </section>

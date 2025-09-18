@@ -11,6 +11,7 @@ function ArticlesPreview({ articles }: ArticlesPreviewProps) {
           <ArticleCard
             key={`articles-preview-article-${article.id}`}
             article={article}
+            isClickable={true}
           />
         ))}
       </section>

@@ -1,6 +1,7 @@
 import { useLoaderData } from "react-router-dom";
 import { useIllustrationById } from "../../hooks/useIllustrationById";
 import type { IllustrationDetailPageData } from "../../types/illustrationDetail";
+import Image from "../atoms/Image";
 
 function GalleryDetail() {
   // Garder : données du loader
@@ -16,13 +17,12 @@ function GalleryDetail() {
   const currentIllustration =
     illustrationData?.data?.illustration || illustration;
 
-  const imageUrl = currentIllustration.image
-    ? `${import.meta.env.VITE_API_URL}/images/${currentIllustration.image}`
-    : null;
-
   return (
     <article className="gallery-detail">
-      {imageUrl && <img src={imageUrl} alt={currentIllustration.alt_text} />}
+      <Image
+        src={currentIllustration.image}
+        alt={currentIllustration.alt_text}
+      />
       <h2>{currentIllustration.title}</h2>
       <p className="illustration-date">{currentIllustration.created_at}</p>
       {currentIllustration.description && (

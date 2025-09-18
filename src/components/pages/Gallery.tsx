@@ -1,5 +1,6 @@
-import { useLoaderData, useSearchParams } from "react-router-dom";
+import { useLoaderData } from "react-router-dom";
 import { useGallery } from "../../hooks/useGallery";
+import { usePagination } from "../../hooks/usePagination";
 import type { IllustrationDetail } from "../../types/illustrationDetail";
 import type { IllustrationPageData } from "../../types/illustrationPage";
 import IllustrationCard from "../molecules/IllustrationCard";
@@ -8,11 +9,11 @@ import Pagination from "../molecules/Pagination";
 function Gallery() {
   // TOUS les hooks doivent être appelés au niveau supérieur
   const loaderData = useLoaderData() as IllustrationPageData | null;
-  const [searchParams, setSearchParams] = useSearchParams();
+
+  // Hook de pagination
+  const { limit, offset, currentPage, handlePageChange } = usePagination();
 
   // Hook SWR avec fallback
-  const limit = Number.parseInt(searchParams.get("limit") || "12", 10);
-  const offset = Number.parseInt(searchParams.get("offset") || "0", 10);
   const { data: galleryData } = useGallery(limit, offset, {
     illustrations: loaderData?.illustrations || [],
     pagination: loaderData?.pagination || {
@@ -39,20 +40,6 @@ function Gallery() {
   const currentIllustrations = galleryData?.illustrations || illustrations;
   const currentPagination = galleryData?.pagination || pagination;
 
-  const currentPage =
-    Math.floor(
-      Number.parseInt(searchParams.get("offset") || "0", 10) /
-        Number.parseInt(searchParams.get("limit") || "12", 10),
-    ) + 1;
-
-  const handlePageChange = (page: number) => {
-    const newOffset = (page - 1) * currentPagination.limit;
-    setSearchParams({
-      offset: newOffset.toString(),
-      limit: currentPagination.limit.toString(),
-    });
-  };
-
   return (
     <section className="gallery-page">
       <h1>Galerie</h1>
@@ -61,13 +48,14 @@ function Gallery() {
           <IllustrationCard
             key={`gallery-page-${illustration.id}`}
             illustration={illustration}
+            isClickable={true}
           />
         ))}
       </section>
       <Pagination
         currentPage={currentPage}
         totalPages={currentPagination.totalPages}
-        onPageChange={handlePageChange}
+        onPageChange={(page) => handlePageChange(page, currentPagination)}
       />
     </section>
   );

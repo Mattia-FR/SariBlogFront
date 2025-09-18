@@ -1,26 +1,17 @@
 import { Link } from "react-router-dom";
 import type { ArticleCardProps } from "../../types/article";
-import Tag from "../atoms/Tag";
+import Image from "../atoms/Image";
+import TagList from "./TagList";
 import "./ArticleCard.css";
 
 function ArticleCard({ article, isClickable = false }: ArticleCardProps) {
-  const imageUrl = article.image
-    ? `${import.meta.env.VITE_API_URL}/images/${article.image}`
-    : null;
-
   const cardContent = (
     <article className="article-card">
-      {imageUrl && <img src={imageUrl} alt={article.title} />}
+      <Image src={article.image} alt={article.title} />
       <h4>{article.title}</h4>
       {article.excerpt && <p>{article.excerpt}</p>}
       <p className="article-date">{article.created_at}</p>
-      {article.tags && (
-        <section className="article-tags">
-          {article.tags.split(", ").map((tag) => (
-            <Tag key={`${article.id}-tag-${tag}`} name={tag} />
-          ))}
-        </section>
-      )}
+      <TagList tags={article.tags} articleId={article.id} />
     </article>
   );
 

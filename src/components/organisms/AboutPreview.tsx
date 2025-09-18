@@ -1,5 +1,6 @@
 import { Link } from "react-router-dom";
 import type { AboutPreviewProps } from "../../types/about";
+import Image from "../atoms/Image";
 import "./AboutPreview.css";
 
 function AboutPreview({ about }: AboutPreviewProps) {
@@ -14,10 +15,7 @@ function AboutPreview({ about }: AboutPreviewProps) {
   return (
     <section className="about-preview">
       <section className="about-image">
-        <img
-          src={`${import.meta.env.VITE_API_URL}/images/${about.image}`}
-          alt="Portrait de l'artiste"
-        />
+        <Image src={about.image} alt="Portrait de l'artiste" />
       </section>
       <section className="about-text">
         <h2>À propos</h2>

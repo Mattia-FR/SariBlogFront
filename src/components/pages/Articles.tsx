@@ -1,5 +1,6 @@
-import { useLoaderData, useSearchParams } from "react-router-dom";
+import { useLoaderData } from "react-router-dom";
 import { useArticles } from "../../hooks/useArticles";
+import { usePagination } from "../../hooks/usePagination";
 import type { Article } from "../../types/article";
 import type { ArticlesPageData } from "../../types/articlesPage";
 import ArticleCard from "../molecules/ArticleCard";
@@ -8,11 +9,11 @@ import Pagination from "../molecules/Pagination";
 function ArticlesPage() {
   // Garder : données du loader
   const { articles, pagination } = useLoaderData() as ArticlesPageData;
-  const [searchParams, setSearchParams] = useSearchParams();
+
+  // Hook de pagination
+  const { limit, offset, currentPage, handlePageChange } = usePagination();
 
   // Ajouter : hook SWR avec fallback
-  const limit = Number.parseInt(searchParams.get("limit") || "12", 10);
-  const offset = Number.parseInt(searchParams.get("offset") || "0", 10);
   const { data: articlesData } = useArticles(limit, offset, {
     articles,
     pagination,
@@ -21,20 +22,6 @@ function ArticlesPage() {
   // Utiliser les données SWR ou fallback vers le loader
   const currentArticles = articlesData?.articles || articles;
   const currentPagination = articlesData?.pagination || pagination;
-
-  const currentPage =
-    Math.floor(
-      Number.parseInt(searchParams.get("offset") || "0", 10) /
-        Number.parseInt(searchParams.get("limit") || "12", 10),
-    ) + 1;
-
-  const handlePageChange = (page: number) => {
-    const newOffset = (page - 1) * currentPagination.limit;
-    setSearchParams({
-      offset: newOffset.toString(),
-      limit: currentPagination.limit.toString(),
-    });
-  };
 
   return (
     <section className="articles-page">
@@ -51,7 +38,7 @@ function ArticlesPage() {
       <Pagination
         currentPage={currentPage}
         totalPages={currentPagination.totalPages}
-        onPageChange={handlePageChange}
+        onPageChange={(page) => handlePageChange(page, currentPagination)}
       />
     </section>
   );

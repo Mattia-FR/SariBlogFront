@@ -9,6 +9,7 @@ export type Illustration = {
 
 export type IllustrationCardProps = {
   illustration: Illustration;
+  isClickable?: boolean;
 };
 
 export type GalleryPreviewProps = {
