@@ -17,7 +17,7 @@ function Pagination({
   if (totalPages <= 1) return null;
 
   return (
-    <nav className="pagination" aria-label="Navigation des pages">
+    <section className="pagination" aria-label="Navigation des pages">
       <button
         type="button"
         onClick={handlePrevious}
@@ -41,7 +41,7 @@ function Pagination({
       >
         <ChevronRight />
       </button>
-    </nav>
+    </section>
   );
 }
 
