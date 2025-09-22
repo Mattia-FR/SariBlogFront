@@ -1,0 +1,14 @@
+.articles-page {
+  .articles-grid {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: clamp(20px, 4vw, 40px);
+    width: 100%;
+  }
+
+  .article-card {
+    width: clamp(230px, 25vw, 350px);
+    flex-shrink: 0;
+  }
+}

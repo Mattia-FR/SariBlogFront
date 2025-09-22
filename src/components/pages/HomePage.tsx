@@ -18,7 +18,7 @@ function HomePage() {
   // Ajouter : hooks SWR avec fallback (revalidation en arrière-plan)
   const { data: articlesData } = useLatestArticles(4, articles);
   const { data: illustrationsData } = useIllustrations(illustrations);
-  const { data: aboutData } = useAbout(about);
+  const { data: aboutData } = useAbout(about ?? undefined);
 
   return (
     <section className="home-page">

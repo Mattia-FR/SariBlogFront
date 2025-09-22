@@ -6,6 +6,8 @@ import type { ArticlesPageData } from "../../types/articlesPage";
 import ArticleCard from "../molecules/ArticleCard";
 import Pagination from "../molecules/Pagination";
 
+import "./Article.css";
+
 function ArticlesPage() {
   // Garder : données du loader
   const { articles, pagination } = useLoaderData() as ArticlesPageData;

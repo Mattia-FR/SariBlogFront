@@ -3,16 +3,20 @@
   flex-direction: column;
   padding-top: clamp(20px, 4vw, 40px);
   margin-bottom: clamp(40px, 8vw, 80px);
-  /* height: calc(100vh - 60px); */
+
   h2 {
     margin: clamp(5px, 1vw, 10px) auto;
     padding-bottom: clamp(10px, 2vw, 20px);
   }
 }
 
-.articles-grid {
+.articles-preview .articles-grid {
   display: flex;
   flex-wrap: wrap;
   justify-content: center;
   gap: clamp(20px, 4vw, 40px);
+}
+
+.articles-preview .article-card {
+  flex: 1 1 clamp(280px, 45%, 400px);
 }

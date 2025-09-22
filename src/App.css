@@ -30,6 +30,17 @@ main {
   max-width: clamp(320px, 90vw, 1200px);
   margin: 0 auto;
   padding: 0 clamp(16px, 4vw, 32px);
+
+  /* Centrer dans l'espace disponible après la navbar */
+  margin-left: calc(
+    clamp(250px, 22vw, 270px) +
+    (100vw - clamp(250px, 22vw, 270px) - clamp(320px, 90vw, 1200px)) /
+    2
+  );
+
+  @media (max-width: 768px) {
+    margin-left: auto;
+  }
 }
 
 a {
