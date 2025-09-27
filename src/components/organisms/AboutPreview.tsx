@@ -19,7 +19,11 @@ function AboutPreview({ about }: AboutPreviewProps) {
       </section>
       <section className="about-text">
         <h2>À propos</h2>
-        <p>{about.content}</p>
+        <p>
+          {about.content.length > 200
+            ? `${about.content.substring(0, 200).trim()}...`
+            : about.content}
+        </p>
         <Link to="/about" className="about-link">
           En savoir plus
         </Link>

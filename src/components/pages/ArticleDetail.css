@@ -1,0 +1,138 @@
+.article-detail {
+  max-width: 800px;
+  margin: 0 auto;
+  padding: 40px 20px;
+  min-height: calc(100vh - 180px);
+
+  > img {
+    width: 100%;
+    height: 300px;
+    object-fit: cover;
+    border-radius: 15px 15px 0px 0px;
+    margin: 0;
+    display: block;
+    cursor: pointer;
+    transition: transform 0.3s ease;
+
+    /* &:hover {
+      transform: scale(1.02);
+    } */
+  }
+
+  .article-divider {
+    border: none;
+    height: 1px;
+    background: linear-gradient(
+      to right,
+      transparent,
+      var(--color-five),
+      transparent
+    );
+    margin: 0px calc(-50vw + 50%) 30px calc(-50vw + 50%);
+    width: 100vw;
+  }
+
+  h2 {
+    font-size: 2.5rem;
+    color: var(--color-two);
+    margin-bottom: 15px;
+    text-align: center;
+  }
+
+  .article-date {
+    color: var(--color-three);
+    text-align: center;
+    margin-bottom: 20px;
+    font-style: italic;
+    font-size: 0.8rem;
+  }
+
+  .article-content {
+    background-color: var(--color-one);
+    padding: 30px;
+    border-radius: 15px;
+    border: 1px solid var(--color-five);
+    margin-bottom: 30px;
+    color: var(--color-three);
+    font-size: 1.2rem;
+    line-height: 1.6;
+    box-shadow: 0px 0px 15px 5px rgba(0, 0, 0, 0.25);
+  }
+
+  .article-tags {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 10px;
+
+    button {
+      background: none;
+      border: 1px solid var(--color-five);
+      border-radius: 20px;
+      padding: 6px 12px;
+      color: var(--color-five);
+      cursor: pointer;
+
+      &:hover {
+        border-color: var(--color-six);
+        color: var(--color-six);
+      }
+    }
+  }
+}
+
+/* Modale pour l'image en plein écran */
+.image-modal {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  background-color: rgba(0, 0, 0, 0.9);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 50;
+  cursor: pointer;
+}
+
+.modal-backdrop {
+  width: 100%;
+  height: 100%;
+  background: transparent;
+  border: none;
+  padding: 0;
+  margin: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.modal-content {
+  position: relative;
+  cursor: default;
+
+  img {
+    max-width: 80vw;
+    max-height: 80vh;
+    object-fit: contain;
+  }
+}
+
+.modal-close {
+  position: absolute;
+  top: -40px;
+  right: 0;
+  background: none;
+  border: none;
+  color: white;
+  font-size: 2rem;
+  cursor: pointer;
+  padding: 5px 10px;
+  border-radius: 50%;
+  transition: background-color 0.3s ease;
+
+  &:hover {
+    background-color: rgba(255, 255, 255, 0.2);
+  }
+}

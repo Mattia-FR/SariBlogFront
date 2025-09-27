@@ -2,7 +2,6 @@ import { Link } from "react-router-dom";
 import type { ArticleCardProps } from "../../types/article";
 import Image from "../atoms/Image";
 import TagList from "./TagList";
-import "./ArticleCard.css";
 
 function ArticleCard({ article, isClickable = false }: ArticleCardProps) {
   const cardContent = (

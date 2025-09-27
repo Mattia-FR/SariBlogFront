@@ -14,12 +14,13 @@
     padding: clamp(5px, 1vw, 10px);
     border: 1px solid var(--color-two);
     border-radius: 15px;
-    color: var(--color-two);
+    color: var(--color-one);
     text-decoration: none;
     font-family: var(--font-two);
+    background-color: var(--color-two);
+    transition: all 0.3s ease;
   }
   .cta-button:hover {
-    color: var(--color-one);
-    background-color: var(--color-two);
+    box-shadow: 0px 0px 10px 0px var(--color-two);
   }
 }

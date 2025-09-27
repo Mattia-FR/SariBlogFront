@@ -1,34 +1,31 @@
 import { Link } from "react-router-dom";
+import { useScroll } from "../../hooks/useScroll";
+import { ThemeToggle } from "../atoms/ThemeToggle";
 import "./Navbar.css";
 
 function Navbar() {
+  const isScrolled = useScroll();
+
   return (
-    <nav>
-      <p>
-        <Link to="/" className="">
-          Accueil
-        </Link>
-      </p>
-      <p>
-        <Link to="/blog" className="">
-          Blog
-        </Link>
-      </p>
-      <p>
-        <Link to="/gallery" className="">
-          Galerie
-        </Link>
-      </p>
-      <p>
-        <Link to="/about" className="">
-          À propos
-        </Link>
-      </p>
-      <p>
-        <Link to="/contact" className="">
-          Contact
-        </Link>
-      </p>
+    <nav className={isScrolled ? "navbar-scrolled" : ""}>
+      <Link to="/" className="">
+        <p>Accueil</p>
+      </Link>
+      <Link to="/blog" className="">
+        <p>Blog</p>
+      </Link>
+      <Link to="/gallery" className="">
+        <p>Galerie</p>
+      </Link>
+      <Link to="/about" className="">
+        <p>À propos</p>
+      </Link>
+      <Link to="/contact" className="">
+        <p>Contact</p>
+      </Link>
+      <div className="theme-toggle-container">
+        <ThemeToggle />
+      </div>
     </nav>
   );
 }

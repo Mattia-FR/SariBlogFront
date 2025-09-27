@@ -3,4 +3,7 @@ export type ImageProps = {
   alt: string;
   className?: string;
   fallbackSrc?: string;
+  onClick?: () => void;
+  onKeyDown?: (e: React.KeyboardEvent) => void;
+  tabIndex?: number;
 };

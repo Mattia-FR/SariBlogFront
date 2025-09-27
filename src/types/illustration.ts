@@ -10,6 +10,9 @@ export type Illustration = {
 export type IllustrationCardProps = {
   illustration: Illustration;
   isClickable?: boolean;
+  showText?: boolean;
+  className?: string;
+  dataTitle?: string;
 };
 
 export type GalleryPreviewProps = {

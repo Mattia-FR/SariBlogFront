@@ -3,6 +3,8 @@ import { useIllustrationById } from "../../hooks/useIllustrationById";
 import type { IllustrationDetailPageData } from "../../types/illustrationDetail";
 import Image from "../atoms/Image";
 
+import "./GalleryDetail.css";
+
 function GalleryDetail() {
   // Garder : données du loader
   const { illustration } = useLoaderData() as IllustrationDetailPageData;
@@ -19,12 +21,13 @@ function GalleryDetail() {
 
   return (
     <article className="gallery-detail">
+      <h2>{currentIllustration.title}</h2>
+      <p className="illustration-date">{currentIllustration.created_at}</p>
       <Image
         src={currentIllustration.image}
         alt={currentIllustration.alt_text}
+        className="gallery-image"
       />
-      <h2>{currentIllustration.title}</h2>
-      <p className="illustration-date">{currentIllustration.created_at}</p>
       {currentIllustration.description && (
         <div className="illustration-description">
           {currentIllustration.description}

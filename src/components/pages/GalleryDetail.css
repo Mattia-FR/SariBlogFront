@@ -1,0 +1,46 @@
+.gallery-detail {
+  max-width: 1000px;
+  margin: 0 auto;
+  padding: 40px 20px;
+  min-height: calc(100vh - 180px);
+
+  h2 {
+    font-size: 2.5rem;
+    color: var(--color-two);
+    margin-bottom: 15px;
+    text-align: center;
+  }
+
+  .illustration-date {
+    color: var(--color-three);
+    text-align: center;
+    margin-bottom: 30px;
+    font-style: italic;
+    font-size: 0.9rem;
+  }
+
+  .gallery-image {
+    width: 70vw;
+    height: auto;
+    object-fit: contain;
+    border-radius: 15px;
+    margin: 0 auto 30px auto;
+    display: block;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+    /* Sortir de la largeur du conteneur */
+    margin-left: calc(-35vw + 50%);
+    margin-right: calc(-35vw + 50%);
+  }
+
+  .illustration-description {
+    background-color: var(--color-one);
+    padding: 30px;
+    border-radius: 15px;
+    border: 1px solid var(--color-five);
+    color: var(--color-three);
+    font-size: 1.1rem;
+    line-height: 1.6;
+    text-align: center;
+    box-shadow: 0px 0px 15px 5px rgba(0, 0, 0, 0.25);
+  }
+}

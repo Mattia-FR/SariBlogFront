@@ -27,7 +27,6 @@ function ArticlesPage() {
 
   return (
     <section className="articles-page">
-      <h1>Articles</h1>
       <section className="articles-grid">
         {currentArticles.map((article: Article) => (
           <ArticleCard

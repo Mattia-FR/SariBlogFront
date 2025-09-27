@@ -1,0 +1,73 @@
+.gallery-page {
+  .gallery-grid {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    grid-auto-rows: 1fr; /* Au lieu de 200px, utiliser 1fr pour des carrés */
+    width: 100%;
+    max-width: 1200px;
+    margin: 0 auto;
+    aspect-ratio: 3 / 4; /* Ratio 3:4 pour la grille (3 colonnes, 4 lignes) */
+  }
+
+  .illustration-card-link,
+  .illustration-card {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+    height: 100%;
+    position: relative;
+    overflow: hidden;
+    text-decoration: none;
+
+    img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      transition: transform 0.3s ease;
+    }
+
+    &:hover img {
+      transform: scale(1.05);
+    }
+
+    &::after {
+      content: attr(data-title);
+      position: absolute;
+      bottom: 0;
+      left: 0;
+      right: 0;
+      background: linear-gradient(transparent, rgba(0, 0, 0, 0.8));
+      color: white;
+      padding: 20px 15px 15px;
+      font-size: 1rem;
+      font-weight: 600;
+      opacity: 0;
+      transition: opacity 0.3s ease;
+    }
+
+    &:hover::after {
+      opacity: 1;
+    }
+  }
+}
+
+/* Classes de taille selon votre pattern */
+.gallery-page .illustration-card-link.size-1x1,
+.gallery-page .illustration-card.size-1x1 {
+  grid-row: span 1;
+  grid-column: span 1;
+}
+
+.gallery-page .illustration-card-link.size-2x1,
+.gallery-page .illustration-card.size-2x1 {
+  grid-row: span 2;
+  grid-column: span 1;
+}
+
+.gallery-page .illustration-card-link.size-1x2,
+.gallery-page .illustration-card.size-1x2 {
+  grid-row: span 1;
+  grid-column: span 2;
+}

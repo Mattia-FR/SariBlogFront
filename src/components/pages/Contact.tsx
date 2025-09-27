@@ -1,15 +1,8 @@
 import { useId, useState } from "react";
-
 import { api } from "../../lib/api";
+import type { ContactFormData, FormStatus } from "../../types/contact";
 
-type ContactFormData = {
-  name: string;
-  email: string;
-  subject: string;
-  message: string;
-};
-
-type FormStatus = "idle" | "loading" | "success" | "error";
+import "./Contact.css";
 
 function Contact() {
   const nameId = useId();

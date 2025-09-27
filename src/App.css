@@ -20,9 +20,22 @@
   --font-two: "Inter", sans-serif;
 }
 
+/* Variables mode clair */
+[data-theme="light"] {
+  --color-one: #ffeae5;
+  --color-two: #272627;
+  --color-three: #f08f85;
+  --color-four: #800000;
+  --color-five: #b33a34;
+  --color-six: #f05357;
+}
+
 /* On définit la couleur de fond sur tout le site */
 body {
   background-color: var(--color-one);
+  transition:
+    background-color 0.3s ease,
+    color 0.3s ease;
 }
 
 /* On centre tout, avec clamp pour que ce soit responsive */
@@ -30,17 +43,7 @@ main {
   max-width: clamp(320px, 90vw, 1200px);
   margin: 0 auto;
   padding: 0 clamp(16px, 4vw, 32px);
-
-  /* Centrer dans l'espace disponible après la navbar */
-  margin-left: calc(
-    clamp(250px, 22vw, 270px) +
-    (100vw - clamp(250px, 22vw, 270px) - clamp(320px, 90vw, 1200px)) /
-    2
-  );
-
-  @media (max-width: 768px) {
-    margin-left: auto;
-  }
+  padding-top: 60px;
 }
 
 a {
