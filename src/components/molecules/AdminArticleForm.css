@@ -1,0 +1,117 @@
+/* ===== FORMULAIRE ARTICLE ADMIN ===== */
+.admin-article-form {
+  border: 1px solid var(--color-five);
+  border-radius: 15px;
+  padding: clamp(20px, 4vw, 40px);
+  margin-bottom: clamp(20px, 4vw, 40px);
+
+  .form-group {
+    margin-bottom: clamp(15px, 3vw, 25px);
+    border: none;
+
+    label,
+    legend {
+      display: block;
+      font-family: var(--font-two);
+      font-weight: 500;
+      color: var(--color-five);
+      margin-bottom: clamp(5px, 1vw, 10px);
+    }
+
+    input,
+    textarea,
+    select {
+      width: 100%;
+      padding: clamp(8px, 2vw, 12px);
+      border: 1px solid var(--color-five);
+      border-radius: 8px;
+      font-family: var(--font-two);
+      color: var(--color-five);
+      transition: border-color 0.2s ease;
+
+      &:focus {
+        outline: none;
+        border-color: var(--color-six);
+      }
+    }
+
+    textarea {
+      resize: vertical;
+      min-height: clamp(100px, 20vw, 150px);
+    }
+
+    .uploaded-file {
+      margin-top: clamp(5px, 1vw, 10px);
+      font-size: clamp(0.8rem, 1.5vw, 0.9rem);
+      color: var(--color-six);
+      font-style: italic;
+    }
+  }
+
+  .tags-checkboxes {
+    display: flex;
+    flex-wrap: wrap;
+    gap: clamp(10px, 2vw, 15px);
+
+    .tag-checkbox {
+      display: flex;
+      align-items: center;
+      gap: clamp(5px, 1vw, 8px);
+      cursor: pointer;
+      font-family: var(--font-two);
+      color: var(--color-five);
+
+      input[type="checkbox"] {
+        width: auto;
+        margin: 0;
+      }
+
+      span {
+        user-select: none;
+      }
+    }
+  }
+
+  .form-actions {
+    display: flex;
+    gap: clamp(10px, 2vw, 15px);
+    justify-content: flex-end;
+    margin-top: clamp(20px, 4vw, 30px);
+    padding-top: clamp(15px, 3vw, 25px);
+    border-top: 1px solid var(--color-five);
+
+    .admin-button {
+      padding: clamp(8px, 2vw, 12px) clamp(16px, 3vw, 24px);
+      border-radius: 15px;
+      font-family: var(--font-two);
+      font-weight: 500;
+      cursor: pointer;
+      transition: all 0.2s ease;
+      border: 1px solid;
+
+      &.primary {
+        background-color: var(--color-six);
+        color: var(--color-one);
+        border-color: var(--color-six);
+
+        &:hover {
+          background-color: var(--color-five);
+          border-color: var(--color-five);
+          transform: translateY(-2px);
+        }
+      }
+
+      &.secondary {
+        background-color: transparent;
+        color: var(--color-five);
+        border-color: var(--color-five);
+
+        &:hover {
+          background-color: var(--color-five);
+          color: var(--color-one);
+          transform: translateY(-1px);
+        }
+      }
+    }
+  }
+}

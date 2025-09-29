@@ -29,9 +29,9 @@ function GalleryDetail() {
         className="gallery-image"
       />
       {currentIllustration.description && (
-        <div className="illustration-description">
+        <section className="illustration-description">
           {currentIllustration.description}
-        </div>
+        </section>
       )}
     </article>
   );

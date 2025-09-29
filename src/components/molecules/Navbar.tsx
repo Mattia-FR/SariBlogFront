@@ -23,9 +23,9 @@ function Navbar() {
       <Link to="/contact" className="">
         <p>Contact</p>
       </Link>
-      <div className="theme-toggle-container">
+      <section className="theme-toggle-container">
         <ThemeToggle />
-      </div>
+      </section>
     </nav>
   );
 }

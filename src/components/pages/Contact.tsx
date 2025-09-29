@@ -51,7 +51,7 @@ function Contact() {
     return (
       <section className="contact-page">
         <h1>Contact</h1>
-        <div className="contact-success">
+        <section className="contact-success">
           <h2>Message envoyé !</h2>
           <p>
             Merci pour votre message. Je vous répondrai dans les plus brefs
@@ -64,7 +64,7 @@ function Contact() {
           >
             Envoyer un autre message
           </button>
-        </div>
+        </section>
       </section>
     );
   }
@@ -87,7 +87,7 @@ function Contact() {
         </section>
 
         <form onSubmit={handleSubmit} className="contact-form">
-          <div className="form-group">
+          <fieldset className="form-group">
             <label htmlFor={nameId}>Nom *</label>
             <input
               type="text"
@@ -99,9 +99,9 @@ function Contact() {
               minLength={2}
               maxLength={100}
             />
-          </div>
+          </fieldset>
 
-          <div className="form-group">
+          <fieldset className="form-group">
             <label htmlFor={emailId}>Email *</label>
             <input
               type="email"
@@ -111,9 +111,9 @@ function Contact() {
               onChange={handleInputChange}
               required
             />
-          </div>
+          </fieldset>
 
-          <div className="form-group">
+          <fieldset className="form-group">
             <label htmlFor={subjectId}>Sujet</label>
             <input
               type="text"
@@ -123,9 +123,9 @@ function Contact() {
               onChange={handleInputChange}
               maxLength={150}
             />
-          </div>
+          </fieldset>
 
-          <div className="form-group">
+          <fieldset className="form-group">
             <label htmlFor={messageId}>Message *</label>
             <textarea
               id={messageId}
@@ -137,10 +137,10 @@ function Contact() {
               maxLength={1000}
               rows={6}
             />
-          </div>
+          </fieldset>
 
           {status === "error" && (
-            <div className="form-error">{errorMessage}</div>
+            <section className="form-error">{errorMessage}</section>
           )}
 
           <button
