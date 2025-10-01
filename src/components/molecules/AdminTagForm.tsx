@@ -1,6 +1,8 @@
 import { useId } from "react";
 import type { CreateTagData } from "../../types/admin";
 
+import "./AdminTagForm.css";
+
 type AdminTagFormProps = {
   formData: CreateTagData;
   setFormData: React.Dispatch<React.SetStateAction<CreateTagData>>;
@@ -43,7 +45,7 @@ function AdminTagForm({
         </p>
       </fieldset>
 
-      <nav className="form-actions">
+      <section className="form-actions">
         <button type="submit" className="admin-button primary">
           {isEditing ? "Modifier le tag" : "Créer le tag"}
         </button>
@@ -54,7 +56,7 @@ function AdminTagForm({
         >
           Annuler
         </button>
-      </nav>
+      </section>
     </form>
   );
 }

@@ -7,6 +7,7 @@ import {
 import { usePagination } from "../../../hooks/usePagination";
 import type {
   AdminArticle,
+  AdminArticlesPageData, // ✅ Utiliser le type depuis admin.ts
   AdminTag,
   CreateArticleData,
 } from "../../../types/admin";
@@ -16,27 +17,10 @@ import Pagination from "../../molecules/Pagination";
 
 import "./AdminArticles.css";
 
-// Type pour les données du loader
-type AdminArticlesPageData = {
-  articles: AdminArticle[];
-  pagination: {
-    limit: number;
-    offset: number;
-    totalCount: number;
-    totalPages: number;
-  };
-  tags: AdminTag[];
-};
-
 function AdminArticles() {
-  // Garder : données du loader
+  // ✅ Données du loader
   const loaderData = useLoaderData() as AdminArticlesPageData;
-  console.info("🔍 [AdminArticles] Données du loader:", loaderData);
-
   const { articles, pagination, tags: loaderTags } = loaderData;
-  console.info("🔍 [AdminArticles] Articles du loader:", articles);
-  console.info("🔍 [AdminArticles] Pagination du loader:", pagination);
-  console.info("🔍 [AdminArticles] Tags du loader:", loaderTags);
 
   const [showForm, setShowForm] = useState(false);
   const [editingArticle, setEditingArticle] = useState<number | null>(null);
@@ -51,46 +35,28 @@ function AdminArticles() {
 
   // Hook de pagination
   const { limit, offset, currentPage, handlePageChange } = usePagination(12);
-  console.info(
-    "🔍 [AdminArticles] Pagination hook - limit:",
-    limit,
-    "offset:",
-    offset,
-    "currentPage:",
-    currentPage,
-  );
 
-  // Hook SWR - utilise les données du loader comme fallback
+  // ✅ Hook SWR unifié avec fallbackData (comme la page Blog)
   const {
-    articles: swrArticles,
-    pagination: swrPagination,
+    data: articlesData,
     isLoading,
     error,
     createArticle,
     updateArticle,
     deleteArticle,
-  } = useAdminArticles(limit, offset);
-
-  console.info("🔍 [AdminArticles] SWR Articles:", swrArticles);
-  console.info("🔍 [AdminArticles] SWR Pagination:", swrPagination);
-  console.info("🔍 [AdminArticles] SWR isLoading:", isLoading);
-  console.info("🔍 [AdminArticles] SWR error:", error);
-
-  const { tags: swrTags } = useAdminArticleTags();
-  console.info("🔍 [AdminArticles] SWR Tags:", swrTags);
-
-  // Utiliser les données SWR ou fallback vers le loader
-  const currentArticles = swrArticles.length > 0 ? swrArticles : articles;
-  const currentPagination = swrPagination || pagination;
-  const currentTags = swrTags.length > 0 ? swrTags : loaderTags;
-
-  console.info("🔍 [AdminArticles] Articles finaux:", currentArticles);
-  console.info("🔍 [AdminArticles] Pagination finale:", currentPagination);
-  console.info("🔍 [AdminArticles] Tags finaux:", currentTags);
-  console.info(
-    "🔍 [AdminArticles] Nombre d'articles à afficher:",
-    currentArticles.length,
+  } = useAdminArticles(
+    limit,
+    offset,
+    loaderData, // ✅ Passer les données du loader comme fallback
   );
+
+  // ✅ Hook pour les tags avec fallback
+  const { tags } = useAdminArticleTags(loaderTags);
+
+  // ✅ Utiliser les données SWR ou fallback vers le loader (comme la page Blog)
+  const currentArticles = articlesData?.articles || articles;
+  const currentPagination = articlesData?.pagination || pagination;
+  const currentTags = tags.length > 0 ? tags : loaderTags;
 
   const handleCreate = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -125,6 +91,7 @@ function AdminArticles() {
         status: "draft",
         tagIds: [],
       });
+      setShowForm(false);
     } catch (error) {
       console.error("Erreur modification article:", error);
     }
@@ -166,9 +133,8 @@ function AdminArticles() {
     });
   };
 
-  // Afficher le loading seulement si on n'a pas de données du loader
+  // ✅ Afficher le loading seulement si on n'a pas de données du loader
   if (isLoading && articles.length === 0) {
-    console.info("🔍 [AdminArticles] Affichage du loading");
     return (
       <main className="admin-articles-page">
         <section className="admin-loading">
@@ -179,9 +145,8 @@ function AdminArticles() {
     );
   }
 
-  // Afficher l'erreur seulement si on n'a pas de données du loader
+  // ✅ Afficher l'erreur seulement si on n'a pas de données du loader
   if (error && articles.length === 0) {
-    console.info("🔍 [AdminArticles] Affichage de l'erreur:", error);
     return (
       <main className="admin-articles-page">
         <section className="admin-error">
@@ -191,66 +156,67 @@ function AdminArticles() {
     );
   }
 
-  console.info(
-    "🔍 [AdminArticles] Rendu de la page avec",
-    currentArticles.length,
-    "articles",
-  );
-
   return (
     <main className="admin-articles-page">
-      <header className="admin-page-header">
-        <h1>Gestion des Articles</h1>
-        <button
-          type="button"
-          onClick={() => setShowForm(true)}
-          className="admin-new-article-btn"
-        >
-          Nouvel Article
-        </button>
-      </header>
+      {/* Header avec bouton - affiché seulement si le formulaire n'est pas visible */}
+      {!showForm && (
+        <header className="admin-page-header">
+          <h1>Gestion des Articles</h1>
+          <button
+            type="button"
+            onClick={() => setShowForm(true)}
+            className="admin-new-article-btn"
+          >
+            Nouvel Article
+          </button>
+        </header>
+      )}
 
+      {/* Formulaire - affiché seulement si showForm est true */}
       {showForm && (
-        <AdminArticleForm
-          formData={formData}
-          setFormData={setFormData}
-          tags={currentTags}
-          onSubmit={editingArticle ? handleUpdate : handleCreate}
-          onCancel={handleCancel}
-          isEditing={!!editingArticle}
-        />
+        <section className="admin-form-section">
+          <header className="admin-form-header">
+            <h1>{editingArticle ? "Modifier l'article" : "Nouvel Article"}</h1>
+          </header>
+          <AdminArticleForm
+            formData={formData}
+            setFormData={setFormData}
+            tags={currentTags}
+            onSubmit={editingArticle ? handleUpdate : handleCreate}
+            onCancel={handleCancel}
+            isEditing={!!editingArticle}
+          />
+        </section>
       )}
 
-      {/* Pagination déplacée en haut */}
-      {currentPagination && currentPagination.totalPages > 1 && (
-        <Pagination
-          currentPage={currentPage}
-          totalPages={currentPagination.totalPages}
-          onPageChange={(page) => handlePageChange(page, currentPagination)}
-        />
-      )}
+      {/* Liste et pagination - affichées seulement si le formulaire n'est pas visible */}
+      {!showForm && (
+        <>
+          {/* Pagination déplacée en haut */}
+          {currentPagination && currentPagination.totalPages > 1 && (
+            <Pagination
+              currentPage={currentPage}
+              totalPages={currentPagination.totalPages}
+              onPageChange={(page) => handlePageChange(page, currentPagination)}
+            />
+          )}
 
-      <section className="admin-articles-grid">
-        {currentArticles.length === 0 ? (
-          <p>Aucun article trouvé</p>
-        ) : (
-          currentArticles.map((article: AdminArticle) => {
-            console.info(
-              "🔍 [AdminArticles] Rendu de l'article:",
-              article.id,
-              article.title,
-            );
-            return (
-              <AdminArticleCard
-                key={article.id}
-                article={article}
-                onEdit={handleEdit}
-                onDelete={handleDelete}
-              />
-            );
-          })
-        )}
-      </section>
+          <section className="admin-articles-grid">
+            {currentArticles.length === 0 ? (
+              <p>Aucun article trouvé</p>
+            ) : (
+              currentArticles.map((article: AdminArticle) => (
+                <AdminArticleCard
+                  key={article.id}
+                  article={article}
+                  onEdit={handleEdit}
+                  onDelete={handleDelete}
+                />
+              ))
+            )}
+          </section>
+        </>
+      )}
     </main>
   );
 }

@@ -6,32 +6,26 @@ import type {
   ChangePasswordData,
   CreateUserData,
   UpdateUserData,
-  UserStats,
+  UserStats, // ✅ Ajouter l'import
 } from "../types/admin";
 
 // Hook pour lister les utilisateurs admin
 export const useAdminUsers = (limit = 12, offset = 0) => {
   const { data, error, mutate, isLoading } = useSWR<
-    AdminListResponse<AdminUser> & { stats: UserStats }
+    AdminListResponse<AdminUser>
   >(`/admin/users?limit=${limit}&offset=${offset}`, null, {
-    revalidateOnMount: false,
+    revalidateOnMount: true,
   });
 
   const createUser = async (userData: CreateUserData) => {
     const response = await api.post("/admin/users", userData);
-    mutate();
+    mutate(); // Revalidation
     return response.data;
   };
 
   const updateUser = async (id: number, userData: UpdateUserData) => {
     const response = await api.put(`/admin/users/${id}`, userData);
-    mutate();
-    return response.data;
-  };
-
-  const deleteUser = async (id: number) => {
-    const response = await api.delete(`/admin/users/${id}`);
-    mutate();
+    mutate(); // Revalidation
     return response.data;
   };
 
@@ -40,28 +34,50 @@ export const useAdminUsers = (limit = 12, offset = 0) => {
     passwordData: ChangePasswordData,
   ) => {
     const response = await api.put(`/admin/users/${id}/password`, passwordData);
-    mutate();
+    mutate(); // Revalidation
     return response.data;
   };
 
-  const toggleActive = async (id: number) => {
-    const response = await api.put(`/admin/users/${id}/toggle-active`);
-    mutate();
+  const toggleActive = async (id: number, isActive: boolean) => {
+    const response = await api.put(`/admin/users/${id}/toggle`, {
+      is_active: isActive,
+    });
+    mutate(); // Revalidation
+    return response.data;
+  };
+
+  const deleteUser = async (id: number) => {
+    const response = await api.delete(`/admin/users/${id}`);
+    mutate(); // Revalidation
     return response.data;
   };
 
   return {
     users: data?.items || [],
     pagination: data?.pagination,
-    stats: data?.stats,
     isLoading,
     error,
     createUser,
     updateUser,
-    deleteUser,
     changePassword,
     toggleActive,
+    deleteUser,
     mutate,
+  };
+};
+
+// ✅ Ajouter le hook pour les stats
+export const useAdminUserStats = () => {
+  const { data, error, isLoading } = useSWR<{ stats: UserStats }>(
+    "/admin/users/stats",
+    null,
+    { revalidateOnMount: true },
+  );
+
+  return {
+    stats: data?.stats,
+    isLoading,
+    error,
   };
 };
 
@@ -70,7 +86,7 @@ export const useAdminUser = (id: number) => {
   const { data, error, mutate, isLoading } = useSWR<{ user: AdminUser }>(
     id ? `/admin/users/${id}` : null,
     null,
-    { revalidateOnMount: false },
+    { revalidateOnMount: true },
   );
 
   return {

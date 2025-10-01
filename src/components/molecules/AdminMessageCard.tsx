@@ -1,6 +1,8 @@
 import { Mail, MailOpen, Trash2 } from "lucide-react";
 import type { AdminMessage } from "../../types/admin";
 
+import "./AdminMessageCard.css";
+
 type AdminMessageCardProps = {
   message: AdminMessage;
   onMarkAsRead: (id: number) => void;
@@ -75,7 +77,7 @@ function AdminMessageCard({
         </p>
       </section>
 
-      <nav className="admin-message-actions">
+      <section className="admin-message-actions">
         {message.is_read ? (
           <button
             type="button"
@@ -116,7 +118,7 @@ function AdminMessageCard({
           <Trash2 size={16} />
           Supprimer
         </button>
-      </nav>
+      </section>
     </article>
   );
 }

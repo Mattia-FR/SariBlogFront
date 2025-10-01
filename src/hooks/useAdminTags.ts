@@ -4,53 +4,44 @@ import type {
   AdminListResponse,
   AdminTag,
   CreateTagData,
-  TagStats,
+  TagStats, // ✅ Import du type existant
   UpdateTagData,
 } from "../types/admin";
 
 // Hook pour lister les tags admin
 export const useAdminTags = (limit = 12, offset = 0) => {
   const { data, error, mutate, isLoading } = useSWR<
-    AdminListResponse<AdminTag> & { stats: TagStats }
+    AdminListResponse<AdminTag>
   >(`/admin/tags?limit=${limit}&offset=${offset}`, null, {
-    revalidateOnMount: false,
+    revalidateOnMount: true,
   });
 
   const createTag = async (tagData: CreateTagData) => {
     const response = await api.post("/admin/tags", tagData);
-    mutate();
+    mutate(); // Revalidation
     return response.data;
   };
 
   const updateTag = async (id: number, tagData: UpdateTagData) => {
     const response = await api.put(`/admin/tags/${id}`, tagData);
-    mutate();
+    mutate(); // Revalidation
     return response.data;
   };
 
   const deleteTag = async (id: number) => {
     const response = await api.delete(`/admin/tags/${id}`);
-    mutate();
-    return response.data;
-  };
-
-  const searchTags = async (query: string, limit = 10) => {
-    const response = await api.get(
-      `/admin/tags/search?q=${encodeURIComponent(query)}&limit=${limit}`,
-    );
+    mutate(); // Revalidation
     return response.data;
   };
 
   return {
     tags: data?.items || [],
     pagination: data?.pagination,
-    stats: data?.stats,
     isLoading,
     error,
     createTag,
     updateTag,
     deleteTag,
-    searchTags,
     mutate,
   };
 };
@@ -60,7 +51,7 @@ export const useAdminTag = (id: number) => {
   const { data, error, mutate, isLoading } = useSWR<{ tag: AdminTag }>(
     id ? `/admin/tags/${id}` : null,
     null,
-    { revalidateOnMount: false },
+    { revalidateOnMount: true },
   );
 
   return {
@@ -68,5 +59,21 @@ export const useAdminTag = (id: number) => {
     isLoading,
     error,
     mutate,
+  };
+};
+
+// Hook pour les statistiques des tags
+export const useAdminTagStats = () => {
+  const { data, error, isLoading } = useSWR<{ stats: TagStats }>(
+    // ✅ Correction : TagStats au lieu de any
+    "/admin/tags/stats",
+    null,
+    { revalidateOnMount: true },
+  );
+
+  return {
+    stats: data?.stats,
+    isLoading,
+    error,
   };
 };

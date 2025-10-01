@@ -19,6 +19,14 @@ function ArticleDetail() {
   // Utiliser les données SWR ou fallback vers le loader
   const currentArticle = articleData?.data?.article || article;
 
+  const formatDate = (dateString: string) => {
+    return new Date(dateString).toLocaleDateString("fr-FR", {
+      year: "numeric",
+      month: "short",
+      day: "numeric",
+    });
+  };
+
   const handleImageClick = () => {
     setIsModalOpen(true);
   };
@@ -51,7 +59,7 @@ function ArticleDetail() {
       />
       <hr className="article-divider" />
       <h2>{currentArticle.title}</h2>
-      <p className="article-date">{currentArticle.created_at}</p>
+      <p className="article-date">{formatDate(currentArticle.created_at)}</p>
       <section className="article-content">{currentArticle.content}</section>
       <TagList tags={currentArticle.tags} articleId={currentArticle.id} />
 

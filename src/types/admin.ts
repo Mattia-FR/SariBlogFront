@@ -183,6 +183,68 @@ export type AdminApiResponse<T> = {
   message?: string;
 };
 
+// ✅ Nouveaux types spécifiques pour chaque entité admin
+export type AdminArticlesResponse = {
+  articles: AdminArticle[];
+  pagination: AdminPagination;
+};
+
+export type AdminIllustrationsResponse = {
+  illustrations: AdminIllustration[];
+  pagination: AdminPagination;
+};
+
+export type AdminMessagesResponse = {
+  messages: AdminMessage[];
+  pagination: AdminPagination;
+};
+
+export type AdminTagsResponse = {
+  tags: AdminTag[];
+  pagination: AdminPagination;
+};
+
+export type AdminUsersResponse = {
+  users: AdminUser[];
+  pagination: AdminPagination;
+};
+
+// ✅ Type pour les données de page (loader)
+export type AdminIllustrationsPageData = {
+  illustrations: AdminIllustration[];
+  pagination: AdminPagination;
+  tags: AdminTag[];
+};
+
+export type AdminMessagesPageData = {
+  messages: AdminMessage[];
+  pagination: AdminPagination;
+  stats: MessageStats;
+};
+
+export type AdminTagsPageData = {
+  tags: AdminTag[];
+  pagination: AdminPagination;
+};
+
+export type AdminUsersPageData = {
+  users: AdminUser[];
+  pagination: AdminPagination;
+  stats: UserStats;
+};
+
+export type AdminAboutPageData = {
+  about: AdminAbout | null;
+  history: AboutHistory[];
+};
+
+export type AdminArticlesPageData = {
+  articles: AdminArticle[];
+  pagination: AdminPagination;
+  tags: AdminTag[];
+};
+
+// ✅ Type générique pour les réponses avec items (gardé pour compatibilité)
 export type AdminListResponse<T> = {
   items: T[];
   pagination: AdminPagination;

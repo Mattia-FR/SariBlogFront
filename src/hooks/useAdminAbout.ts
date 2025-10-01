@@ -1,30 +1,30 @@
 import useSWR from "swr";
 import { api } from "../lib/api";
-import type { AboutHistory, AdminAbout, UpdateAboutData } from "../types/admin";
+import type { AboutHistory, AdminAbout, UpdateAboutData } from "../types/admin"; // ✅ Import du type AboutHistory
 
-// Hook pour le contenu "À propos"
+// Hook pour récupérer le contenu "À propos"
 export const useAdminAbout = () => {
   const { data, error, mutate, isLoading } = useSWR<{ about: AdminAbout }>(
     "/admin/about",
     null,
-    { revalidateOnMount: false },
+    { revalidateOnMount: true },
   );
 
   const updateAbout = async (aboutData: UpdateAboutData) => {
     const response = await api.put("/admin/about", aboutData);
-    mutate();
+    mutate(); // Revalidation
     return response.data;
   };
 
   const updateContent = async (content: string) => {
     const response = await api.put("/admin/about/content", { content });
-    mutate();
+    mutate(); // Revalidation
     return response.data;
   };
 
   const updateImage = async (image: string) => {
     const response = await api.put("/admin/about/image", { image });
-    mutate();
+    mutate(); // Revalidation
     return response.data;
   };
 
@@ -39,16 +39,17 @@ export const useAdminAbout = () => {
   };
 };
 
-// Hook pour l'historique "À propos"
+// Hook pour l'historique des modifications
 export const useAdminAboutHistory = () => {
-  const { data, error, isLoading } = useSWR<{ history: AboutHistory[] }>(
+  const { data, error, isLoading } = useSWR<{ history: AboutHistory }>(
+    // ✅ Correction : AboutHistory au lieu de any
     "/admin/about/history",
     null,
-    { revalidateOnMount: false },
+    { revalidateOnMount: true },
   );
 
   return {
-    history: data?.history || [],
+    history: data?.history,
     isLoading,
     error,
   };

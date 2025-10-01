@@ -1,5 +1,5 @@
-/* ===== FORMULAIRE ARTICLE ADMIN ===== */
-.admin-article-form {
+/* ===== FORMULAIRE ILLUSTRATION ADMIN ===== */
+.admin-illustration-form {
   border: 1px solid var(--color-five);
   border-radius: 15px;
   padding: clamp(20px, 4vw, 40px);
@@ -18,6 +18,22 @@
       font-weight: 500;
       color: var(--color-five);
       margin-bottom: clamp(5px, 1vw, 10px);
+    }
+
+    .checkbox-label {
+      display: flex;
+      align-items: center;
+      gap: clamp(8px, 2vw, 12px);
+      cursor: pointer;
+
+      input[type="checkbox"] {
+        width: auto;
+        margin: 0;
+      }
+
+      span {
+        user-select: none;
+      }
     }
 
     input,

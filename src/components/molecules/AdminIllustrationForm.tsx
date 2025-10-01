@@ -2,6 +2,8 @@ import { useId, useState } from "react";
 import { useAdminUpload } from "../../hooks/useAdminUpload";
 import type { AdminTag, CreateIllustrationData } from "../../types/admin";
 
+import "./AdminIllustrationForm.css";
+
 type AdminIllustrationFormProps = {
   formData: CreateIllustrationData;
   setFormData: React.Dispatch<React.SetStateAction<CreateIllustrationData>>;
@@ -149,7 +151,7 @@ function AdminIllustrationForm({
         </section>
       </fieldset>
 
-      <nav className="form-actions">
+      <section className="form-actions">
         <button type="submit" className="admin-button primary">
           {isEditing ? "Modifier l'illustration" : "Créer l'illustration"}
         </button>
@@ -160,7 +162,7 @@ function AdminIllustrationForm({
         >
           Annuler
         </button>
-      </nav>
+      </section>
     </form>
   );
 }

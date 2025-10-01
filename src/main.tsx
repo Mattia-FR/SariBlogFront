@@ -264,7 +264,7 @@ const adminIllustrationsLoader = async ({ request }: { request: Request }) => {
     const { data: tagsData } = await api.get("/admin/illustrations/tags");
 
     return {
-      illustrations: data?.data?.items || [],
+      illustrations: data?.data?.illustrations || [],
       pagination: data?.data?.pagination || {
         limit,
         offset,
@@ -297,17 +297,16 @@ const adminMessagesLoader = async ({ request }: { request: Request }) => {
     const { data } = await api.get(
       `/admin/messages?limit=${limit}&offset=${offset}`,
     );
-    const { data: statsData } = await api.get("/admin/messages/stats");
 
     return {
-      messages: data?.data?.items || [],
+      messages: data?.data?.messages || [],
       pagination: data?.data?.pagination || {
         limit,
         offset,
         totalCount: 0,
         totalPages: 0,
       },
-      stats: statsData?.data?.stats || {
+      stats: data?.data?.stats || {
         total: 0,
         unread: 0,
         read: 0,
@@ -341,19 +340,14 @@ const adminTagsLoader = async ({ request }: { request: Request }) => {
     const { data } = await api.get(
       `/admin/tags?limit=${limit}&offset=${offset}`,
     );
-    const { data: statsData } = await api.get("/admin/tags/stats");
 
     return {
-      tags: data?.data?.items || [],
+      tags: data?.data?.tags || [],
       pagination: data?.data?.pagination || {
         limit,
         offset,
         totalCount: 0,
         totalPages: 0,
-      },
-      stats: statsData?.data?.stats || {
-        total: 0,
-        most_used: [],
       },
     };
   } catch (error) {
@@ -365,10 +359,6 @@ const adminTagsLoader = async ({ request }: { request: Request }) => {
         offset: 0,
         totalCount: 0,
         totalPages: 0,
-      },
-      stats: {
-        total: 0,
-        most_used: [],
       },
     };
   }

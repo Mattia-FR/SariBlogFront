@@ -1,13 +1,22 @@
 import { useState } from "react";
+import { useLoaderData } from "react-router-dom";
 import {
   useAdminAbout,
   useAdminAboutHistory,
 } from "../../../hooks/useAdminAbout";
 import { useAdminUpload } from "../../../hooks/useAdminUpload";
-import type { UpdateAboutData } from "../../../types/admin";
+import type {
+  AboutHistory,
+  AdminAboutPageData,
+  UpdateAboutData,
+} from "../../../types/admin";
 import AdminAboutForm from "../../molecules/AdminAboutForm";
 
 function AdminAbout() {
+  // ✅ Ajouter useLoaderData
+  const loaderData = useLoaderData() as AdminAboutPageData;
+  const { about: loaderAbout, history: loaderHistory } = loaderData;
+
   const [showForm, setShowForm] = useState(false);
   const [showHistory, setShowHistory] = useState(false);
   const [formData, setFormData] = useState<UpdateAboutData>({
@@ -15,11 +24,20 @@ function AdminAbout() {
     image: "",
   });
 
-  // Hooks SWR
-  const { about, isLoading, error, updateAbout } = useAdminAbout();
-
-  const { history, isLoading: historyLoading } = useAdminAboutHistory();
+  // ✅ Hooks SWR avec fallback
+  const { about: swrAbout, isLoading, error, updateAbout } = useAdminAbout();
+  const { history: swrHistory, isLoading: historyLoading } =
+    useAdminAboutHistory();
   const { uploadSingle } = useAdminUpload();
+
+  // ✅ Utiliser les données SWR ou fallback vers le loader
+  const about = swrAbout || loaderAbout;
+  // ✅ S'assurer que history est toujours un tableau
+  const history = Array.isArray(swrHistory)
+    ? swrHistory
+    : Array.isArray(loaderHistory)
+      ? loaderHistory
+      : [];
 
   const handleUpdate = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -55,7 +73,8 @@ function AdminAbout() {
     }
   };
 
-  if (isLoading) {
+  // ✅ Afficher le loading seulement si on n'a pas de données du loader
+  if (isLoading && !loaderAbout) {
     return (
       <main className="admin-about-page">
         <section className="admin-loading">
@@ -66,7 +85,8 @@ function AdminAbout() {
     );
   }
 
-  if (error) {
+  // ✅ Afficher l'erreur seulement si on n'a pas de données du loader
+  if (error && !loaderAbout) {
     return (
       <main className="admin-about-page">
         <section className="admin-error">
@@ -142,9 +162,11 @@ function AdminAbout() {
             </section>
           ) : (
             <ol className="history-list">
-              {history.map((entry) => (
+              {history.map((entry: AboutHistory) => (
                 <li key={entry.id} className="history-item">
                   <time className="history-date">
+                    {" "}
+                    {/* ✅ time est un élément HTML valide */}
                     {new Date(entry.updated_at).toLocaleDateString("fr-FR")}
                   </time>
                   <p className="history-user">

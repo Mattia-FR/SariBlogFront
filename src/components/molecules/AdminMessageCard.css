@@ -1,0 +1,173 @@
+/* ===== CARTE MESSAGE ADMIN ===== */
+.admin-message-card {
+  width: clamp(300px, 35vw, 450px);
+  border: 1px solid var(--color-five);
+  border-radius: 15px;
+  overflow: hidden;
+  transition: all 0.2s ease;
+  cursor: pointer;
+  background-color: var(--color-one);
+
+  &:hover {
+    transform: scale(1.02);
+    box-shadow: 0px 10px 25px rgba(0, 0, 0, 0.15);
+    border-color: var(--color-six);
+  }
+
+  &.selected {
+    border-color: var(--color-six);
+    box-shadow: 0px 0px 0px 2px rgba(var(--color-six-rgb), 0.2);
+  }
+
+  &.unread {
+    border-left: 4px solid #fbbf24;
+    background-color: rgba(251, 191, 36, 0.05);
+  }
+
+  .admin-message-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: clamp(12px, 2.5vw, 16px);
+    background-color: rgba(var(--color-five-rgb), 0.05);
+    border-bottom: 1px solid var(--color-five);
+
+    .admin-message-status {
+      display: flex;
+      align-items: center;
+      gap: clamp(6px, 1.5vw, 8px);
+
+      .status-icon {
+        &.read {
+          color: #4ade80;
+        }
+        &.unread {
+          color: #fbbf24;
+        }
+      }
+
+      .status-text {
+        font-family: var(--font-two);
+        font-size: clamp(0.8rem, 2vw, 0.9rem);
+        font-weight: 500;
+
+        &.read {
+          color: #4ade80;
+        }
+        &.unread {
+          color: #fbbf24;
+        }
+      }
+    }
+
+    .admin-message-date {
+      font-family: var(--font-two);
+      font-size: clamp(0.7rem, 1.5vw, 0.8rem);
+      color: var(--color-five);
+      opacity: 0.7;
+    }
+  }
+
+  .admin-message-content {
+    padding: clamp(15px, 3vw, 20px);
+
+    .admin-message-subject {
+      font-family: var(--font-one);
+      font-size: clamp(1.1rem, 2.5vw, 1.3rem);
+      color: var(--color-five);
+      margin: 0 0 clamp(8px, 2vw, 12px) 0;
+      font-weight: 600;
+    }
+
+    .admin-message-sender {
+      display: flex;
+      flex-direction: column;
+      gap: clamp(2px, 0.5vw, 4px);
+      margin-bottom: clamp(8px, 2vw, 12px);
+      font-style: normal;
+
+      strong {
+        font-family: var(--font-two);
+        font-size: clamp(0.9rem, 2vw, 1rem);
+        color: var(--color-five);
+        font-weight: 600;
+      }
+
+      .sender-email {
+        font-family: var(--font-two);
+        font-size: clamp(0.8rem, 1.5vw, 0.9rem);
+        color: var(--color-five);
+        opacity: 0.7;
+      }
+    }
+
+    .admin-message-preview {
+      font-family: var(--font-two);
+      font-size: clamp(0.8rem, 2vw, 0.9rem);
+      color: var(--color-five);
+      opacity: 0.8;
+      line-height: 1.5;
+      margin: 0;
+    }
+  }
+
+  .admin-message-actions {
+    display: flex;
+    gap: clamp(8px, 2vw, 12px);
+    padding: clamp(12px, 2.5vw, 16px);
+    border-top: 1px solid var(--color-five);
+    background-color: rgba(var(--color-five-rgb), 0.02);
+
+    .admin-button {
+      flex: 1;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: clamp(4px, 1vw, 6px);
+      padding: clamp(6px, 1.5vw, 10px);
+      border-radius: 8px;
+      font-family: var(--font-two);
+      font-size: clamp(0.8rem, 2vw, 0.9rem);
+      font-weight: 500;
+      cursor: pointer;
+      transition: all 0.2s ease;
+      border: 1px solid;
+
+      &.primary {
+        background-color: var(--color-six);
+        color: var(--color-one);
+        border-color: var(--color-six);
+
+        &:hover {
+          background-color: var(--color-five);
+          border-color: var(--color-five);
+          transform: translateY(-1px);
+        }
+      }
+
+      &.secondary {
+        background-color: transparent;
+        color: var(--color-five);
+        border-color: var(--color-five);
+
+        &:hover {
+          background-color: var(--color-five);
+          color: var(--color-one);
+          transform: translateY(-1px);
+        }
+      }
+
+      &.danger {
+        background-color: transparent;
+        color: #dc2626;
+        border-color: #dc2626;
+
+        &:hover {
+          background-color: #dc2626;
+          color: white;
+          transform: translateY(-1px);
+        }
+      }
+    }
+  }
+}

@@ -1,12 +1,25 @@
 import { useState } from "react";
-import { useAdminUsers } from "../../../hooks/useAdminUsers";
+import { useLoaderData } from "react-router-dom";
+import { useAdminUserStats, useAdminUsers } from "../../../hooks/useAdminUsers";
 import { usePagination } from "../../../hooks/usePagination";
-import type { AdminUser, CreateUserData } from "../../../types/admin";
+import type {
+  AdminUser,
+  AdminUsersPageData,
+  CreateUserData,
+} from "../../../types/admin";
 import AdminUserCard from "../../molecules/AdminUserCard";
 import AdminUserForm from "../../molecules/AdminuserForm";
 import Pagination from "../../molecules/Pagination";
 
 function AdminUsers() {
+  // ✅ Ajouter useLoaderData
+  const loaderData = useLoaderData() as AdminUsersPageData;
+  const {
+    users: loaderUsers,
+    pagination: loaderPagination,
+    stats: loaderStats,
+  } = loaderData;
+
   const [showForm, setShowForm] = useState(false);
   const [editingUser, setEditingUser] = useState<number | null>(null);
   const [formData, setFormData] = useState<CreateUserData>({
@@ -19,11 +32,10 @@ function AdminUsers() {
   // Hook de pagination
   const { limit, offset, currentPage, handlePageChange } = usePagination(12);
 
-  // Hook SWR
+  // ✅ Hook SWR avec fallback
   const {
-    users,
-    pagination,
-    stats,
+    users: swrUsers,
+    pagination: swrPagination,
     isLoading,
     error,
     createUser,
@@ -31,6 +43,14 @@ function AdminUsers() {
     deleteUser,
     toggleActive,
   } = useAdminUsers(limit, offset);
+
+  // ✅ Hook séparé pour les stats
+  const { stats: swrStats } = useAdminUserStats();
+
+  // ✅ Utiliser les données SWR ou fallback vers le loader
+  const users = swrUsers.length > 0 ? swrUsers : loaderUsers;
+  const pagination = swrPagination || loaderPagination;
+  const stats = swrStats || loaderStats;
 
   const handleCreate = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -87,9 +107,14 @@ function AdminUsers() {
     }
   };
 
+  // ✅ Corriger la signature pour correspondre à AdminUserCard
   const handleToggleActive = async (id: number) => {
     try {
-      await toggleActive(id);
+      // Trouver l'utilisateur pour obtenir son statut actuel
+      const user = users.find((u) => u.id === id);
+      if (user) {
+        await toggleActive(id, !user.is_active); // ✅ Inverser le statut actuel
+      }
     } catch (error) {
       console.error("Erreur changement statut:", error);
     }
@@ -106,7 +131,8 @@ function AdminUsers() {
     });
   };
 
-  if (isLoading) {
+  // ✅ Afficher le loading seulement si on n'a pas de données du loader
+  if (isLoading && loaderUsers.length === 0) {
     return (
       <main className="admin-users-page">
         <section className="admin-loading">
@@ -117,7 +143,8 @@ function AdminUsers() {
     );
   }
 
-  if (error) {
+  // ✅ Afficher l'erreur seulement si on n'a pas de données du loader
+  if (error && loaderUsers.length === 0) {
     return (
       <main className="admin-users-page">
         <section className="admin-error">
@@ -143,23 +170,25 @@ function AdminUsers() {
       {stats && (
         <section className="admin-users-stats">
           <article className="stat-item">
-            <span className="stat-number">{stats.total}</span>
+            <span className="stat-number">{stats.total || 0}</span>
             <span className="stat-label">Total</span>
           </article>
           <article className="stat-item active">
-            <span className="stat-number">{stats.active}</span>
+            <span className="stat-number">{stats.active || 0}</span>
             <span className="stat-label">Actifs</span>
           </article>
           <article className="stat-item inactive">
-            <span className="stat-number">{stats.inactive}</span>
+            <span className="stat-number">{stats.inactive || 0}</span>
             <span className="stat-label">Inactifs</span>
           </article>
           <article className="stat-item">
-            <span className="stat-number">{stats.by_role.admin}</span>
+            <span className="stat-number">{stats.by_role?.admin || 0}</span>{" "}
+            {/* ✅ Ajouter ?. pour éviter l'erreur */}
             <span className="stat-label">Admins</span>
           </article>
           <article className="stat-item">
-            <span className="stat-number">{stats.by_role.editor}</span>
+            <span className="stat-number">{stats.by_role?.editor || 0}</span>{" "}
+            {/* ✅ Ajouter ?. pour éviter l'erreur */}
             <span className="stat-label">Éditeurs</span>
           </article>
         </section>

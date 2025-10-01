@@ -1,6 +1,8 @@
 import { Edit, Hash, Trash2 } from "lucide-react";
 import type { AdminTag } from "../../types/admin";
 
+import "./AdminTagCard.css";
+
 type AdminTagCardProps = {
   tag: AdminTag;
   onEdit: (tag: AdminTag) => void;
@@ -37,7 +39,7 @@ function AdminTagCard({ tag, onEdit, onDelete }: AdminTagCardProps) {
         )}
       </section>
 
-      <nav className="admin-tag-actions">
+      <section className="admin-tag-actions">
         <button
           type="button"
           onClick={() => onEdit(tag)}
@@ -57,7 +59,7 @@ function AdminTagCard({ tag, onEdit, onDelete }: AdminTagCardProps) {
           <Trash2 size={16} />
           Supprimer
         </button>
-      </nav>
+      </section>
     </article>
   );
 }

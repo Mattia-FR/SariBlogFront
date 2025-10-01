@@ -9,45 +9,44 @@ import type {
 // Hook pour lister les messages admin
 export const useAdminMessages = (limit = 12, offset = 0) => {
   const { data, error, mutate, isLoading } = useSWR<
-    AdminListResponse<AdminMessage> & { stats: MessageStats }
+    AdminListResponse<AdminMessage>
   >(`/admin/messages?limit=${limit}&offset=${offset}`, null, {
-    revalidateOnMount: false,
+    revalidateOnMount: true,
   });
 
   const markAsRead = async (id: number) => {
     const response = await api.put(`/admin/messages/${id}/read`);
-    mutate();
+    mutate(); // Revalidation
     return response.data;
   };
 
   const markAsUnread = async (id: number) => {
     const response = await api.put(`/admin/messages/${id}/unread`);
-    mutate();
+    mutate(); // Revalidation
     return response.data;
   };
 
   const markAllAsRead = async () => {
     const response = await api.put("/admin/messages/read-all");
-    mutate();
+    mutate(); // Revalidation
     return response.data;
   };
 
   const deleteMessage = async (id: number) => {
     const response = await api.delete(`/admin/messages/${id}`);
-    mutate();
+    mutate(); // Revalidation
     return response.data;
   };
 
   const deleteAllRead = async () => {
-    const response = await api.delete("/admin/messages/read-all");
-    mutate();
+    const response = await api.delete("/admin/messages/read");
+    mutate(); // Revalidation
     return response.data;
   };
 
   return {
     messages: data?.items || [],
     pagination: data?.pagination,
-    stats: data?.stats,
     isLoading,
     error,
     markAsRead,
@@ -64,7 +63,7 @@ export const useAdminMessage = (id: number) => {
   const { data, error, mutate, isLoading } = useSWR<{ message: AdminMessage }>(
     id ? `/admin/messages/${id}` : null,
     null,
-    { revalidateOnMount: false },
+    { revalidateOnMount: true },
   );
 
   return {
@@ -72,5 +71,20 @@ export const useAdminMessage = (id: number) => {
     isLoading,
     error,
     mutate,
+  };
+};
+
+// Hook pour les statistiques des messages
+export const useAdminMessageStats = () => {
+  const { data, error, isLoading } = useSWR<{ stats: MessageStats }>(
+    "/admin/messages/stats",
+    null,
+    { revalidateOnMount: true },
+  );
+
+  return {
+    stats: data?.stats,
+    isLoading,
+    error,
   };
 };

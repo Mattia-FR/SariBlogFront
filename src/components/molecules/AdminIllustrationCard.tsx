@@ -3,6 +3,8 @@ import type { AdminIllustration } from "../../types/admin";
 import Image from "../atoms/Image";
 import TagList from "./TagList";
 
+import "./AdminIllustrationCard.css";
+
 type AdminIllustrationCardProps = {
   illustration: AdminIllustration;
   onEdit: (illustration: AdminIllustration) => void;
@@ -69,7 +71,7 @@ function AdminIllustrationCard({
           </section>
         )}
 
-        <nav className="admin-illustration-actions">
+        <section className="admin-illustration-actions">
           <button
             type="button"
             onClick={() => onEdit(illustration)}
@@ -89,7 +91,7 @@ function AdminIllustrationCard({
             <Trash2 size={16} />
             Supprimer
           </button>
-        </nav>
+        </section>
       </section>
     </article>
   );
