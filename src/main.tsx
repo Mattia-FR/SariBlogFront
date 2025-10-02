@@ -225,7 +225,7 @@ const adminArticlesLoader = async ({ request }: { request: Request }) => {
     const { data } = await api.get(
       `/admin/articles?limit=${limit}&offset=${offset}`,
     );
-    const { data: tagsData } = await api.get("/admin/articles/tags");
+    const { data: tagsData } = await api.get("/admin/tags");
 
     return {
       articles: data?.data?.articles || [],
