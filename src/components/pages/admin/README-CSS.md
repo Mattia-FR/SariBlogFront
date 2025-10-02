@@ -24,7 +24,6 @@ Chaque page admin a son propre fichier CSS avec les classes nécessaires :
 - **AdminLogin.css** : Styles spécifiques au formulaire de connexion
 - **AdminAbout.css** : Styles pour la prévisualisation et l'historique About
 - **AdminArticles.css** : Classes `.admin-articles-grid`
-- **AdminUsers.css** : Classes `.admin-users-grid`, `.admin-users-stats`
 - **AdminTags.css** : Classes `.admin-tags-grid`, `.admin-tags-stats`
 - **AdminMessages.css** : Classes `.admin-messages-grid`, `.admin-messages-stats`, `.admin-messages-actions`
 - **AdminIllustrations.css** : Classes `.admin-illustrations-grid`

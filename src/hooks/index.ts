@@ -14,7 +14,6 @@ export {
 export { useAdminMessage, useAdminMessages } from "./useAdminMessages";
 export { useAdminTag, useAdminTags } from "./useAdminTags";
 export { useAdminUpload } from "./useAdminUpload";
-export { useAdminUser, useAdminUsers } from "./useAdminUsers";
 export { useArticleBySlug } from "./useArticleBySlug";
 
 // Hooks publics existants

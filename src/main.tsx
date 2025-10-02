@@ -19,7 +19,6 @@ import AdminIllustrations from "./components/pages/admin/AdminIllustrations.tsx"
 import AdminLogin from "./components/pages/admin/AdminLogin.tsx";
 import AdminMessages from "./components/pages/admin/AdminMessages.tsx";
 import AdminTags from "./components/pages/admin/AdminTags.tsx";
-import AdminUsers from "./components/pages/admin/AdminUsers.tsx";
 import Contact from "./components/pages/Contact.tsx";
 import Gallery from "./components/pages/Gallery.tsx";
 import GalleryDetail from "./components/pages/GalleryDetail.tsx";
@@ -364,58 +363,6 @@ const adminTagsLoader = async ({ request }: { request: Request }) => {
   }
 };
 
-const adminUsersLoader = async ({ request }: { request: Request }) => {
-  try {
-    const url = new URL(request.url);
-    const limit = Number.parseInt(url.searchParams.get("limit") || "12", 10);
-    const offset = Number.parseInt(url.searchParams.get("offset") || "0", 10);
-
-    const { data } = await api.get(
-      `/admin/users?limit=${limit}&offset=${offset}`,
-    );
-    const { data: statsData } = await api.get("/admin/users/stats");
-
-    return {
-      users: data?.data?.items || [],
-      pagination: data?.data?.pagination || {
-        limit,
-        offset,
-        totalCount: 0,
-        totalPages: 0,
-      },
-      stats: statsData?.data?.stats || {
-        total: 0,
-        active: 0,
-        inactive: 0,
-        by_role: {
-          admin: 0,
-          editor: 0,
-        },
-      },
-    };
-  } catch (error) {
-    console.error("❌ Erreur dans le loader admin users:", error);
-    return {
-      users: [],
-      pagination: {
-        limit: 12,
-        offset: 0,
-        totalCount: 0,
-        totalPages: 0,
-      },
-      stats: {
-        total: 0,
-        active: 0,
-        inactive: 0,
-        by_role: {
-          admin: 0,
-          editor: 0,
-        },
-      },
-    };
-  }
-};
-
 const adminAboutLoader = async () => {
   try {
     const { data } = await api.get("/admin/about");
@@ -503,11 +450,6 @@ const router = createBrowserRouter([
         path: "tags",
         element: <AdminTags />,
         loader: adminTagsLoader,
-      },
-      {
-        path: "users",
-        element: <AdminUsers />,
-        loader: adminUsersLoader,
       },
       {
         path: "about",

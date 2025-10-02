@@ -1,12 +1,4 @@
-import {
-  FileText,
-  Image,
-  LogOut,
-  Mail,
-  Settings,
-  Tag,
-  User,
-} from "lucide-react";
+import { FileText, Image, LogOut, Mail, Settings, Tag } from "lucide-react";
 import { NavLink } from "react-router-dom";
 import { useAuthContext } from "../../contexts/AuthContext";
 
@@ -20,7 +12,6 @@ export default function AdminSidebar() {
     { path: "/admin/illustrations", label: "Illustrations", icon: Image },
     { path: "/admin/messages", label: "Messages", icon: Mail },
     { path: "/admin/tags", label: "Tags", icon: Tag },
-    { path: "/admin/users", label: "Utilisateurs", icon: User },
     { path: "/admin/about", label: "À propos", icon: Settings },
   ];
 
