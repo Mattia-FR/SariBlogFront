@@ -30,6 +30,18 @@ nav {
       text-decoration: none;
     }
 
+    &.active {
+      background-color: var(--color-two);
+
+      p {
+        color: var(--color-six);
+        text-shadow:
+          0 0 5px var(--color-six),
+          0 0 10px var(--color-six),
+          0 0 50px var(--color-six);
+      }
+    }
+
     p {
       margin: 0;
       color: var(--color-five);

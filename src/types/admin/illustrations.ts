@@ -1,6 +1,7 @@
 // Import des types dépendants
-import type { AdminTag } from './tags';
-import type { AdminPagination } from './common';
+
+import type { AdminPagination } from "./common";
+import type { AdminTag } from "./tags";
 
 // Types pour les illustrations admin
 export type AdminIllustration = {

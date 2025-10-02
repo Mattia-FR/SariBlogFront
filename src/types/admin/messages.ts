@@ -1,5 +1,5 @@
 // Import des types dépendants
-import type { AdminPagination } from './common';
+import type { AdminPagination } from "./common";
 
 // Types pour les messages admin
 export type AdminMessage = {
