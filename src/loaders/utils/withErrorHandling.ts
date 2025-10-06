@@ -8,13 +8,13 @@
  * @param fallbackData - Les données de fallback en cas d'erreur
  * @returns Le loader wrappé avec gestion d'erreurs
  */
-export const withErrorHandling = <T>(
-  loader: () => Promise<T>,
+export const withErrorHandling = <T, P extends any[]>(
+  loader: (...args: P) => Promise<T>,
   fallbackData: T,
 ) => {
-  return async (): Promise<T> => {
+  return async (...args: P): Promise<T> => {
     try {
-      return await loader();
+      return await loader(...args);
     } catch (error) {
       console.error("❌ Erreur dans le loader:", error);
       return fallbackData;
@@ -27,16 +27,19 @@ export const withErrorHandling = <T>(
  * @param loader - La fonction loader à wrapper
  * @returns Le loader wrappé avec gestion d'erreurs
  */
-export const withErrorHandlingAndThrow = <T>(loader: () => Promise<T>) => {
-  return async (): Promise<T> => {
+export const withErrorHandlingAndThrow = <T, P extends any[]>(
+  loader: (...args: P) => Promise<T>
+) => {
+  return async (...args: P): Promise<T> => {
     try {
-      return await loader();
+      return await loader(...args);
     } catch (error) {
       console.error("❌ Erreur dans le loader:", error);
       throw error; // Re-lance l'erreur pour React Router
     }
   };
 };
+
 
 
 
