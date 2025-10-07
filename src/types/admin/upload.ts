@@ -9,7 +9,10 @@ export type UploadedFile = {
 };
 
 export type UploadResponse = {
-  file: UploadedFile;
+  success: true;
+  data: {
+    file: UploadedFile;
+  };
   message: string;
 };
 

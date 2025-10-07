@@ -55,7 +55,7 @@ function AdminArticleForm({
     setIsUploading(true);
     try {
       const response = await uploadSingle(file);
-      setFormData((prev) => ({ ...prev, image: response.file.filename }));
+      setFormData((prev) => ({ ...prev, image: response.data.file.filename }));
     } catch (error) {
       console.error("Erreur upload:", error);
     } finally {
