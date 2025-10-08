@@ -14,8 +14,20 @@
   justify-content: space-between;
 }
 
-.legal-links {
-  display: flex;
-  flex-direction: row;
-  gap: clamp(10px, 2vw, 20px);
+.contact-link {
+  border-right: none;
+}
+
+.legal-button {
+  background: none;
+  border: none;
+  color: var(--color-five);
+  cursor: pointer;
+  font-size: inherit;
+  font-family: var(--font-two);
+  padding: 0;
+}
+
+.legal-button:hover {
+  opacity: 0.8;
 }

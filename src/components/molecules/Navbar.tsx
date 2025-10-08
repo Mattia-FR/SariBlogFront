@@ -29,7 +29,10 @@ function Navbar() {
       <Link to="/about" className={isActive("/about") ? "active" : ""}>
         <p>À propos</p>
       </Link>
-      <Link to="/contact" className={isActive("/contact") ? "active" : ""}>
+      <Link
+        to="/contact"
+        className={`${isActive("/contact") ? "active" : ""} contact-link`}
+      >
         <p>Contact</p>
       </Link>
       <section className="theme-toggle-container">

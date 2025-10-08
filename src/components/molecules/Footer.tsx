@@ -1,12 +1,13 @@
-import { Link } from "react-router-dom";
+import { useState } from "react";
 import "./Footer.css";
+import LegalModal from "./LegalModal";
 
 function Footer() {
+  const [showLegalModal, setShowLegalModal] = useState(false);
+
   return (
     <footer className="footer">
-      {/* <hr /> */}
       <section className="footer-content">
-        <h3>Contact</h3>
         <p>
           Email: {import.meta.env.VITE_CONTACT_EMAIL || "contact@sariblog.com"}
         </p>
@@ -14,13 +15,19 @@ function Footer() {
 
       <section className="footer-bottom">
         <p className="copyright">© 2025 SariBlog. Tous droits réservés.</p>
-        <section className="legal-links">
-          <Link to="/privacy">Politique de confidentialité</Link>
-          <Link to="/terms">Conditions d'utilisation</Link>
-          <Link to="/legal">Mentions légales</Link>
-          <Link to="/cookies">Gestion des cookies</Link>
-        </section>
+        <button
+          className="legal-button"
+          onClick={() => setShowLegalModal(true)}
+          type="button"
+        >
+          Mentions légales
+        </button>
       </section>
+
+      <LegalModal
+        isOpen={showLegalModal}
+        onClose={() => setShowLegalModal(false)}
+      />
     </footer>
   );
 }
