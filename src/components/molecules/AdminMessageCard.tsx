@@ -1,16 +1,7 @@
 import { Mail, MailOpen, Trash2 } from "lucide-react";
-import type { AdminMessage } from "../../types/admin";
+import type { AdminMessageCardProps } from "../../types/admin";
 
 import "./AdminMessageCard.css";
-
-type AdminMessageCardProps = {
-  message: AdminMessage;
-  onMarkAsRead: (id: number) => void;
-  onMarkAsUnread: (id: number) => void;
-  onDelete: (id: number) => void;
-  onSelect: (message: AdminMessage) => void;
-  isSelected?: boolean;
-};
 
 function AdminMessageCard({
   message,

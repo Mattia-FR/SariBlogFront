@@ -1,9 +1,6 @@
-import "./LegalModal.css";
+import type { LegalModalProps } from "../../types/legal";
 
-interface LegalModalProps {
-  isOpen: boolean;
-  onClose: () => void;
-}
+import "./LegalModal.css";
 
 function LegalModal({ isOpen, onClose }: LegalModalProps) {
   if (!isOpen) return null;

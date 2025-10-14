@@ -1,13 +1,5 @@
 import { useId, useState } from "react";
-import type { UpdateAboutData } from "../../types/admin";
-
-type AdminAboutFormProps = {
-  formData: UpdateAboutData;
-  setFormData: React.Dispatch<React.SetStateAction<UpdateAboutData>>;
-  onSubmit: (e: React.FormEvent) => void;
-  onCancel: () => void;
-  onImageUpload: (file: File) => Promise<void>;
-};
+import type { AdminAboutFormProps, UpdateAboutData } from "../../types/admin";
 
 function AdminAboutForm({
   formData,

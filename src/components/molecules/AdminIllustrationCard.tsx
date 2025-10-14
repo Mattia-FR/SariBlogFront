@@ -1,15 +1,9 @@
 import { Edit, Eye, EyeOff, Trash2 } from "lucide-react";
-import type { AdminIllustration } from "../../types/admin";
+import type { AdminIllustrationCardProps } from "../../types/admin";
 import Image from "../atoms/Image";
 import TagList from "./TagList";
 
 import "./AdminIllustrationCard.css";
-
-type AdminIllustrationCardProps = {
-  illustration: AdminIllustration;
-  onEdit: (illustration: AdminIllustration) => void;
-  onDelete: (id: number) => void;
-};
 
 function AdminIllustrationCard({
   illustration,

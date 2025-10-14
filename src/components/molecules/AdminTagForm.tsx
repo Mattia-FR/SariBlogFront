@@ -1,15 +1,7 @@
 import { useId } from "react";
-import type { CreateTagData } from "../../types/admin";
+import type { AdminTagFormProps } from "../../types/admin";
 
 import "./AdminTagForm.css";
-
-type AdminTagFormProps = {
-  formData: CreateTagData;
-  setFormData: React.Dispatch<React.SetStateAction<CreateTagData>>;
-  onSubmit: (e: React.FormEvent) => void;
-  onCancel: () => void;
-  isEditing?: boolean;
-};
 
 function AdminTagForm({
   formData,

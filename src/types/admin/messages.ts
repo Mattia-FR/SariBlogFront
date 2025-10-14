@@ -29,3 +29,13 @@ export type AdminMessagesPageData = {
   pagination: AdminPagination;
   stats: MessageStats;
 };
+
+// Types pour les composants admin des messages
+export type AdminMessageCardProps = {
+  message: AdminMessage;
+  onMarkAsRead: (id: number) => void;
+  onMarkAsUnread: (id: number) => void;
+  onDelete: (id: number) => void;
+  onSelect: (message: AdminMessage) => void;
+  isSelected?: boolean;
+};

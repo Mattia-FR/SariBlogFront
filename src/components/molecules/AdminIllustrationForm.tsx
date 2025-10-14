@@ -1,17 +1,8 @@
 import { useId, useState } from "react";
 import { useAdminUpload } from "../../hooks/useAdminUpload";
-import type { AdminTag, CreateIllustrationData } from "../../types/admin";
+import type { AdminIllustrationFormProps } from "../../types/admin";
 
 import "./AdminIllustrationForm.css";
-
-type AdminIllustrationFormProps = {
-  formData: CreateIllustrationData;
-  setFormData: React.Dispatch<React.SetStateAction<CreateIllustrationData>>;
-  tags: AdminTag[];
-  onSubmit: (e: React.FormEvent) => void;
-  onCancel: () => void;
-  isEditing?: boolean;
-};
 
 function AdminIllustrationForm({
   formData,
@@ -59,7 +50,7 @@ function AdminIllustrationForm({
     setIsUploading(true);
     try {
       const response = await uploadSingle(file);
-      setFormData((prev) => ({ ...prev, image: response.file.filename }));
+      setFormData((prev) => ({ ...prev, image: response.data.file.filename }));
     } catch (error) {
       console.error("Erreur upload:", error);
     } finally {

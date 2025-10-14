@@ -24,3 +24,12 @@ export type AdminAboutPageData = {
   about: AdminAbout | null;
   history: AboutHistory[];
 };
+
+// Types pour les composants admin de la page À propos
+export type AdminAboutFormProps = {
+  formData: UpdateAboutData;
+  setFormData: React.Dispatch<React.SetStateAction<UpdateAboutData>>;
+  onSubmit: (e: React.FormEvent) => void;
+  onCancel: () => void;
+  onImageUpload: (file: File) => Promise<void>;
+};

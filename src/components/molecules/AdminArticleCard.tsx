@@ -1,15 +1,9 @@
 import { Edit, Eye, EyeOff, Trash2 } from "lucide-react";
-import type { AdminArticle } from "../../types/admin";
+import type { AdminArticle, AdminArticleCardProps } from "../../types/admin";
 import Image from "../atoms/Image";
 import TagList from "./TagList";
 
 import "./AdminArticleCard.css";
-
-type AdminArticleCardProps = {
-  article: AdminArticle;
-  onEdit: (article: AdminArticle) => void;
-  onDelete: (id: number) => void;
-};
 
 function AdminArticleCard({
   article,

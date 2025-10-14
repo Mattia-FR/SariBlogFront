@@ -5,11 +5,14 @@
 export type {
   AboutHistory,
   AdminAbout,
+  AdminAboutFormProps,
   AdminAboutPageData,
   UpdateAboutData,
 } from "./about";
 export type {
   AdminArticle,
+  AdminArticleCardProps,
+  AdminArticleFormProps,
   AdminArticlesPageData,
   AdminArticlesResponse,
   CreateArticleData,
@@ -26,6 +29,8 @@ export type {
 // Illustrations
 export type {
   AdminIllustration,
+  AdminIllustrationCardProps,
+  AdminIllustrationFormProps,
   AdminIllustrationsPageData,
   AdminIllustrationsResponse,
   CreateIllustrationData,
@@ -34,6 +39,7 @@ export type {
 // Messages
 export type {
   AdminMessage,
+  AdminMessageCardProps,
   AdminMessagesPageData,
   AdminMessagesResponse,
   MessageStats,
@@ -41,6 +47,8 @@ export type {
 // Tags
 export type {
   AdminTag,
+  AdminTagCardProps,
+  AdminTagFormProps,
   AdminTagsPageData,
   AdminTagsResponse,
   CreateTagData,

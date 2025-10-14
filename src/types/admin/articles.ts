@@ -39,3 +39,19 @@ export type AdminArticlesPageData = {
   pagination: AdminPagination;
   tags: AdminTag[];
 };
+
+// Types pour les composants admin des articles
+export type AdminArticleFormProps = {
+  formData: CreateArticleData;
+  setFormData: React.Dispatch<React.SetStateAction<CreateArticleData>>;
+  tags: AdminTag[];
+  onSubmit: (e: React.FormEvent) => void;
+  onCancel: () => void;
+  isEditing?: boolean;
+};
+
+export type AdminArticleCardProps = {
+  article: AdminArticle;
+  onEdit: (article: AdminArticle) => void;
+  onDelete: (id: number) => void;
+};

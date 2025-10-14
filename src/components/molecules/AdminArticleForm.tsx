@@ -1,17 +1,8 @@
 import { useId, useState } from "react";
 import { useAdminUpload } from "../../hooks/useAdminUpload";
-import type { AdminTag, CreateArticleData } from "../../types/admin";
+import type { AdminArticleFormProps } from "../../types/admin";
 
 import "./AdminArticleForm.css";
-
-type AdminArticleFormProps = {
-  formData: CreateArticleData;
-  setFormData: React.Dispatch<React.SetStateAction<CreateArticleData>>;
-  tags: AdminTag[];
-  onSubmit: (e: React.FormEvent) => void;
-  onCancel: () => void;
-  isEditing?: boolean;
-};
 
 function AdminArticleForm({
   formData,
@@ -29,6 +20,28 @@ function AdminArticleForm({
 
   const [isUploading, setIsUploading] = useState(false);
   const { uploadSingle } = useAdminUpload();
+
+  // ✅ Fonction pour générer automatiquement l'extrait
+  const generateExcerptFromContent = () => {
+    if (!formData.content) return;
+
+    const cleanContent = formData.content.replace(/<[^>]*>/g, "");
+    const maxLength = 150;
+
+    if (cleanContent.length <= maxLength) {
+      setFormData((prev) => ({ ...prev, excerpt: cleanContent }));
+      return;
+    }
+
+    const truncated = cleanContent.substring(0, maxLength);
+    const lastSpace = truncated.lastIndexOf(" ");
+    const excerpt =
+      lastSpace > 0
+        ? `${truncated.substring(0, lastSpace)}...`
+        : `${truncated}...`;
+
+    setFormData((prev) => ({ ...prev, excerpt }));
+  };
 
   const handleInputChange = (
     e: React.ChangeEvent<
@@ -88,6 +101,19 @@ function AdminArticleForm({
           placeholder="Résumé de l'article"
           rows={3}
         />
+        <button
+          type="button"
+          onClick={generateExcerptFromContent}
+          className="generate-excerpt-btn"
+          disabled={!formData.content}
+          title={
+            !formData.content
+              ? "Ajoutez du contenu pour générer l'extrait"
+              : "Générer automatiquement l'extrait à partir du contenu"
+          }
+        >
+          Générer automatiquement
+        </button>
       </fieldset>
 
       <fieldset className="form-group">

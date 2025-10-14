@@ -33,3 +33,18 @@ export type AdminTagsPageData = {
   tags: AdminTag[];
   pagination: AdminPagination;
 };
+
+// Types pour les composants admin des tags
+export type AdminTagFormProps = {
+  formData: CreateTagData;
+  setFormData: React.Dispatch<React.SetStateAction<CreateTagData>>;
+  onSubmit: (e: React.FormEvent) => void;
+  onCancel: () => void;
+  isEditing?: boolean;
+};
+
+export type AdminTagCardProps = {
+  tag: AdminTag;
+  onEdit: (tag: AdminTag) => void;
+  onDelete: (id: number) => void;
+};

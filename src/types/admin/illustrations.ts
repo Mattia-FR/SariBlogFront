@@ -38,3 +38,19 @@ export type AdminIllustrationsPageData = {
   pagination: AdminPagination;
   tags: AdminTag[];
 };
+
+// Types pour les composants admin des illustrations
+export type AdminIllustrationFormProps = {
+  formData: CreateIllustrationData;
+  setFormData: React.Dispatch<React.SetStateAction<CreateIllustrationData>>;
+  tags: AdminTag[];
+  onSubmit: (e: React.FormEvent) => void;
+  onCancel: () => void;
+  isEditing?: boolean;
+};
+
+export type AdminIllustrationCardProps = {
+  illustration: AdminIllustration;
+  onEdit: (illustration: AdminIllustration) => void;
+  onDelete: (id: number) => void;
+};

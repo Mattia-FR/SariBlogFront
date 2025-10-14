@@ -1,13 +1,7 @@
 import { Edit, Hash, Trash2 } from "lucide-react";
-import type { AdminTag } from "../../types/admin";
+import type { AdminTagCardProps } from "../../types/admin";
 
 import "./AdminTagCard.css";
-
-type AdminTagCardProps = {
-  tag: AdminTag;
-  onEdit: (tag: AdminTag) => void;
-  onDelete: (id: number) => void;
-};
 
 function AdminTagCard({ tag, onEdit, onDelete }: AdminTagCardProps) {
   const formatDate = (dateString: string) => {
