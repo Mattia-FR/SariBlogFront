@@ -6,6 +6,7 @@
   background-color: var(--color-one);
   position: relative;
   z-index: 15;
+  min-height: 100px;
 }
 
 .footer-bottom {

@@ -73,7 +73,3 @@ export const articleDetailLoader = withErrorHandlingAndThrow(
     };
   },
 );
-
-
-
-

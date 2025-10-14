@@ -41,7 +41,3 @@ export const homePageLoader = withErrorHandling(
     about: null,
   },
 );
-
-
-
-

@@ -28,7 +28,7 @@ export const withErrorHandling = <T, P extends any[]>(
  * @returns Le loader wrappé avec gestion d'erreurs
  */
 export const withErrorHandlingAndThrow = <T, P extends any[]>(
-  loader: (...args: P) => Promise<T>
+  loader: (...args: P) => Promise<T>,
 ) => {
   return async (...args: P): Promise<T> => {
     try {
@@ -39,7 +39,3 @@ export const withErrorHandlingAndThrow = <T, P extends any[]>(
     }
   };
 };
-
-
-
-

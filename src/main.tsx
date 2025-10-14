@@ -22,28 +22,27 @@ import Contact from "./components/pages/Contact.tsx";
 import Gallery from "./components/pages/Gallery.tsx";
 import GalleryDetail from "./components/pages/GalleryDetail.tsx";
 import HomePage from "./components/pages/HomePage.tsx";
-import { AuthProvider } from "./contexts/AuthContext.tsx";
-
 // Imports des loaders externalisés
 import { swrConfig } from "./config/swr.ts";
-import { homePageLoader } from "./loaders/homeLoader.ts";
-import {
-  articlesPageLoader,
-  articleDetailLoader,
-} from "./loaders/articlesLoaders.ts";
-import {
-  galleryPageLoader,
-  galleryDetailLoader,
-} from "./loaders/galleryLoaders.ts";
+import { AuthProvider } from "./contexts/AuthContext.tsx";
 import { aboutPageLoader } from "./loaders/aboutLoader.ts";
 import {
-  adminLoader,
+  adminAboutLoader,
   adminArticlesLoader,
   adminIllustrationsLoader,
+  adminLoader,
   adminMessagesLoader,
   adminTagsLoader,
-  adminAboutLoader,
 } from "./loaders/adminLoaders.ts";
+import {
+  articleDetailLoader,
+  articlesPageLoader,
+} from "./loaders/articlesLoaders.ts";
+import {
+  galleryDetailLoader,
+  galleryPageLoader,
+} from "./loaders/galleryLoaders.ts";
+import { homePageLoader } from "./loaders/homeLoader.ts";
 
 const router = createBrowserRouter([
   {

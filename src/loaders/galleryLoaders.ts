@@ -75,7 +75,3 @@ export const galleryDetailLoader = withErrorHandlingAndThrow(
     };
   },
 );
-
-
-
-

@@ -22,7 +22,3 @@ export const aboutPageLoader = withErrorHandling(
     about: null,
   },
 );
-
-
-
-

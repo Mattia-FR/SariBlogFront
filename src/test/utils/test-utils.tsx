@@ -1,8 +1,9 @@
-import React, { ReactElement } from 'react';
-import { render, RenderOptions } from '@testing-library/react';
+import { type RenderOptions, render } from '@testing-library/react';
+import type React from 'react';
+import type { ReactElement } from 'react';
 import { BrowserRouter } from 'react-router-dom';
-import { ThemeProvider } from '../contexts/ThemeContext';
 import { AuthProvider } from '../contexts/AuthContext';
+import { ThemeProvider } from '../contexts/ThemeContext';
 
 // Wrapper personnalisé pour les tests
 const AllTheProviders = ({ children }: { children: React.ReactNode }) => {

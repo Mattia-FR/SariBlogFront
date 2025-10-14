@@ -20,7 +20,3 @@ export const swrConfig = {
     console.log(`✅ SWR Success for ${key}:`, data);
   },
 };
-
-
-
-
