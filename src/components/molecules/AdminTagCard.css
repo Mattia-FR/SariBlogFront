@@ -1,0 +1,128 @@
+/* ===== CARTE TAG ADMIN ===== */
+.admin-tag-card {
+  width: clamp(250px, 25vw, 350px);
+  border: 1px solid var(--color-five);
+  border-radius: 15px;
+  overflow: hidden;
+  transition: all 0.2s ease;
+  background-color: var(--color-one);
+
+  &:hover {
+    transform: scale(1.02);
+    box-shadow: 0px 10px 25px rgba(0, 0, 0, 0.15);
+    border-color: var(--color-six);
+  }
+
+  .admin-tag-header {
+    display: flex;
+    align-items: center;
+    gap: clamp(12px, 2.5vw, 16px);
+    padding: clamp(15px, 3vw, 20px);
+    background-color: rgba(var(--color-five-rgb), 0.05);
+    border-bottom: 1px solid var(--color-five);
+
+    .admin-tag-icon {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      width: clamp(40px, 8vw, 50px);
+      height: clamp(40px, 8vw, 50px);
+      background-color: var(--color-six);
+      border-radius: 50%;
+      color: var(--color-one);
+    }
+
+    .admin-tag-info {
+      flex: 1;
+
+      .admin-tag-name {
+        font-family: var(--font-one);
+        font-size: clamp(1.1rem, 2.5vw, 1.3rem);
+        color: var(--color-five);
+        margin: 0 0 clamp(4px, 1vw, 6px) 0;
+        font-weight: 600;
+      }
+
+      .admin-tag-date {
+        font-family: var(--font-two);
+        font-size: clamp(0.7rem, 1.5vw, 0.8rem);
+        color: var(--color-five);
+        opacity: 0.7;
+        margin: 0;
+      }
+    }
+  }
+
+  .admin-tag-stats {
+    padding: clamp(10px, 2vw, 15px);
+    background-color: rgba(var(--color-six-rgb), 0.05);
+
+    .usage-count {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: clamp(2px, 0.5vw, 4px);
+
+      .count-number {
+        font-family: var(--font-one);
+        font-size: clamp(1.2rem, 2.5vw, 1.4rem);
+        font-weight: bold;
+        color: var(--color-six);
+      }
+
+      .count-label {
+        font-family: var(--font-two);
+        font-size: clamp(0.7rem, 1.5vw, 0.8rem);
+        color: var(--color-five);
+        opacity: 0.8;
+      }
+    }
+  }
+
+  .admin-tag-actions {
+    display: flex;
+    gap: clamp(8px, 2vw, 12px);
+    padding: clamp(12px, 2.5vw, 16px);
+    border-top: 1px solid var(--color-five);
+
+    .admin-button {
+      flex: 1;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: clamp(4px, 1vw, 6px);
+      padding: clamp(6px, 1.5vw, 10px);
+      border-radius: 8px;
+      font-family: var(--font-two);
+      font-size: clamp(0.8rem, 2vw, 0.9rem);
+      font-weight: 500;
+      cursor: pointer;
+      transition: all 0.2s ease;
+      border: 1px solid;
+
+      &.secondary {
+        background-color: transparent;
+        color: var(--color-five);
+        border-color: var(--color-five);
+
+        &:hover {
+          background-color: var(--color-five);
+          color: var(--color-one);
+          transform: translateY(-1px);
+        }
+      }
+
+      &.danger {
+        background-color: transparent;
+        color: #dc2626;
+        border-color: #dc2626;
+
+        &:hover {
+          background-color: #dc2626;
+          color: white;
+          transform: translateY(-1px);
+        }
+      }
+    }
+  }
+}

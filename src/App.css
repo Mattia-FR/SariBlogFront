@@ -1,0 +1,87 @@
+/* On importe les fonts */
+@import url("https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300..700;1,300..700&family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&display=swap");
+
+/* Pour poser une base propre */
+* {
+  margin: 0;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+/* On définit les variables */
+:root {
+  --color-one: #272627;
+  --color-two: #ffeae5;
+  --color-three: #f08f85;
+  --color-four: #800000;
+  --color-five: #b33a34;
+  --color-six: #f05357;
+  --font-one: "Cormorant Garamond", serif;
+  --font-two: "Inter", sans-serif;
+}
+
+/* Variables mode clair */
+[data-theme="light"] {
+  --color-one: #ffeae5;
+  --color-two: #272627;
+  --color-three: #f08f85;
+  --color-four: #800000;
+  --color-five: #b33a34;
+  --color-six: #f05357;
+}
+
+/* On définit la couleur de fond sur tout le site */
+body {
+  background-color: var(--color-one);
+  transition:
+    background-color 0.3s ease,
+    color 0.3s ease;
+}
+
+/* On centre tout, avec clamp pour que ce soit responsive */
+main {
+  max-width: clamp(320px, 90vw, 1200px);
+  margin: 0 auto;
+  padding: 0 clamp(16px, 4vw, 32px);
+  padding-top: 60px;
+}
+
+a {
+  text-decoration: none;
+  color: var(--color-five);
+}
+
+a:hover {
+  text-decoration: underline;
+  color: var(--color-six);
+}
+
+h1 {
+  font-size: 4rem;
+  font-family: var(--font-one);
+}
+
+h2 {
+  font-size: 3rem;
+  font-family: var(--font-one);
+}
+
+h3 {
+  font-size: 2rem;
+  font-family: var(--font-one);
+}
+
+h4 {
+  font-size: 1.5rem;
+  font-family: var(--font-one);
+}
+
+h5 {
+  font-size: 1.125rem;
+  font-family: var(--font-one);
+}
+
+p {
+  font-size: 1rem;
+  font-family: var(--font-two);
+}

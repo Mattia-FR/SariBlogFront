@@ -1,0 +1,36 @@
+.about-page {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  min-height: calc(100vh - 180px);
+  gap: clamp(32px, 8vw, 60px);
+
+  .about-image {
+    img {
+      width: clamp(300px, 50vw, 400px);
+      height: clamp(300px, 50vw, 400px);
+      object-fit: cover;
+      border-radius: 500px;
+    }
+  }
+
+  .about-text {
+    display: flex;
+    flex-direction: column;
+    gap: clamp(16px, 4vw, 30px);
+    border-left: 1px solid var(--color-five);
+    padding-left: clamp(16px, 4vw, 30px);
+
+    .about-description {
+      font-size: 1.2rem;
+      font-family: var(--font-two);
+      color: var(--color-three);
+    }
+
+    .about-updated {
+      font-style: italic;
+      text-align: right;
+      font-size: 0.8rem;
+    }
+  }
+}

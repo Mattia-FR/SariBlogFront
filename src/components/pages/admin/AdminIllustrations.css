@@ -1,0 +1,109 @@
+/* ===== PAGE ADMIN ILLUSTRATIONS ===== */
+.admin-illustrations-page {
+  padding: clamp(20px, 4vw, 40px) 0;
+
+  .admin-page-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: clamp(20px, 4vw, 40px);
+    padding-bottom: clamp(10px, 2vw, 20px);
+    border-bottom: 1px solid var(--color-five);
+
+    h1 {
+      font-size: clamp(2rem, 4vw, 3rem);
+      font-family: var(--font-one);
+      color: var(--color-five);
+      margin: 0;
+    }
+
+    .admin-new-illustration-btn {
+      padding: clamp(8px, 2vw, 12px) clamp(16px, 3vw, 24px);
+      border: 1px solid var(--color-six);
+      border-radius: 15px;
+      color: var(--color-one);
+      background-color: var(--color-six);
+      font-family: var(--font-two);
+      font-size: clamp(0.9rem, 2vw, 1rem);
+      font-weight: 600;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      box-shadow: 0px 2px 8px rgba(0, 0, 0, 0.1);
+    }
+
+    .admin-new-illustration-btn:hover {
+      background-color: var(--color-two);
+      border-color: var(--color-two);
+      box-shadow: 0px 0px 10px 0px var(--color-two);
+      transform: scale(1.2);
+    }
+
+    .admin-new-illustration-btn:active {
+      transform: translateY(0);
+      box-shadow: 0px 2px 8px rgba(0, 0, 0, 0.1);
+    }
+  }
+
+  /* ===== SECTION FORMULAIRE ===== */
+  .admin-form-section {
+    .admin-form-header {
+      margin-bottom: clamp(20px, 4vw, 40px);
+      padding-bottom: clamp(10px, 2vw, 20px);
+      border-bottom: 1px solid var(--color-five);
+
+      h1 {
+        font-size: clamp(2rem, 4vw, 3rem);
+        font-family: var(--font-one);
+        color: var(--color-five);
+        margin: 0;
+      }
+    }
+  }
+
+  .admin-illustrations-grid {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: clamp(20px, 4vw, 40px);
+    width: 100%;
+  }
+
+  .admin-loading,
+  .admin-error {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: clamp(40px, 8vw, 80px);
+    text-align: center;
+
+    .spinner {
+      width: clamp(40px, 8vw, 60px);
+      height: clamp(40px, 8vw, 60px);
+      border: 3px solid var(--color-five);
+      border-top: 3px solid var(--color-six);
+      border-radius: 50%;
+      animation: spin 1s linear infinite;
+      margin-bottom: clamp(15px, 3vw, 25px);
+    }
+
+    p {
+      font-family: var(--font-two);
+      font-size: clamp(1rem, 2.5vw, 1.2rem);
+      color: var(--color-five);
+    }
+  }
+
+  .admin-error p {
+    color: #dc2626;
+  }
+}
+
+@keyframes spin {
+  0% {
+    transform: rotate(0deg);
+  }
+  100% {
+    transform: rotate(360deg);
+  }
+}

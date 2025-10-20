@@ -1,0 +1,26 @@
+.contact-cta {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  gap: clamp(8px, 2vw, 15px);
+  box-shadow: 0px 0px 15px 5px rgba(0, 0, 0, 0.25);
+  border-radius: 15px;
+  padding: clamp(10px, 2vw, 20px);
+  h2 {
+    font-weight: 900;
+  }
+  .cta-button {
+    align-self: flex-start;
+    padding: clamp(5px, 1vw, 10px);
+    border: 1px solid var(--color-two);
+    border-radius: 15px;
+    color: var(--color-one);
+    text-decoration: none;
+    font-family: var(--font-two);
+    background-color: var(--color-two);
+    transition: all 0.3s ease;
+  }
+  .cta-button:hover {
+    box-shadow: 0px 0px 10px 0px var(--color-two);
+  }
+}
