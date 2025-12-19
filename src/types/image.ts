@@ -13,3 +13,7 @@ export interface Image {
   created_at: Date;
   updated_at: Date;
 }
+
+export interface ImageWithUrl extends Image {
+  imageUrl: string;
+}
