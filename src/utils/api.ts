@@ -9,7 +9,7 @@ const API_BASE_URL = "http://localhost:4242/api";
 export const api = {
   /**
    * Effectue une requête GET
-   * @param endpoint - Chemin de l'endpoint (ex: "/villages")
+   * @param endpoint - Chemin de l'endpoint
    * @returns Les données typées
    * @throws HTTPError si la requête échoue
    */

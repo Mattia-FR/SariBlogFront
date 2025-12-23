@@ -11,11 +11,7 @@ function ArticlesPreview({ articles }: ArticlesPreviewProps) {
       <h2 className="articles-preview-title">Derniers Articles</h2>
       <section className="articles-preview-grid">
         {articles.map((article) => (
-          <ArticleCard
-            key={article.id}
-            article={article}
-            isClickable={true}
-          />
+          <ArticleCard key={article.id} article={article} isClickable={true} />
         ))}
       </section>
     </section>

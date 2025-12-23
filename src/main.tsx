@@ -5,6 +5,7 @@ import "./index.css";
 import App from "./App.tsx";
 import HomePage from "./components/pages/Homepage.tsx";
 import type { ArticleForList } from "./types/article.ts";
+import type { ImageWithUrl } from "./types/image.ts";
 import { api } from "./utils/api.ts";
 
 const router = createBrowserRouter([
@@ -18,10 +19,16 @@ const router = createBrowserRouter([
           const articles = await api.get<ArticleForList[]>(
             "/articles/homepage-preview",
           );
-
-          return { articles };
+          const imageOfTheDay = await api.get<ImageWithUrl | null>(
+            "/images/image-of-the-day",
+          );
+          return { articles, imageOfTheDay };
         },
       },
+      // {
+      //   path: "/gallery",
+      //   element: <Gallery />,
+      // },
     ],
   },
 ]);
