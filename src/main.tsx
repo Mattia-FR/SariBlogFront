@@ -3,6 +3,7 @@ import { createRoot } from "react-dom/client";
 import { createBrowserRouter, RouterProvider } from "react-router-dom";
 import "./index.css";
 import App from "./App.tsx";
+import BlogPage from "./components/pages/BlogPage.tsx";
 import HomePage from "./components/pages/Homepage.tsx";
 import type { ArticleForList } from "./types/article.ts";
 import type { ImageWithUrl } from "./types/image.ts";
@@ -27,10 +28,16 @@ const router = createBrowserRouter([
           return { articles, imageOfTheDay, user };
         },
       },
-      // {
-      //   path: "/gallery",
-      //   element: <Gallery />,
-      // },
+      {
+        path: "/blog",
+        element: <BlogPage />,
+        loader: async () => {
+          const articles = await api.get<ArticleForList[]>(
+            "/articles/published",
+          );
+          return { articles };
+        },
+      },
     ],
   },
 ]);
