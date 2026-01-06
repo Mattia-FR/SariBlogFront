@@ -1,19 +1,23 @@
 import { useLoaderData } from "react-router-dom";
 import type { ArticleForList } from "../../types/article";
 import type { ImageWithUrl } from "../../types/image";
+import type { User } from "../../types/users";
 import ArticlesPreview from "../organisms/ArticlesPreview";
+import ArtistPreview from "../organisms/ArtistPreview";
 import Hero from "../organisms/Hero";
 
 function HomePage() {
-  const { articles, imageOfTheDay } = useLoaderData() as {
+  const { articles, imageOfTheDay, user } = useLoaderData() as {
     articles: ArticleForList[];
     imageOfTheDay: ImageWithUrl | null;
+    user: User;
   };
 
   return (
     <section className="home-page">
       <Hero image={imageOfTheDay} />
       <ArticlesPreview articles={articles} />
+      <ArtistPreview user={user} />
     </section>
   );
 }

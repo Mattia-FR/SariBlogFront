@@ -6,6 +6,7 @@ import App from "./App.tsx";
 import HomePage from "./components/pages/Homepage.tsx";
 import type { ArticleForList } from "./types/article.ts";
 import type { ImageWithUrl } from "./types/image.ts";
+import type { User } from "./types/users.ts";
 import { api } from "./utils/api.ts";
 
 const router = createBrowserRouter([
@@ -22,7 +23,8 @@ const router = createBrowserRouter([
           const imageOfTheDay = await api.get<ImageWithUrl | null>(
             "/images/image-of-the-day",
           );
-          return { articles, imageOfTheDay };
+          const user = await api.get<User>("/users/artist");
+          return { articles, imageOfTheDay, user };
         },
       },
       // {
