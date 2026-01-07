@@ -1,16 +1,16 @@
-// Types pour les articles côté frontend
-// Basés sur les types backend mais enrichis pour l'affichage
-
-// Tag (basé sur le type backend TagForList)
+/**
+ * Tag frontend
+ */
 export interface Tag {
   id: number;
   name: string;
   slug: string;
-  created_at?: Date; // Optionnel car non utilisé pour l'affichage
 }
 
-// ArticleListItem (basé sur le type backend ArticleListItem)
-// Utilisé pour les listes d'articles (sans le content)
+/**
+ * Article pour les listes simples
+ * (= /articles/published)
+ */
 export interface ArticleListItem {
   id: number;
   title: string;
@@ -18,34 +18,38 @@ export interface ArticleListItem {
   excerpt: string | null;
   status: "draft" | "published" | "archived";
   user_id: number;
-  created_at: Date;
-  updated_at: Date;
-  published_at: Date | null;
+  created_at: string;
+  updated_at: string;
+  published_at: string | null;
   views: number;
   featured_image_id: number | null;
 }
 
-// Article complet (basé sur le type backend Article)
+/**
+ * Article complet
+ * (= /articles/published/:slug)
+ */
 export interface Article extends ArticleListItem {
-  content: string; // Le contenu complet de l'article (LONGTEXT)
+  content: string;
 }
 
-// Article enrichi pour l'affichage dans les listes (homepage, blog)
-// Contient les données de base + image URL et tags (enrichis côté frontend)
+/**
+ * Article enrichi (homepage, previews)
+ * ⚠️ enrichissement NON garanti
+ */
 export interface ArticleForList extends ArticleListItem {
-  // URL de l'image featured (enrichie depuis featured_image_id)
   imageUrl?: string;
-  // Tags de l'article (enrichis depuis l'API tags)
   tags?: Tag[];
 }
 
-// Props pour ArticleCard
+/**
+ * Props composants
+ */
 export interface ArticleCardProps {
-  article: ArticleForList;
+  article: ArticleListItem & Partial<ArticleForList>;
   isClickable?: boolean;
 }
 
-// Props pour ArticlePage (page détaillée)
 export interface ArticlePageProps {
   article: Article & {
     imageUrl?: string;
@@ -53,7 +57,6 @@ export interface ArticlePageProps {
   };
 }
 
-// Props pour ArticlesPreview
 export interface ArticlesPreviewProps {
   articles: ArticleForList[];
 }

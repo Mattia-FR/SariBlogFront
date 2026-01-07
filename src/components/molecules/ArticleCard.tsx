@@ -2,9 +2,8 @@ import { Link } from "react-router-dom";
 import type { ArticleCardProps } from "../../types/article";
 
 function ArticleCard({ article, isClickable = false }: ArticleCardProps) {
-  const formatDate = (dateString: string | Date) => {
-    const date =
-      typeof dateString === "string" ? new Date(dateString) : dateString;
+  const formatDate = (dateString: string) => {
+    const date = new Date(dateString);
     return date.toLocaleDateString("fr-FR", {
       year: "numeric",
       month: "short",
@@ -22,16 +21,17 @@ function ArticleCard({ article, isClickable = false }: ArticleCardProps) {
           className="article-card-image"
         />
       )}
+
       <h4 className="article-card-title">{article.title}</h4>
+
       {article.excerpt && (
         <p className="article-card-excerpt">{article.excerpt}</p>
       )}
-      <time
-        className="article-card-date"
-        dateTime={article.created_at.toString()}
-      >
+
+      <time className="article-card-date" dateTime={article.created_at}>
         {formatDate(article.created_at)}
       </time>
+
       {article.tags && article.tags.length > 0 && (
         <ul className="article-card-tags">
           {article.tags.map((tag) => (

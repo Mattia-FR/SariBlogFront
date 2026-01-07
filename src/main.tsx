@@ -2,19 +2,27 @@ import { StrictMode } from "react";
 import { createRoot } from "react-dom/client";
 import { createBrowserRouter, RouterProvider } from "react-router-dom";
 import "./index.css";
-import App from "./App.tsx";
-import ArticlePage from "./components/pages/ArticlePage.tsx";
-import BlogPage from "./components/pages/BlogPage.tsx";
-import HomePage from "./components/pages/Homepage.tsx";
-import type { Article, ArticleForList } from "./types/article.ts";
-import type { ImageWithUrl } from "./types/image.ts";
-import type { User } from "./types/users.ts";
-import { api } from "./utils/api.ts";
+
+import App from "./App";
+import ArticlePage from "./components/pages/ArticlePage";
+import BlogPage from "./components/pages/BlogPage";
+import GalleryPage from "./components/pages/GalleryPage";
+import HomePage from "./components/pages/Homepage";
+
+import type { Article, ArticleForList, ArticleListItem } from "./types/article";
+import type { Image, ImageForArticle } from "./types/image";
+import type { User } from "./types/users";
+
+import { api } from "./utils/api";
 
 const router = createBrowserRouter([
   {
     element: <App />,
     children: [
+      /**
+       * Homepage
+       * Endpoint enrichi (articles + image + tags)
+       */
       {
         path: "/",
         element: <HomePage />,
@@ -22,32 +30,66 @@ const router = createBrowserRouter([
           const articles = await api.get<ArticleForList[]>(
             "/articles/homepage-preview",
           );
-          const imageOfTheDay = await api.get<ImageWithUrl | null>(
+
+          const imageOfTheDay = await api.get<Image | null>(
             "/images/image-of-the-day",
           );
+
           const user = await api.get<User>("/users/artist");
+
           return { articles, imageOfTheDay, user };
         },
       },
+
+      /**
+       * Blog – liste simple
+       * ❗ PAS d’enrichissement garanti
+       */
       {
         path: "/blog",
         element: <BlogPage />,
         loader: async () => {
-          const articles = await api.get<ArticleForList[]>(
+          const articles = await api.get<ArticleListItem[]>(
             "/articles/published",
           );
+
           return { articles };
         },
       },
+
+      /**
+       * Article détaillé
+       */
       {
         path: "/blog/:slug",
         element: <ArticlePage />,
         loader: async ({ params }) => {
+          if (!params.slug) {
+            throw new Response("Not Found", { status: 404 });
+          }
+
           const article = await api.get<Article>(
             `/articles/published/${params.slug}`,
           );
-          const articleImages = await api.get(`/images/article/${article.id}`);
+
+          const articleImages = await api.get<ImageForArticle[]>(
+            `/images/article/${article.id}`,
+          );
+
           return { article, articleImages };
+        },
+      },
+
+      /**
+       * Galerie
+       */
+      {
+        path: "/gallery",
+        element: <GalleryPage />,
+        loader: async () => {
+          const images = await api.get<Image[]>("/images/gallery");
+
+          return { images };
         },
       },
     ],
@@ -56,8 +98,8 @@ const router = createBrowserRouter([
 
 const rootElement = document.getElementById("root");
 
-if (rootElement == null) {
-  throw new Error(`Your HTML Document must contain a <div id="root"></div>`);
+if (!rootElement) {
+  throw new Error('Your HTML Document must contain a <div id="root"></div>');
 }
 
 createRoot(rootElement).render(

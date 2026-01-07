@@ -1,6 +1,6 @@
 import { useLoaderData } from "react-router-dom";
 import type { ArticleForList } from "../../types/article";
-import type { ImageWithUrl } from "../../types/image";
+import type { Image } from "../../types/image";
 import type { User } from "../../types/users";
 import ContactCTA from "../molecules/ContactPreview";
 import ArticlesPreview from "../organisms/ArticlesPreview";
@@ -10,7 +10,7 @@ import Hero from "../organisms/Hero";
 function HomePage() {
   const { articles, imageOfTheDay, user } = useLoaderData() as {
     articles: ArticleForList[];
-    imageOfTheDay: ImageWithUrl | null;
+    imageOfTheDay: Image | null;
     user: User;
   };
 
