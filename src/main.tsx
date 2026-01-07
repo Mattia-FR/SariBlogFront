@@ -3,9 +3,10 @@ import { createRoot } from "react-dom/client";
 import { createBrowserRouter, RouterProvider } from "react-router-dom";
 import "./index.css";
 import App from "./App.tsx";
+import ArticlePage from "./components/pages/ArticlePage.tsx";
 import BlogPage from "./components/pages/BlogPage.tsx";
 import HomePage from "./components/pages/Homepage.tsx";
-import type { ArticleForList } from "./types/article.ts";
+import type { Article, ArticleForList } from "./types/article.ts";
 import type { ImageWithUrl } from "./types/image.ts";
 import type { User } from "./types/users.ts";
 import { api } from "./utils/api.ts";
@@ -36,6 +37,17 @@ const router = createBrowserRouter([
             "/articles/published",
           );
           return { articles };
+        },
+      },
+      {
+        path: "/blog/:slug",
+        element: <ArticlePage />,
+        loader: async ({ params }) => {
+          const article = await api.get<Article>(
+            `/articles/published/${params.slug}`,
+          );
+          const articleImages = await api.get(`/images/article/${article.id}`);
+          return { article, articleImages };
         },
       },
     ],

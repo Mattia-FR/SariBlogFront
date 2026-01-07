@@ -25,6 +25,11 @@ export interface ArticleListItem {
   featured_image_id: number | null;
 }
 
+// Article complet (basé sur le type backend Article)
+export interface Article extends ArticleListItem {
+  content: string; // Le contenu complet de l'article (LONGTEXT)
+}
+
 // Article enrichi pour l'affichage dans les listes (homepage, blog)
 // Contient les données de base + image URL et tags (enrichis côté frontend)
 export interface ArticleForList extends ArticleListItem {
@@ -38,6 +43,14 @@ export interface ArticleForList extends ArticleListItem {
 export interface ArticleCardProps {
   article: ArticleForList;
   isClickable?: boolean;
+}
+
+// Props pour ArticlePage (page détaillée)
+export interface ArticlePageProps {
+  article: Article & {
+    imageUrl?: string;
+    tags?: Tag[];
+  };
 }
 
 // Props pour ArticlesPreview
