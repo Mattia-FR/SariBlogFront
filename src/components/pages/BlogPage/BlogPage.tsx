@@ -1,6 +1,6 @@
 import { useLoaderData } from "react-router-dom";
-import type { ArticleForList } from "../../types/article";
-import ArticleCard from "../molecules/ArticleCard";
+import type { ArticleForList } from "../../../types/article";
+import ArticleCard from "../../molecules/ArticleCard";
 
 function BlogPage() {
   const { articles } = useLoaderData() as { articles: ArticleForList[] };

@@ -5,9 +5,9 @@ function ArtistPreview({ user }: { user: User }) {
   return (
     <section className="artist-preview">
       <h2 className="artist-preview-title">L'artiste</h2>
-      {user.avatar ? (
+      {user.avatarUrl ? (
         <img
-          src={user.avatar}
+          src={user.avatarUrl}
           alt={user.username}
           className="artist-preview-avatar"
         />

@@ -1,6 +1,6 @@
 import { useLoaderData } from "react-router-dom";
-import type { Article } from "../../types/article";
-import type { Image } from "../../types/image";
+import type { Article } from "../../../types/article";
+import type { Image } from "../../../types/image";
 
 function ArticlePage() {
   const data = useLoaderData() as {
@@ -24,7 +24,7 @@ function ArticlePage() {
       {articleImages.map((image) => (
         <img
           key={image.id}
-          src={`http://localhost:4242${image.path}`}
+          src={image.imageUrl}
           alt={image.alt_descr || image.title || article.title}
         />
       ))}

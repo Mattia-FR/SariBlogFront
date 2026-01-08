@@ -4,10 +4,10 @@ import { createBrowserRouter, RouterProvider } from "react-router-dom";
 import "./index.css";
 
 import App from "./App";
-import ArticlePage from "./components/pages/ArticlePage";
-import BlogPage from "./components/pages/BlogPage";
-import GalleryPage from "./components/pages/GalleryPage";
-import HomePage from "./components/pages/Homepage";
+import ArticlePage from "./components/pages/ArticlePage/ArticlePage";
+import BlogPage from "./components/pages/BlogPage/BlogPage";
+import GalleryPage from "./components/pages/GalleryPage/GalleryPage";
+import HomePage from "./components/pages/HomePage/HomePage";
 
 import type { Article, ArticleForList, ArticleListItem } from "./types/article";
 import type { Image, ImageForArticle } from "./types/image";
