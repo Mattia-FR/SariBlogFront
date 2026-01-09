@@ -5,92 +5,37 @@ import "./index.css";
 
 import App from "./App";
 import ArticlePage from "./components/pages/ArticlePage/ArticlePage";
+import { articleLoader } from "./components/pages/ArticlePage/articleLoader";
 import BlogPage from "./components/pages/BlogPage/BlogPage";
+import { blogLoader } from "./components/pages/BlogPage/blogLoader";
 import GalleryPage from "./components/pages/GalleryPage/GalleryPage";
+import { galleryLoader } from "./components/pages/GalleryPage/galleryLoader";
 import HomePage from "./components/pages/HomePage/HomePage";
-
-import type { Article, ArticleForList, ArticleListItem } from "./types/article";
-import type { Image, ImageForArticle } from "./types/image";
-import type { User } from "./types/users";
-
-import { api } from "./utils/api";
+import { homeLoader } from "./components/pages/HomePage/homeLoader";
 
 const router = createBrowserRouter([
   {
     element: <App />,
     children: [
-      /**
-       * Homepage
-       * Endpoint enrichi (articles + image + tags)
-       */
       {
         path: "/",
         element: <HomePage />,
-        loader: async () => {
-          const articles = await api.get<ArticleForList[]>(
-            "/articles/homepage-preview",
-          );
-
-          const imageOfTheDay = await api.get<Image | null>(
-            "/images/image-of-the-day",
-          );
-
-          const user = await api.get<User>("/users/artist");
-
-          return { articles, imageOfTheDay, user };
-        },
+        loader: homeLoader,
       },
-
-      /**
-       * Blog – liste simple
-       * ❗ PAS d’enrichissement garanti
-       */
       {
         path: "/blog",
         element: <BlogPage />,
-        loader: async () => {
-          const articles = await api.get<ArticleListItem[]>(
-            "/articles/published",
-          );
-
-          return { articles };
-        },
+        loader: blogLoader,
       },
-
-      /**
-       * Article détaillé
-       */
       {
         path: "/blog/:slug",
         element: <ArticlePage />,
-        loader: async ({ params }) => {
-          if (!params.slug) {
-            throw new Response("Not Found", { status: 404 });
-          }
-
-          const article = await api.get<Article>(
-            `/articles/published/${params.slug}`,
-          );
-
-          const articleImages = await api.get<ImageForArticle[]>(
-            `/images/article/${article.id}`,
-          );
-
-          return { article, articleImages };
-        },
+        loader: articleLoader,
       },
-
-      /**
-       * Galerie
-       */
       {
         path: "/gallery",
         element: <GalleryPage />,
-        loader: async () => {
-          const images = await api.get<Image[]>("/images/gallery");
-
-          return { images };
-        },
+        loader: galleryLoader,
       },
     ],
   },
