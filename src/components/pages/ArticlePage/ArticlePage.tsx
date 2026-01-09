@@ -1,12 +1,8 @@
 import { useLoaderData } from "react-router-dom";
-import type { Article } from "../../../types/article";
-import type { Image } from "../../../types/image";
+import type { ArticleLoaderData } from "./articleTypes";
 
 function ArticlePage() {
-  const data = useLoaderData() as {
-    article: Article;
-    articleImages: Image[];
-  };
+  const data = useLoaderData<ArticleLoaderData>();
 
   const { article, articleImages } = data;
 

@@ -1,9 +1,9 @@
 import { useLoaderData } from "react-router-dom";
-import type { Image } from "../../../types/image";
 import ImageCard from "../../molecules/ImageCard";
+import type { GalleryLoaderData } from "./galleryTypes";
 
 function GalleryPage() {
-  const { images } = useLoaderData() as { images: Image[] };
+  const { images } = useLoaderData<GalleryLoaderData>();
 
   return (
     <div>

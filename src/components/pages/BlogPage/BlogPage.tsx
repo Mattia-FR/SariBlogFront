@@ -1,9 +1,9 @@
 import { useLoaderData } from "react-router-dom";
-import type { ArticleForList } from "../../../types/article";
 import ArticleCard from "../../molecules/ArticleCard";
+import type { BlogLoaderData } from "./blogTypes";
 
 function BlogPage() {
-  const { articles } = useLoaderData() as { articles: ArticleForList[] };
+  const { articles } = useLoaderData<BlogLoaderData>();
 
   if (articles.length === 0) {
     return null;

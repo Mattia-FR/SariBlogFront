@@ -1,18 +1,12 @@
 import { useLoaderData } from "react-router-dom";
-import type { ArticleForList } from "../../../types/article";
-import type { Image } from "../../../types/image";
-import type { User } from "../../../types/users";
 import ContactCTA from "../../molecules/ContactPreview";
 import ArticlesPreview from "../../organisms/ArticlesPreview";
 import ArtistPreview from "../../organisms/ArtistPreview";
 import Hero from "../../organisms/Hero";
+import type { HomeLoaderData } from "./homeTypes";
 
 function HomePage() {
-  const { articles, imageOfTheDay, user } = useLoaderData() as {
-    articles: ArticleForList[];
-    imageOfTheDay: Image | null;
-    user: User;
-  };
+  const { articles, imageOfTheDay, user } = useLoaderData<HomeLoaderData>();
 
   return (
     <section className="home-page">
