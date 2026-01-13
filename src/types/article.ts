@@ -1,11 +1,4 @@
-/**
- * Tag frontend
- */
-export interface Tag {
-  id: number;
-  name: string;
-  slug: string;
-}
+import type { Tag } from "./tags";
 
 /**
  * Article pour les listes simples

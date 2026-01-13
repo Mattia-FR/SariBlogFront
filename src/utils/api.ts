@@ -32,4 +32,32 @@ export const api = {
     const data = (await response.json()) as T;
     return data;
   },
+
+  /**
+   * Effectue une requête POST
+   * @param endpoint - Chemin de l'endpoint
+   * @param data - Données à envoyer dans le body
+   * @returns Les données typées
+   * @throws HTTPError si la requête échoue
+   */
+  post: async <T>(endpoint: string, data: unknown): Promise<T> => {
+    const url = `${API_BASE_URL}${endpoint}`;
+
+    const response = await fetch(url, {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(data),
+    });
+
+    // Gestion des erreurs HTTP
+    if (!response.ok) {
+      throw new Error(`HTTP Error: ${response.status} ${response.statusText}`);
+    }
+
+    // Parse et retourne les données
+    const responseData = (await response.json()) as T;
+    return responseData;
+  },
 };

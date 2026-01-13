@@ -1,0 +1,48 @@
+.home-page {
+  .articles-preview-grid {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 3rem;
+
+    a {
+      text-decoration: none;
+    }
+
+    .article-card {
+      width: clamp(200px, 70vw, 500px);
+      overflow: hidden;
+      flex: 0 0 auto;
+      cursor: pointer;
+      border: 1px solid var(--color-five);
+      border-radius: 15px;
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+
+      img {
+        width: 100%;
+        height: 200px;
+        aspect-ratio: 1 / 1;
+        object-fit: cover;
+        display: block;
+      }
+
+      h4 {
+        font-family: var(--font-one);
+        color: var(--color-three);
+        padding: 1rem;
+      }
+
+      .article-card-excerpt {
+        padding: 0.5rem;
+        color: var(--color-two);
+      }
+
+      .article-card-date,
+      .article-card-tags {
+        font-size: 0.75rem;
+        padding: 0.5rem;
+        color: var(--color-four);
+      }
+    }
+  }
+}

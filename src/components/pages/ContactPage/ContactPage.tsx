@@ -1,4 +1,5 @@
 import { useState } from "react";
+import { api } from "../../../utils/api";
 
 function ContactPage() {
   const [formData, setFormData] = useState({
@@ -60,32 +61,20 @@ function ContactPage() {
     setSubmitStatus(null);
 
     try {
-      // 4. Envoyer les données au backend
-      const response = await fetch("http://localhost:4242/messages", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify(formData),
+      // 4. Envoyer les données au backend via le client API
+      await api.post("/messages", formData);
+
+      // 5. Succès : afficher un message de confirmation
+      setSubmitStatus("success");
+
+      // Réinitialiser le formulaire
+      setFormData({
+        firstname: "",
+        lastname: "",
+        email: "",
+        subject: "",
+        text: "",
       });
-
-      // 5. Vérifier si l'envoi a réussi
-      if (response.ok) {
-        // Succès : afficher un message de confirmation
-        setSubmitStatus("success");
-
-        // Réinitialiser le formulaire
-        setFormData({
-          firstname: "",
-          lastname: "",
-          email: "",
-          subject: "",
-          text: "",
-        });
-      } else {
-        // Échec : afficher un message d'erreur
-        setSubmitStatus("error");
-      }
     } catch (error) {
       // 6. En cas d'erreur réseau ou autre
       console.error("Erreur lors de l'envoi du message :", error);

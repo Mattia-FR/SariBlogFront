@@ -16,6 +16,17 @@ function ArticlePage() {
         <p>{new Date(article.published_at).toLocaleDateString("fr-FR")}</p>
       )}
 
+      {/* Tags */}
+      {article.tags && article.tags.length > 0 && (
+        <ul className="article-detail-tags">
+          {article.tags.map((tag) => (
+            <li key={tag.id} className="article-detail-tag">
+              {tag.name}
+            </li>
+          ))}
+        </ul>
+      )}
+
       {/* TOUTES les images liées à l'article */}
       {articleImages.map((image) => (
         <img

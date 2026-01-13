@@ -5,13 +5,13 @@ import Header from "./components/organisms/Header";
 
 function App() {
   return (
-    <>
+    <div className="app-layout">
       <Header />
-      <main>
+      <main className="main-content">
         <Outlet />
       </main>
       <Footer />
-    </>
+    </div>
   );
 }
 

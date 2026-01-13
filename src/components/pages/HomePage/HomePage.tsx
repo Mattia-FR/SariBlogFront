@@ -4,6 +4,7 @@ import ArticlesPreview from "../../organisms/ArticlesPreview";
 import ArtistPreview from "../../organisms/ArtistPreview";
 import Hero from "../../organisms/Hero";
 import type { HomeLoaderData } from "./homeTypes";
+import "./HomePage.css";
 
 function HomePage() {
   const { articles, imageOfTheDay, user } = useLoaderData<HomeLoaderData>();

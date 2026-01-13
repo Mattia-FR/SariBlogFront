@@ -1,3 +1,5 @@
+import type { Tag } from "./tags";
+
 /**
  * Image côté frontend
  * 🔒 `path` SUPPRIMÉ
@@ -17,6 +19,14 @@ export interface Image {
 }
 
 /**
+ * Image enrichie (galerie, listes)
+ * ⚠️ enrichissement NON garanti
+ */
+export interface ImageForList extends Image {
+  tags?: Tag[];
+}
+
+/**
  * Image affichée dans un article
  */
 export interface ImageForArticle {
@@ -28,5 +38,5 @@ export interface ImageForArticle {
 }
 
 export interface ImageCardProps {
-  image: Image;
+  image: ImageForList;
 }
