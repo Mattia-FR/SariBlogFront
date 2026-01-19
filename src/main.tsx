@@ -15,6 +15,7 @@ import HomePage from "./components/pages/HomePage/HomePage";
 import { homeLoader } from "./components/pages/HomePage/homeLoader";
 import PresentationPage from "./components/pages/PresentationPage/PresentationPage";
 import { presentationLoader } from "./components/pages/PresentationPage/presentationLoader";
+import { AuthProvider } from "./contexts/AuthContext";
 
 const router = createBrowserRouter([
   {
@@ -61,6 +62,8 @@ if (!rootElement) {
 
 createRoot(rootElement).render(
   <StrictMode>
-    <RouterProvider router={router} />
+    <AuthProvider>
+      <RouterProvider router={router} />
+    </AuthProvider>
   </StrictMode>,
 );

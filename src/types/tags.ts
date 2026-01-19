@@ -1,6 +1,6 @@
 /**
  * Tag frontend
- * 
+ *
  * Représente un tag tel qu'il est utilisé dans l'application frontend.
  * Les dates sont converties en string (contrairement au backend où elles sont Date).
  */

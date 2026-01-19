@@ -2,7 +2,7 @@ import type { LoaderFunctionArgs } from "react-router-dom";
 import type { Article } from "../../../types/article";
 import type { ImageForArticle } from "../../../types/image";
 import type { Tag } from "../../../types/tags";
-import { api } from "../../../utils/api";
+import { api } from "../../../utils/apiClient";
 import type { ArticleLoaderData } from "./articleTypes";
 
 export async function articleLoader({

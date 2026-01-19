@@ -1,5 +1,5 @@
 import type { ImageForList } from "../../../types/image";
-import { api } from "../../../utils/api";
+import { api } from "../../../utils/apiClient";
 import type { GalleryLoaderData } from "./galleryTypes";
 
 export async function galleryLoader(): Promise<GalleryLoaderData> {

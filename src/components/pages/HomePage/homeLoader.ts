@@ -1,7 +1,7 @@
 import type { ArticleForList } from "../../../types/article";
 import type { Image } from "../../../types/image";
 import type { User } from "../../../types/users";
-import { api } from "../../../utils/api";
+import { api } from "../../../utils/apiClient";
 import type { HomeLoaderData } from "./homeTypes";
 
 export async function homeLoader(): Promise<HomeLoaderData> {
