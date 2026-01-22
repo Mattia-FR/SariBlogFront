@@ -16,6 +16,7 @@ import { homeLoader } from "./components/pages/HomePage/homeLoader";
 import PresentationPage from "./components/pages/PresentationPage/PresentationPage";
 import { presentationLoader } from "./components/pages/PresentationPage/presentationLoader";
 import { AuthProvider } from "./contexts/AuthContext";
+import LoginPage from "./components/pages/LoginPage/LoginPage";
 
 const router = createBrowserRouter([
   {
@@ -49,6 +50,10 @@ const router = createBrowserRouter([
       {
         path: "/contact",
         element: <ContactPage />,
+      },
+      {
+        path: "/login",
+        element: <LoginPage />,
       },
     ],
   },

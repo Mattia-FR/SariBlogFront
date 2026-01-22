@@ -88,7 +88,7 @@ export function AuthProvider({ children }: AuthProviderProps) {
       setError(null);
 
       if (import.meta.env.DEV) {
-        console.log("[Auth] Tentative de connexion:", credentials.email);
+        console.log("[Auth] Tentative de connexion:", credentials.identifier);
       }
 
       const response = await apiClient("/auth/login", {
@@ -98,7 +98,7 @@ export function AuthProvider({ children }: AuthProviderProps) {
 
       if (!response.ok) {
         if (response.status === 401) {
-          throw new Error("Email ou mot de passe incorrect");
+          throw new Error("Email/nom d'utilisateur ou mot de passe incorrect");
         }
         throw new Error("Erreur de connexion");
       }
