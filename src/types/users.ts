@@ -12,6 +12,6 @@ export interface User {
   avatarUrl?: string;
   bio: string | null;
   bio_short: string | null;
-  created_at?: Date;
-  updated_at?: Date;
+  created_at: Date;
+  updated_at: Date;
 }

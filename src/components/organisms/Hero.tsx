@@ -1,7 +1,7 @@
 import { Link } from "react-router-dom";
-import type { HeroProps } from "../../types/hero";
+import type { Image } from "../../types/image";
 
-function Hero({ image }: HeroProps) {
+function Hero({ image }: { image: Image | null }) {
   if (!image) {
     return null;
   }

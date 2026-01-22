@@ -13,10 +13,10 @@ import GalleryPage from "./components/pages/GalleryPage/GalleryPage";
 import { galleryLoader } from "./components/pages/GalleryPage/galleryLoader";
 import HomePage from "./components/pages/HomePage/HomePage";
 import { homeLoader } from "./components/pages/HomePage/homeLoader";
+import LoginPage from "./components/pages/LoginPage/LoginPage";
 import PresentationPage from "./components/pages/PresentationPage/PresentationPage";
 import { presentationLoader } from "./components/pages/PresentationPage/presentationLoader";
 import { AuthProvider } from "./contexts/AuthContext";
-import LoginPage from "./components/pages/LoginPage/LoginPage";
 
 const router = createBrowserRouter([
   {
