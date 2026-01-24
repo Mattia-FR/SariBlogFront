@@ -5,4 +5,3 @@ export interface ModalContentProps {
   content: ReactNode;
   actions?: ReactNode;
 }
-

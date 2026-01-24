@@ -1,6 +1,6 @@
-import { createPortal } from "react-dom";
 import type { ReactNode } from "react";
 import { useEffect, useRef } from "react";
+import { createPortal } from "react-dom";
 import "./Modal.css";
 
 interface ModalProps {
@@ -29,7 +29,9 @@ export default function Modal({ isOpen, onClose, children }: ModalProps) {
         (el) =>
           !el.hasAttribute("disabled") &&
           el.getAttribute("aria-hidden") !== "true" &&
-          (el.offsetWidth > 0 || el.offsetHeight > 0 || el === document.activeElement),
+          (el.offsetWidth > 0 ||
+            el.offsetHeight > 0 ||
+            el === document.activeElement),
       );
     };
 
@@ -109,11 +111,9 @@ export default function Modal({ isOpen, onClose, children }: ModalProps) {
   if (!isOpen) return null;
 
   return createPortal(
-    <div
-      role="presentation"
-      onClick={onClose}
-      className="modal-overlay"
-    >
+    // biome-ignore lint/a11y/noStaticElementInteractions: overlay click-to-close is intentional UX pattern
+    <div role="presentation" onClick={onClose} className="modal-overlay">
+      {/** biome-ignore lint/a11y/useKeyWithClickEvents: same */}
       <div
         role="dialog"
         aria-modal="true"
@@ -137,4 +137,3 @@ export default function Modal({ isOpen, onClose, children }: ModalProps) {
     document.body,
   );
 }
-

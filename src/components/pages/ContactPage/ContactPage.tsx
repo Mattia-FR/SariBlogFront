@@ -1,6 +1,6 @@
-import { useState, useEffect } from "react";
-import { api } from "../../../utils/apiClient";
+import { useEffect, useState } from "react";
 import { useAuth } from "../../../hooks/useAuth";
+import { api } from "../../../utils/apiClient";
 
 function ContactPage() {
   const { user, isAuthenticated } = useAuth();
@@ -77,24 +77,25 @@ function ContactPage() {
 
     try {
       // 4. Préparer les données à envoyer
-      const dataToSend = isAuthenticated && user
-        ? {
-            // Utilisateur connecté : envoyer username et données utilisateur
-            username: user.username,
-            email: user.email,
-            firstname: user.firstname || null,
-            lastname: user.lastname || null,
-            subject: formData.subject,
-            text: formData.text,
-          }
-        : {
-            // Visiteur non connecté : envoyer toutes les données du formulaire
-            firstname: formData.firstname,
-            lastname: formData.lastname,
-            email: formData.email,
-            subject: formData.subject,
-            text: formData.text,
-          };
+      const dataToSend =
+        isAuthenticated && user
+          ? {
+              // Utilisateur connecté : envoyer username et données utilisateur
+              username: user.username,
+              email: user.email,
+              firstname: user.firstname || null,
+              lastname: user.lastname || null,
+              subject: formData.subject,
+              text: formData.text,
+            }
+          : {
+              // Visiteur non connecté : envoyer toutes les données du formulaire
+              firstname: formData.firstname,
+              lastname: formData.lastname,
+              email: formData.email,
+              subject: formData.subject,
+              text: formData.text,
+            };
 
       // 5. Envoyer les données au backend via le client API
       await api.post("/messages", dataToSend);
@@ -209,14 +210,10 @@ function ContactPage() {
         </button>
       </form>
 
-      {submitStatus === "success" && (
-        <p>Message envoyé avec succès !</p>
-      )}
+      {submitStatus === "success" && <p>Message envoyé avec succès !</p>}
 
       {submitStatus === "error" && (
-        <p>
-          Erreur lors de l'envoi. Veuillez réessayer.
-        </p>
+        <p>Erreur lors de l'envoi. Veuillez réessayer.</p>
       )}
     </div>
   );

@@ -89,4 +89,3 @@ export default function SignupForm({ onSuccess }: SignupFormProps) {
     </form>
   );
 }
-

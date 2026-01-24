@@ -1,7 +1,7 @@
 import {
   createContext,
-  type ReactNode,
   isValidElement,
+  type ReactNode,
   useCallback,
   useMemo,
   useState,
@@ -65,19 +65,14 @@ export function ModalProvider({ children }: ModalProviderProps) {
       <Modal isOpen={isOpen} onClose={closeModal}>
         {modalContent?.kind === "structured" ? (
           <div>
-            {modalContent.title ? (
-              <h2>{modalContent.title}</h2>
-            ) : null}
+            {modalContent.title ? <h2>{modalContent.title}</h2> : null}
             <div>{modalContent.content}</div>
-            {modalContent.actions ? (
-              <div>{modalContent.actions}</div>
-            ) : null}
+            {modalContent.actions ? <div>{modalContent.actions}</div> : null}
           </div>
         ) : (
-          modalContent?.node ?? null
+          (modalContent?.node ?? null)
         )}
       </Modal>
     </ModalContext.Provider>
   );
 }
-
