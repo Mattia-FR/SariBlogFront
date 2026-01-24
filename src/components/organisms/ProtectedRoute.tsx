@@ -7,19 +7,19 @@ interface ProtectedRouteProps {
 }
 
 export function ProtectedRoute({ children }: ProtectedRouteProps) {
-  const { isAuthenticated, isLoading } = useAuth();
+  const { isAuthenticated, isInitializing } = useAuth();
 
   if (import.meta.env.DEV) {
     console.log(
-      "[ProtectedRoute] isLoading:",
-      isLoading,
+      "[ProtectedRoute] isInitializing:",
+      isInitializing,
       "isAuthenticated:",
       isAuthenticated,
     );
   }
 
   // Afficher un loader pendant la vérification
-  if (isLoading) {
+  if (isInitializing) {
     return (
       <div className="flex items-center justify-center min-h-screen">
         <div className="text-xl">Vérification de l'authentification...</div>

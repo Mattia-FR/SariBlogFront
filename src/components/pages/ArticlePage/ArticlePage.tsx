@@ -9,7 +9,7 @@ function ArticlePage() {
   return (
     <article className="article-detail">
       {/* Titre */}
-      <h2>{article.title}</h2>
+      <h1>{article.title}</h1>
 
       {/* Date */}
       {article.published_at && (

@@ -9,6 +9,7 @@ import type {
   AuthContextValue,
   LoginCredentials,
   LoginResponse,
+  SignupCredentials,
   User,
 } from "../types/auth";
 import {
@@ -29,14 +30,15 @@ interface AuthProviderProps {
 
 export function AuthProvider({ children }: AuthProviderProps) {
   const [user, setUser] = useState<User | null>(null);
-  const [isLoading, setIsLoading] = useState(true);
+  const [isInitializing, setIsInitializing] = useState(true);
+  const [isLoading, setIsLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
 
   // 🚀 Initialisation : vérifier si une session existe
   useEffect(() => {
     const initAuth = async () => {
       try {
-        setIsLoading(true);
+        setIsInitializing(true);
 
         if (import.meta.env.DEV) {
           console.log("[Auth] Initialisation...");
@@ -74,7 +76,7 @@ export function AuthProvider({ children }: AuthProviderProps) {
         }
         setUser(null);
       } finally {
-        setIsLoading(false);
+        setIsInitializing(false);
       }
     };
 
@@ -127,9 +129,72 @@ export function AuthProvider({ children }: AuthProviderProps) {
     }
   }, []);
 
+  // ✍️ Inscription (auto-login côté backend)
+  const signup = useCallback(async (credentials: SignupCredentials) => {
+    try {
+      setIsLoading(true);
+      setError(null);
+
+      if (import.meta.env.DEV) {
+        console.log("[Auth] Tentative d'inscription:", credentials.email);
+      }
+
+      const response = await apiClient("/auth/signup", {
+        method: "POST",
+        body: JSON.stringify(credentials),
+      });
+
+      if (!response.ok) {
+        // Le backend renvoie parfois { error: "..." }
+        let message = "Erreur d'inscription";
+        try {
+          const data = await response.json();
+          if (data?.error && typeof data.error === "string") {
+            message = data.error;
+          }
+        } catch {
+          // ignore
+        }
+
+        if (response.status === 409) {
+          throw new Error(message);
+        }
+
+        if (response.status === 400) {
+          throw new Error(message);
+        }
+
+        throw new Error(message);
+      }
+
+      const data: LoginResponse = await response.json();
+
+      setAccessToken(data.accessToken);
+      setUser(data.user);
+
+      if (import.meta.env.DEV) {
+        console.log("[Auth] Inscription réussie:", data.user.email);
+      }
+    } catch (err) {
+      const message =
+        err instanceof Error ? err.message : "Erreur d'inscription";
+      setError(message);
+
+      if (import.meta.env.DEV) {
+        console.error("[Auth] Erreur d'inscription:", message);
+      }
+
+      throw err;
+    } finally {
+      setIsLoading(false);
+    }
+  }, []);
+
   // 🚪 Déconnexion
   const logout = useCallback(async () => {
     try {
+      setIsLoading(true);
+      setError(null);
       if (import.meta.env.DEV) {
         console.log("[Auth] Déconnexion...");
       }
@@ -145,26 +210,20 @@ export function AuthProvider({ children }: AuthProviderProps) {
       clearAccessToken();
       setUser(null);
       setError(null);
+      setIsLoading(false);
     }
   }, []);
 
   const value: AuthContextValue = {
     user,
     isAuthenticated: !!user,
+    isInitializing,
     isLoading,
     error,
     login,
+    signup,
     logout,
   };
-
-  // Loader pendant l'initialisation
-  if (isLoading && user === null) {
-    return (
-      <div className="flex items-center justify-center min-h-screen">
-        <div className="text-xl">Chargement...</div>
-      </div>
-    );
-  }
 
   return <AuthContext.Provider value={value}>{children}</AuthContext.Provider>;
 }

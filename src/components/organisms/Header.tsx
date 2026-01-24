@@ -1,7 +1,13 @@
 import Navbar from "../molecules/Navbar";
+import Login from "./Login";
 
 function Header() {
-  return <Navbar />;
+  return (
+    <header>
+      <Navbar />
+      <Login />
+    </header>
+  );
 }
 
 export default Header;

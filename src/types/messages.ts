@@ -6,6 +6,7 @@ export interface Message {
   firstname: string;
   lastname: string;
   email: string;
+  username: string | null;
   ip: string | null;
   subject: string;
   text: string;
@@ -15,9 +16,10 @@ export interface Message {
 }
 
 export interface MessageCreateData {
-  firstname: string;
-  lastname: string;
+  firstname?: string | null;
+  lastname?: string | null;
   email: string;
+  username?: string | null;
   subject: string;
   text: string;
 }

@@ -1,7 +1,10 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { api } from "../../../utils/apiClient";
+import { useAuth } from "../../../hooks/useAuth";
 
 function ContactPage() {
+  const { user, isAuthenticated } = useAuth();
+
   const [formData, setFormData] = useState({
     firstname: "",
     lastname: "",
@@ -14,6 +17,18 @@ function ContactPage() {
   const [submitStatus, setSubmitStatus] = useState<"success" | "error" | null>(
     null,
   );
+
+  // Préremplir les champs si l'utilisateur est connecté
+  useEffect(() => {
+    if (isAuthenticated && user) {
+      setFormData((prev) => ({
+        ...prev,
+        email: user.email,
+        firstname: user.firstname || "",
+        lastname: user.lastname || "",
+      }));
+    }
+  }, [isAuthenticated, user]);
 
   const handleInputChange = (
     event: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>,
@@ -61,26 +76,58 @@ function ContactPage() {
     setSubmitStatus(null);
 
     try {
-      // 4. Envoyer les données au backend via le client API
-      await api.post("/messages", formData);
+      // 4. Préparer les données à envoyer
+      const dataToSend = isAuthenticated && user
+        ? {
+            // Utilisateur connecté : envoyer username et données utilisateur
+            username: user.username,
+            email: user.email,
+            firstname: user.firstname || null,
+            lastname: user.lastname || null,
+            subject: formData.subject,
+            text: formData.text,
+          }
+        : {
+            // Visiteur non connecté : envoyer toutes les données du formulaire
+            firstname: formData.firstname,
+            lastname: formData.lastname,
+            email: formData.email,
+            subject: formData.subject,
+            text: formData.text,
+          };
 
-      // 5. Succès : afficher un message de confirmation
+      // 5. Envoyer les données au backend via le client API
+      await api.post("/messages", dataToSend);
+
+      // 6. Succès : afficher un message de confirmation
       setSubmitStatus("success");
 
       // Réinitialiser le formulaire
-      setFormData({
-        firstname: "",
-        lastname: "",
-        email: "",
-        subject: "",
-        text: "",
-      });
+      if (isAuthenticated && user) {
+        // Utilisateur connecté : garder email, firstname, lastname
+        setFormData({
+          firstname: user.firstname || "",
+          lastname: user.lastname || "",
+          email: user.email,
+          subject: "",
+          text: "",
+        });
+      } else {
+        // Visiteur non connecté : tout réinitialiser
+        setFormData({
+          firstname: "",
+          lastname: "",
+          email: "",
+          subject: "",
+          text: "",
+        });
+      }
     } catch (error) {
-      // 6. En cas d'erreur réseau ou autre
+      // 7. En cas d'erreur réseau ou autre
       console.error("Erreur lors de l'envoi du message :", error);
       setSubmitStatus("error");
     } finally {
-      // 7. Dans tous les cas, réactiver le formulaire
+      // 8. Dans tous les cas, réactiver le formulaire
       setIsSubmitting(false);
     }
   };
@@ -90,44 +137,48 @@ function ContactPage() {
       <h1>Contact</h1>
 
       <form onSubmit={handleSubmit}>
-        <label>
-          Prénom:
-          <input
-            type="text"
-            name="firstname"
-            value={formData.firstname}
-            onChange={handleInputChange}
-            required
-            maxLength={50}
-            disabled={isSubmitting}
-          />
-        </label>
+        {!isAuthenticated && (
+          <>
+            <label>
+              Prénom:
+              <input
+                type="text"
+                name="firstname"
+                value={formData.firstname}
+                onChange={handleInputChange}
+                required
+                maxLength={50}
+                disabled={isSubmitting}
+              />
+            </label>
 
-        <label>
-          Nom:
-          <input
-            type="text"
-            name="lastname"
-            value={formData.lastname}
-            onChange={handleInputChange}
-            required
-            maxLength={50}
-            disabled={isSubmitting}
-          />
-        </label>
+            <label>
+              Nom:
+              <input
+                type="text"
+                name="lastname"
+                value={formData.lastname}
+                onChange={handleInputChange}
+                required
+                maxLength={50}
+                disabled={isSubmitting}
+              />
+            </label>
 
-        <label>
-          Email:
-          <input
-            type="email"
-            name="email"
-            value={formData.email}
-            onChange={handleInputChange}
-            required
-            maxLength={100}
-            disabled={isSubmitting}
-          />
-        </label>
+            <label>
+              Email:
+              <input
+                type="email"
+                name="email"
+                value={formData.email}
+                onChange={handleInputChange}
+                required
+                maxLength={100}
+                disabled={isSubmitting}
+              />
+            </label>
+          </>
+        )}
 
         <label>
           Sujet:
@@ -159,11 +210,11 @@ function ContactPage() {
       </form>
 
       {submitStatus === "success" && (
-        <p style={{ color: "green" }}>Message envoyé avec succès !</p>
+        <p>Message envoyé avec succès !</p>
       )}
 
       {submitStatus === "error" && (
-        <p style={{ color: "red" }}>
+        <p>
           Erreur lors de l'envoi. Veuillez réessayer.
         </p>
       )}
