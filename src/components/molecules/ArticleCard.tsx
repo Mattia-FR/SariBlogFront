@@ -11,16 +11,16 @@ function ArticleCard({ article, isClickable = false }: ArticleCardProps) {
     });
   };
 
+  const imageSrc = article.imageUrl ?? "/placeholder.png";
+
   const cardContent = (
     <article className="article-card">
-      {article.imageUrl && (
-        <img
-          src={article.imageUrl}
-          alt={article.title}
-          loading="lazy"
-          className="article-card-image"
-        />
-      )}
+      <img
+        src={imageSrc}
+        alt={article.title}
+        loading="lazy"
+        className="article-card-image"
+      />
 
       <h4 className="article-card-title">{article.title}</h4>
 

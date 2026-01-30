@@ -42,7 +42,7 @@ function Login() {
   }
 
   return (
-    <div>
+    <div className="login-zone">
       <p>Bienvenue, {user ? user.id : "visiteur"}.</p>
 
       {user ? (

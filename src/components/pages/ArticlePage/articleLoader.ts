@@ -8,7 +8,9 @@ import type { ArticleLoaderData } from "./articleTypes";
 export async function articleLoader({
   params,
 }: LoaderFunctionArgs): Promise<ArticleLoaderData> {
-  const article = await api.get<Article>(`/articles/published/${params.slug}`);
+  const article = await api.get<Article>(
+    `/articles/published/slug/${params.slug}`,
+  );
 
   const [articleImages, tags] = await Promise.all([
     api.get<ImageForArticle[]>(`/images/article/${article.id}`),

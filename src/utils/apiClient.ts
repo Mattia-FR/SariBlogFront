@@ -140,7 +140,7 @@ export const api = {
     const response = await apiClient(endpoint, { method: "GET" });
 
     if (!response.ok) {
-      throw new Error(`HTTP ${response.status}: ${response.statusText}`);
+      throw new Error(`Erreur HTTP ${response.status}: ${response.statusText}`);
     }
 
     return response.json();
@@ -153,7 +153,7 @@ export const api = {
     });
 
     if (!response.ok) {
-      throw new Error(`HTTP ${response.status}: ${response.statusText}`);
+      throw new Error(`Erreur HTTP ${response.status}: ${response.statusText}`);
     }
 
     return response.json();
@@ -166,7 +166,7 @@ export const api = {
     });
 
     if (!response.ok) {
-      throw new Error(`HTTP ${response.status}: ${response.statusText}`);
+      throw new Error(`Erreur HTTP ${response.status}: ${response.statusText}`);
     }
 
     return response.json();
@@ -176,7 +176,7 @@ export const api = {
     const response = await apiClient(endpoint, { method: "DELETE" });
 
     if (!response.ok) {
-      throw new Error(`HTTP ${response.status}: ${response.statusText}`);
+      throw new Error(`Erreur HTTP ${response.status}: ${response.statusText}`);
     }
 
     return response.json();

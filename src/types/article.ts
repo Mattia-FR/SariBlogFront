@@ -20,7 +20,7 @@ export interface ArticleListItem {
 
 /**
  * Article complet
- * (= /articles/published/:slug)
+ * (= /articles/published/slug/:slug)
  */
 export interface Article extends ArticleListItem {
   content: string;

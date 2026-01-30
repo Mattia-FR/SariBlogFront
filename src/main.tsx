@@ -44,7 +44,7 @@ const router = createBrowserRouter([
         loader: galleryLoader,
       },
       {
-        path: "/about",
+        path: "/presentation",
         element: <PresentationPage />,
         loader: presentationLoader,
       },
@@ -63,7 +63,7 @@ const router = createBrowserRouter([
 const rootElement = document.getElementById("root");
 
 if (!rootElement) {
-  throw new Error('Your HTML Document must contain a <div id="root"></div>');
+  throw new Error('Votre document HTML doit contenir un <div id="root"></div>');
 }
 
 createRoot(rootElement).render(

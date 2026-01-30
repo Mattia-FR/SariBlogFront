@@ -10,13 +10,11 @@ function ProfilePage() {
         <h1>Mon Profil</h1>
 
         <div className="profile-header">
-          {user.avatarUrl && (
-            <img
-              src={user.avatarUrl}
-              alt={`Avatar de ${user.username}`}
-              className="profile-avatar"
-            />
-          )}
+          <img
+            src={user.avatarUrl ?? "/placeholder.png"}
+            alt={user.avatarUrl ? `Avatar de ${user.username}` : "Avatar par défaut"}
+            className="profile-avatar"
+          />
           <div className="profile-info">
             <h2>{user.username}</h2>
             {user.firstname || user.lastname ? (

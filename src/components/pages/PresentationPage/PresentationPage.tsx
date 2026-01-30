@@ -7,15 +7,11 @@ function PresentationPage() {
   return (
     <main>
       <h1>Présentation</h1>
-      {user.avatarUrl ? (
-        <img
-          src={user.avatarUrl}
-          alt={user.username}
-          className="artist-avatar"
-        />
-      ) : (
-        <div className="artist-avatar-placeholder">Placeholder</div>
-      )}
+      <img
+        src={user.avatarUrl ?? "/placeholder.png"}
+        alt={user.avatarUrl ? user.username : "Avatar par défaut"}
+        className="artist-avatar"
+      />
       <h3 className="artist-name">
         {user.firstname ?? ""} {user.lastname ?? ""}
       </h3>
