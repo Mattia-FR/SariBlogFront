@@ -1,5 +1,5 @@
-import type { ArticleForList } from "../../../types/article";
+import type { Article } from "../../../types/article";
 
 export interface BlogLoaderData {
-  articles: ArticleForList[];
+  articles: Article[];
 }

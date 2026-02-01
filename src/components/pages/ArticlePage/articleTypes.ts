@@ -1,7 +1,7 @@
 import type { ArticlePageProps } from "../../../types/article";
-import type { ImageForArticle } from "../../../types/image";
+import type { Image } from "../../../types/image";
 
 export interface ArticleLoaderData {
   article: ArticlePageProps["article"];
-  articleImages: ImageForArticle[];
+  articleImages: Image[];
 }

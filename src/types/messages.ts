@@ -1,18 +1,17 @@
-// Types pour les messages côté frontend
-// Basés sur les types backend
+export type MessageStatus = "unread" | "read" | "archived";
 
 export interface Message {
   id: number;
-  firstname: string;
-  lastname: string;
+  firstname: string | null;
+  lastname: string | null;
   email: string;
   username: string | null;
   ip: string | null;
   subject: string;
   text: string;
-  status: "unread" | "read" | "archived";
+  status: MessageStatus;
   user_id: number | null;
-  created_at: Date;
+  created_at: string;
 }
 
 export interface MessageCreateData {

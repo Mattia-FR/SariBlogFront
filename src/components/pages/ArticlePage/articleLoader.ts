@@ -1,6 +1,6 @@
 import type { LoaderFunctionArgs } from "react-router-dom";
 import type { Article } from "../../../types/article";
-import type { ImageForArticle } from "../../../types/image";
+import type { Image } from "../../../types/image";
 import type { Tag } from "../../../types/tags";
 import { api } from "../../../utils/apiClient";
 import type { ArticleLoaderData } from "./articleTypes";
@@ -13,7 +13,7 @@ export async function articleLoader({
   );
 
   const [articleImages, tags] = await Promise.all([
-    api.get<ImageForArticle[]>(`/images/article/${article.id}`),
+    api.get<Image[]>(`/images/article/${article.id}`),
     api.get<Tag[]>(`/tags/article/${article.id}`),
   ]);
 

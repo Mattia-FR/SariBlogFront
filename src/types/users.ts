@@ -1,5 +1,4 @@
-// Types pour les utilisateurs côté frontend
-// Basés sur les types backend
+export type UserRole = "admin" | "editor" | "subscriber";
 
 export interface User {
   id: number;
@@ -7,11 +6,11 @@ export interface User {
   email: string;
   firstname: string | null;
   lastname: string | null;
-  role: "admin" | "editor" | "subscriber";
+  role: UserRole;
   avatar: string | null;
   avatarUrl?: string;
   bio: string | null;
   bio_short: string | null;
-  created_at: Date;
-  updated_at: Date;
+  created_at: string;
+  updated_at: string;
 }

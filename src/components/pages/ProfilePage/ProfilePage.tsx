@@ -12,7 +12,11 @@ function ProfilePage() {
         <div className="profile-header">
           <img
             src={user.avatarUrl ?? "/placeholder.png"}
-            alt={user.avatarUrl ? `Avatar de ${user.username}` : "Avatar par défaut"}
+            alt={
+              user.avatarUrl
+                ? `Avatar de ${user.username}`
+                : "Avatar par défaut"
+            }
             className="profile-avatar"
           />
           <div className="profile-info">

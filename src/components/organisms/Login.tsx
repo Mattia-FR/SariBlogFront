@@ -43,7 +43,7 @@ function Login() {
 
   return (
     <div className="login-zone">
-      <p>Bienvenue, {user ? user.id : "visiteur"}.</p>
+      <p>Bienvenue, {user ? user.username : "visiteur"}.</p>
 
       {user ? (
         <button type="button" onClick={() => void logout()}>

@@ -1,16 +1,4 @@
-export interface User {
-  id: number;
-  username: string;
-  email: string;
-  firstname: string | null;
-  lastname: string | null;
-  role: "admin" | "editor" | "subscriber";
-  avatar: string | null;
-  bio: string | null;
-  bio_short: string | null;
-  created_at: Date;
-  updated_at: Date;
-}
+import type { User } from "./users";
 
 export interface LoginCredentials {
   identifier: string;
@@ -37,14 +25,7 @@ export interface RefreshResponse {
 export interface AuthState {
   user: User | null;
   isAuthenticated: boolean;
-  /**
-   * True uniquement pendant l'initialisation (refresh token + /users/me).
-   * Ne doit pas bloquer l'accès aux pages publiques.
-   */
   isInitializing: boolean;
-  /**
-   * True pendant une action explicite (login / signup / logout).
-   */
   isLoading: boolean;
   error: string | null;
 }

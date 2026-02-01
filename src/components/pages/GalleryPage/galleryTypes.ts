@@ -1,5 +1,5 @@
-import type { ImageForList } from "../../../types/image";
+import type { Image } from "../../../types/image";
 
 export interface GalleryLoaderData {
-  images: ImageForList[];
+  images: Image[];
 }

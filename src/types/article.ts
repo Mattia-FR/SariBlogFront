@@ -1,55 +1,33 @@
 import type { Tag } from "./tags";
 
-/**
- * Article pour les listes simples
- * (= /articles/published)
- */
-export interface ArticleListItem {
+export type ArticleStatus = "draft" | "published" | "archived";
+
+export interface Article {
   id: number;
   title: string;
   slug: string;
   excerpt: string | null;
-  status: "draft" | "published" | "archived";
+  content?: string;
+  status: ArticleStatus;
   user_id: number;
   created_at: string;
   updated_at: string;
   published_at: string | null;
   views: number;
   featured_image_id: number | null;
-}
-
-/**
- * Article complet
- * (= /articles/published/slug/:slug)
- */
-export interface Article extends ArticleListItem {
-  content: string;
-}
-
-/**
- * Article enrichi (homepage, previews)
- * ⚠️ enrichissement NON garanti
- */
-export interface ArticleForList extends ArticleListItem {
   imageUrl?: string;
   tags?: Tag[];
 }
 
-/**
- * Props composants
- */
 export interface ArticleCardProps {
-  article: ArticleListItem & Partial<ArticleForList>;
+  article: Article;
   isClickable?: boolean;
 }
 
 export interface ArticlePageProps {
-  article: Article & {
-    imageUrl?: string;
-    tags?: Tag[];
-  };
+  article: Article;
 }
 
 export interface ArticlesPreviewProps {
-  articles: ArticleForList[];
+  articles: Article[];
 }

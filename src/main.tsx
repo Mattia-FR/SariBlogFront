@@ -4,6 +4,8 @@ import { createBrowserRouter, RouterProvider } from "react-router-dom";
 import "./index.css";
 
 import App from "./App";
+import { ProtectedRoute } from "./components/organisms/ProtectedRoute";
+import ArticlesAdmin from "./components/pages/Admin/Articles/ArticlesAdmin";
 import ArticlePage from "./components/pages/ArticlePage/ArticlePage";
 import { articleLoader } from "./components/pages/ArticlePage/articleLoader";
 import BlogPage from "./components/pages/BlogPage/BlogPage";
@@ -55,6 +57,14 @@ const router = createBrowserRouter([
       {
         path: "/login",
         element: <LoginPage />,
+      },
+      {
+        path: "/admin/articles",
+        element: (
+          <ProtectedRoute allowedRoles={["admin", "editor"]}>
+            <ArticlesAdmin />
+          </ProtectedRoute>
+        ),
       },
     ],
   },

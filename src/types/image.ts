@@ -1,10 +1,5 @@
 import type { Tag } from "./tags";
 
-/**
- * Image côté frontend
- * 🔒 `path` SUPPRIMÉ
- * 🔒 dates = string
- */
 export interface Image {
   id: number;
   title: string | null;
@@ -16,27 +11,9 @@ export interface Image {
   created_at: string;
   updated_at: string;
   imageUrl: string;
-}
-
-/**
- * Image enrichie (galerie, listes)
- * ⚠️ enrichissement NON garanti
- */
-export interface ImageForList extends Image {
   tags?: Tag[];
 }
 
-/**
- * Image affichée dans un article
- */
-export interface ImageForArticle {
-  id: number;
-  title: string | null;
-  alt_descr: string | null;
-  article_id: number | null;
-  imageUrl: string;
-}
-
 export interface ImageCardProps {
-  image: ImageForList;
+  image: Image;
 }

@@ -1,11 +1,6 @@
-import type { ArticleForList } from "../../../../types/article";
+import type { Article } from "../../../../types/article";
 
-export interface ArticlesAdminList extends ArticleForList {
-  status: "draft" | "published" | "archived";
-  views: number;
-  commentsCount?: number;
-  updated_at: string;
-}
+export type ArticlesAdminList = Article & { comments_count?: number };
 
 export interface ArticlesAdminLoaderData {
   articles: ArticlesAdminList[];
