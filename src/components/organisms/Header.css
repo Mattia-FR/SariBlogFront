@@ -33,8 +33,8 @@ header {
       height: 2px;
       background-color: currentColor;
       transition:
-        width 0.5s ease,
-        left 0.5s ease;
+        width 0.35s ease,
+        left 0.35s ease;
     }
 
     a:hover::after {
@@ -68,7 +68,7 @@ header {
       cursor: pointer;
       outline: none;
       font-family: var(--font-one);
-      transition: all 0.25s ease;
+      transition: border 0.35s ease;
     }
 
     button:hover {

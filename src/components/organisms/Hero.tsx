@@ -1,4 +1,4 @@
-import { Link } from "react-router-dom";
+import { NavLink } from "react-router-dom";
 import type { Image } from "../../types/image";
 
 function Hero({ image }: { image: Image | null }) {
@@ -6,17 +6,25 @@ function Hero({ image }: { image: Image | null }) {
     return null;
   }
   return (
-    <section className="hero">
+    <figure className="hero-figure">
       <img
+        className="hero-image"
         src={image.imageUrl}
         alt={image.alt_descr || image.title || "Image du jour"}
       />
-      {image.title && <h2 className="hero-title">{image.title}</h2>}
-      {image.description && (
-        <p className="hero-description">{image.description}</p>
-      )}
-      <Link to="/gallery">Voir la galerie</Link>
-    </section>
+
+      <figcaption className="hero-caption">
+        <div className="hero-texte">
+          {image.title && <h3 className="hero-title">{image.title}</h3>}
+          {image.description && (
+            <p className="hero-description">{image.description}</p>
+          )}
+        </div>
+        <NavLink to="/gallery" className="hero-link">
+          Voir la galerie
+        </NavLink>
+      </figcaption>
+    </figure>
   );
 }
 

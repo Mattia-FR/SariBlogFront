@@ -45,6 +45,7 @@ export default function Modal({ isOpen, onClose, children }: ModalProps) {
     };
 
     // Focus initial à l'ouverture
+    // queueMicrotask gère le timing du focus
     queueMicrotask(focusFirst);
 
     const onKeyDown = (event: KeyboardEvent) => {
