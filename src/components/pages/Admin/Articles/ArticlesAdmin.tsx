@@ -1,4 +1,5 @@
 import { useEffect, useState } from "react";
+import { NavLink } from "react-router-dom";
 import type { Article } from "../../../../types/article";
 import { api } from "../../../../utils/apiClient";
 import ArticleCard from "../../../molecules/ArticleCard";
@@ -31,12 +32,18 @@ function ArticlesAdmin() {
   return (
     <main className="articles-preview">
       <h2 className="articles-preview-title">Tous les articles</h2>
+      <NavLink to="/admin/articles/new">Créer un nouvel article.</NavLink>
       <section className="articles-preview-grid">
         {articles.length === 0 ? (
           <p>Aucun article.</p>
         ) : (
           articles.map((article) => (
-            <ArticleCard key={article.id} article={article} isClickable />
+            <ArticleCard
+              key={article.id}
+              article={article}
+              isClickable
+              isAdmin
+            />
           ))
         )}
       </section>

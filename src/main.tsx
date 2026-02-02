@@ -5,6 +5,8 @@ import "./index.css";
 
 import App from "./App";
 import { ProtectedRoute } from "./components/organisms/ProtectedRoute";
+import ArticleCreate from "./components/pages/Admin/Articles/ArticleCreate";
+import ArticleEdit from "./components/pages/Admin/Articles/ArticleEdit";
 import ArticlesAdmin from "./components/pages/Admin/Articles/ArticlesAdmin";
 import ArticlePage from "./components/pages/ArticlePage/ArticlePage";
 import { articleLoader } from "./components/pages/ArticlePage/articleLoader";
@@ -15,7 +17,6 @@ import GalleryPage from "./components/pages/GalleryPage/GalleryPage";
 import { galleryLoader } from "./components/pages/GalleryPage/galleryLoader";
 import HomePage from "./components/pages/HomePage/HomePage";
 import { homeLoader } from "./components/pages/HomePage/homeLoader";
-import LoginPage from "./components/pages/LoginPage/LoginPage";
 import PresentationPage from "./components/pages/PresentationPage/PresentationPage";
 import { presentationLoader } from "./components/pages/PresentationPage/presentationLoader";
 import { AuthProvider } from "./contexts/AuthContext";
@@ -55,14 +56,26 @@ const router = createBrowserRouter([
         element: <ContactPage />,
       },
       {
-        path: "/login",
-        element: <LoginPage />,
-      },
-      {
         path: "/admin/articles",
         element: (
           <ProtectedRoute allowedRoles={["admin", "editor"]}>
             <ArticlesAdmin />
+          </ProtectedRoute>
+        ),
+      },
+      {
+        path: "/admin/articles/new",
+        element: (
+          <ProtectedRoute allowedRoles={["admin", "editor"]}>
+            <ArticleCreate />
+          </ProtectedRoute>
+        ),
+      },
+      {
+        path: "/admin/articles/edit/:id",
+        element: (
+          <ProtectedRoute allowedRoles={["admin", "editor"]}>
+            <ArticleEdit />
           </ProtectedRoute>
         ),
       },

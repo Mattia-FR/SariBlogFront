@@ -33,12 +33,12 @@ export function ProtectedRoute({
     );
   }
 
-  // Rediriger vers login si non authentifié
+  // Rediriger vers l'accueil si non authentifié (connexion via modale header)
   if (!isAuthenticated) {
     if (import.meta.env.DEV) {
-      console.log("[ProtectedRoute] Non authentifié, redirection vers /login");
+      console.log("[ProtectedRoute] Non authentifié, redirection vers /");
     }
-    return <Navigate to="/login" replace />;
+    return <Navigate to="/" replace />;
   }
 
   // Rôle requis mais pas les bons

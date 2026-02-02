@@ -159,9 +159,9 @@ export const api = {
     return response.json();
   },
 
-  async put<T>(endpoint: string, data?: unknown): Promise<T> {
+  async patch<T>(endpoint: string, data?: unknown): Promise<T> {
     const response = await apiClient(endpoint, {
-      method: "PUT",
+      method: "PATCH",
       body: data ? JSON.stringify(data) : undefined,
     });
 
@@ -179,6 +179,10 @@ export const api = {
       throw new Error(`Erreur HTTP ${response.status}: ${response.statusText}`);
     }
 
+    // 204 No Content : pas de corps, ne pas appeler .json()
+    if (response.status === 204) {
+      return undefined as T;
+    }
     return response.json();
   },
 };

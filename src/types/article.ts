@@ -22,6 +22,7 @@ export interface Article {
 export interface ArticleCardProps {
   article: Article;
   isClickable?: boolean;
+  isAdmin?: boolean;
 }
 
 export interface ArticlePageProps {

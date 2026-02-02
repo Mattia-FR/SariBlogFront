@@ -1,7 +1,11 @@
-import { Link } from "react-router-dom";
+import { NavLink } from "react-router-dom";
 import type { ArticleCardProps } from "../../types/article";
 
-function ArticleCard({ article, isClickable = false }: ArticleCardProps) {
+function ArticleCard({
+  article,
+  isClickable = false,
+  isAdmin = false,
+}: ArticleCardProps) {
   const formatDate = (dateString: string) => {
     const date = new Date(dateString);
     return date.toLocaleDateString("fr-FR", {
@@ -45,10 +49,14 @@ function ArticleCard({ article, isClickable = false }: ArticleCardProps) {
   );
 
   if (isClickable) {
+    const linkTo = isAdmin
+      ? `/admin/articles/edit/${article.id}`
+      : `/blog/${article.slug}`;
+
     return (
-      <Link to={`/blog/${article.slug}`} className="article-card-link">
+      <NavLink to={linkTo} className="article-card-link">
         {cardContent}
-      </Link>
+      </NavLink>
     );
   }
 
