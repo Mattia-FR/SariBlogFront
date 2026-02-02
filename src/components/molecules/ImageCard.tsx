@@ -1,9 +1,9 @@
-import { Link } from "react-router-dom";
+import { NavLink } from "react-router-dom";
 import type { ImageCardProps } from "../../types/image";
 
 function ImageCard({ image }: ImageCardProps) {
   return (
-    <Link to={`/gallery/${image.id}`} className="image-card">
+    <NavLink to={`/gallery/${image.id}`} className="image-card">
       <img
         src={image.imageUrl}
         alt={image.alt_descr || image.title || "Image de galerie"}
@@ -18,7 +18,7 @@ function ImageCard({ image }: ImageCardProps) {
           ))}
         </ul>
       )}
-    </Link>
+    </NavLink>
   );
 }
 

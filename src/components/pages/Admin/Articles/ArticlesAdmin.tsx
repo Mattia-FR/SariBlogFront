@@ -26,8 +26,8 @@ function ArticlesAdmin() {
     fetchArticles();
   }, []);
 
-  if (loading) return <p className="text-xl">Chargement des articles…</p>;
-  if (error) return <p className="text-xl text-red-600">{error}</p>;
+  if (loading) return <p>Chargement des articles…</p>;
+  if (error) return <p>{error}</p>;
 
   return (
     <main className="articles-preview">

@@ -8,6 +8,9 @@ import { ProtectedRoute } from "./components/organisms/ProtectedRoute";
 import ArticleCreate from "./components/pages/Admin/Articles/ArticleCreate";
 import ArticleEdit from "./components/pages/Admin/Articles/ArticleEdit";
 import ArticlesAdmin from "./components/pages/Admin/Articles/ArticlesAdmin";
+import Dashboard from "./components/pages/Admin/Dashboard/Dashboard";
+import ImagesAdmin from "./components/pages/Admin/Images/ImagesAdmin";
+import MessagesAdmin from "./components/pages/Admin/Messages/MessagesAdmin";
 import ArticlePage from "./components/pages/ArticlePage/ArticlePage";
 import { articleLoader } from "./components/pages/ArticlePage/articleLoader";
 import BlogPage from "./components/pages/BlogPage/BlogPage";
@@ -19,6 +22,8 @@ import HomePage from "./components/pages/HomePage/HomePage";
 import { homeLoader } from "./components/pages/HomePage/homeLoader";
 import PresentationPage from "./components/pages/PresentationPage/PresentationPage";
 import { presentationLoader } from "./components/pages/PresentationPage/presentationLoader";
+import NotFoundPage from "./components/pages/RedirectionPage/NotFoundPage";
+import UnauthorizedPage from "./components/pages/RedirectionPage/UnauthorizedPage";
 import { AuthProvider } from "./contexts/AuthContext";
 import { ModalProvider } from "./contexts/ModalContext";
 
@@ -56,6 +61,14 @@ const router = createBrowserRouter([
         element: <ContactPage />,
       },
       {
+        path: "/admin",
+        element: (
+          <ProtectedRoute allowedRoles={["admin", "editor"]}>
+            <Dashboard />
+          </ProtectedRoute>
+        ),
+      },
+      {
         path: "/admin/articles",
         element: (
           <ProtectedRoute allowedRoles={["admin", "editor"]}>
@@ -78,6 +91,30 @@ const router = createBrowserRouter([
             <ArticleEdit />
           </ProtectedRoute>
         ),
+      },
+      {
+        path: "/admin/messages",
+        element: (
+          <ProtectedRoute allowedRoles={["admin", "editor"]}>
+            <MessagesAdmin />
+          </ProtectedRoute>
+        ),
+      },
+      {
+        path: "/admin/images",
+        element: (
+          <ProtectedRoute allowedRoles={["admin", "editor"]}>
+            <ImagesAdmin />
+          </ProtectedRoute>
+        ),
+      },
+      {
+        path: "/unauthorized",
+        element: <UnauthorizedPage />,
+      },
+      {
+        path: "*",
+        element: <NotFoundPage />,
       },
     ],
   },

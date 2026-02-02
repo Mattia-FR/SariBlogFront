@@ -14,6 +14,10 @@ export interface Message {
   created_at: string;
 }
 
+export interface MessageCardProps {
+  message: Message;
+}
+
 export interface MessageCreateData {
   firstname?: string | null;
   lastname?: string | null;

@@ -14,16 +14,6 @@ export function ProtectedRoute({
 }: ProtectedRouteProps) {
   const { isAuthenticated, isInitializing, user } = useAuth();
 
-  // Logs pendant le développement
-  if (import.meta.env.DEV) {
-    console.log(
-      "[ProtectedRoute] isInitializing:",
-      isInitializing,
-      "isAuthenticated:",
-      isAuthenticated,
-    );
-  }
-
   // Afficher un loader pendant la vérification
   if (isInitializing) {
     return (
@@ -45,7 +35,7 @@ export function ProtectedRoute({
   if (allowedRoles !== undefined && allowedRoles.length > 0) {
     const hasAllowedRole = user && allowedRoles.includes(user.role);
     if (!hasAllowedRole) {
-      return <Navigate to="/" replace />; // ou vers /unauthorized
+      return <Navigate to="/unauthorized" replace />;
     }
   }
 
