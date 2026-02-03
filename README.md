@@ -5,7 +5,7 @@
 
 ## 🎯 Contexte
 
-Frontend du projet Sariblog (voir [backend](../Back)), créé pour gérer le portfolio professionnel de ma sœur. Premier projet où je construis une application React complète avec routing, authentification et gestion d'état.
+Frontend du projet Sariblog (voir [backend](https://github.com/Mattia-FR/SariBlogBack)), créé pour gérer le portfolio professionnel de ma sœur. Premier projet où je construis une application React complète avec routing, authentification et gestion d'état.
 
 **Objectifs techniques :**
 - Maîtriser React Router pour une SPA multi-pages
