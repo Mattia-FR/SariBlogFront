@@ -154,7 +154,7 @@ Les routes admin sont enveloppées dans `ProtectedRoute` avec `allowedRoles={["a
 
 ## Lien avec le backend
 
-Le frontend attend une API REST documentée dans le [README du backend](../Back/README.md). En développement, lancer le backend (ex. port 4242) puis :
+Le frontend attend une API REST documentée dans le [README du backend](https://github.com/Mattia-FR/SariBlogBack/blob/main/README.md). En développement, lancer le backend (ex. port 4242) puis :
 
 ```bash
 npm run dev
