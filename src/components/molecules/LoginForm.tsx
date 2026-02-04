@@ -1,6 +1,7 @@
 import type { FormEvent } from "react";
 import { useState } from "react";
 import { useAuth } from "../../hooks/useAuth";
+import "./LoginForm.css";
 
 interface LoginFormProps {
   onSuccess?: () => void;
@@ -32,7 +33,7 @@ export default function LoginForm({ onSuccess }: LoginFormProps) {
   }
 
   return (
-    <form onSubmit={handleSubmit}>
+    <form onSubmit={handleSubmit} className="login-form">
       {formError ? <p>{formError}</p> : null}
 
       <input
@@ -41,6 +42,7 @@ export default function LoginForm({ onSuccess }: LoginFormProps) {
         placeholder="Email ou nom d'utilisateur"
         required
         disabled={isLoading}
+        className="login-input-user"
       />
 
       <input
@@ -49,6 +51,7 @@ export default function LoginForm({ onSuccess }: LoginFormProps) {
         placeholder="Mot de passe"
         required
         disabled={isLoading}
+        className="login-input-password"
       />
 
       <button type="submit" disabled={isLoading}>

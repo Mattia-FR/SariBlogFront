@@ -6,7 +6,7 @@
   .hero-figure {
     display: flex;
     flex-direction: column;
-    padding: 3rem 0 6rem 0;
+    padding: 4rem 0;
 
     .hero-image {
       max-width: 50vw;
@@ -51,7 +51,7 @@
   }
 
   .articles-preview {
-    padding-bottom: 6rem;
+    padding: 4rem 0;
 
     .articles-preview-title {
       color: var(--color-five);
@@ -121,7 +121,22 @@
   }
 
   .artist-preview {
-    padding-bottom: 6rem;
+    /* Passer en 100vw */
+    width: 100vw;
+    position: relative;
+    left: 50%;
+    right: 50%;
+    margin-left: -50vw;
+    margin-right: -50vw;
+    /* Fin du "trick" */
+    display: flex;
+    justify-content: center;
+    padding: 4rem 0;
+
+    .artist-preview-inner {
+      width: clamp(320px, 90vw, 1200px);
+    }
+
     .artist-preview-title {
       color: var(--color-five);
     }
@@ -129,7 +144,7 @@
     .artist-preview-main {
       display: flex;
       flex-direction: row;
-      justify-content: space-around;
+      gap: 3rem;
       padding: 3rem 0;
 
       .artist-preview-avatar {
@@ -139,6 +154,7 @@
         object-fit: cover;
         display: block;
         border-radius: 15px;
+        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
       }
 
       .artist-preview-text {
@@ -175,27 +191,50 @@
   }
 
   .contact-cta {
-    padding-bottom: 6rem;
+    /* Passer en 100vw */
+    width: 100vw;
+    position: relative;
+    left: 50%;
+    right: 50%;
+    margin-left: -50vw;
+    margin-right: -50vw;
+    /* Fin du "trick" */
+    display: flex;
+    justify-content: center;
+    background-color: var(--color-five);
+    padding: 4rem 0;
+
+    .contact-cta-inner {
+      width: clamp(320px, 90vw, 1200px);
+    }
 
     .contact-cta-title {
-      color: var(--color-five);
+      color: var(--color-one);
     }
 
     .contact-cta-texte {
+      padding: 3rem 0;
       display: flex;
       flex-direction: column;
       align-items: flex-start;
       gap: 1.5rem;
-      padding: 3rem 0;
+      color: var(--color-one);
     }
 
     .contact-cta-button {
       color: var(--color-one);
       font-family: var(--font-one);
-      border: 1px solid var(--color-five);
+      border: 1px solid var(--color-three);
       border-radius: 15px;
       padding: 1rem 2rem;
-      background-color: var(--color-five);
+      background-color: var(--color-three);
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+      transition: all 0.35s ease;
+    }
+
+    .contact-cta-button:hover {
+      transform: scale(1.2);
+      box-shadow: 0 8px 24px rgba(0, 0, 0, 0.3);
     }
   }
 }

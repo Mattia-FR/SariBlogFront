@@ -8,15 +8,19 @@ function ImageCard({ image }: ImageCardProps) {
         src={image.imageUrl}
         alt={image.alt_descr || image.title || "Image de galerie"}
         loading="lazy"
+        className="image-card-img"
       />
+
       {image.tags && image.tags.length > 0 && (
-        <ul className="image-card-tags">
-          {image.tags.map((tag) => (
-            <li key={tag.id} className="image-card-tag">
-              {tag.name}
-            </li>
-          ))}
-        </ul>
+        <div className="image-card-tags-container">
+          <ul className="image-card-tags">
+            {image.tags.map((tag) => (
+              <li key={tag.id} className="image-card-tag">
+                {tag.name}
+              </li>
+            ))}
+          </ul>
+        </div>
       )}
     </NavLink>
   );

@@ -1,78 +1,87 @@
 header {
   display: flex;
   flex-direction: row;
-  justify-content: space-between;
-  align-items: center;
-  min-height: 5rem;
   padding: 2rem 0;
   box-shadow: 0 1.5rem 1.5rem rgba(0, 0, 0, 0.03);
 
-  .nav-links {
-    display: flex;
-    flex-direction: row;
+  .header-logo {
+    height: 5rem;
     margin-left: 5rem;
-    padding: 1rem 3rem;
-    gap: 3rem;
-    font-family: var(--font-one);
-
-    a {
-      text-decoration: none;
-      color: var(--color-five);
-      letter-spacing: 0.2rem;
-      font-weight: 700;
-      font-size: 1.1rem;
-      position: relative;
-    }
-
-    a::after {
-      content: "";
-      position: absolute;
-      left: 50%;
-      bottom: -0.4rem;
-      width: 0;
-      height: 2px;
-      background-color: currentColor;
-      transition:
-        width 0.35s ease,
-        left 0.35s ease;
-    }
-
-    a:hover::after {
-      width: 100%;
-      left: 0;
-    }
-
-    a.active::after {
-      width: 100%;
-      left: 0;
-    }
   }
 
-  .login-zone {
+  .header-texte {
     display: flex;
     flex-direction: row;
+    justify-content: space-between;
     align-items: center;
-    margin-right: 5rem;
-    gap: 3rem;
-    font-family: var(--font-two);
-    font-style: italic;
-    color: var(--color-four);
+    width: 100%;
 
-    button {
-      background: none;
-      border: 1px solid var(--color-one);
-      border-radius: 15px;
-      padding: 1rem 2rem;
-      margin: 0;
-      color: var(--color-five);
-      cursor: pointer;
-      outline: none;
+    .nav-links {
+      display: flex;
+      flex-direction: row;
+      padding: 1rem 3rem;
+      gap: 3rem;
       font-family: var(--font-one);
-      transition: border 0.35s ease;
+
+      a {
+        text-decoration: none;
+        color: var(--color-five);
+        letter-spacing: 0.2rem;
+        font-weight: 700;
+        font-size: 1.1rem;
+        position: relative;
+      }
+
+      a::after {
+        content: "";
+        position: absolute;
+        left: 50%;
+        bottom: -0.4rem;
+        width: 0;
+        height: 2px;
+        background-color: currentColor;
+        transition:
+          width 0.35s ease,
+          left 0.35s ease;
+      }
+
+      a:hover::after {
+        width: 100%;
+        left: 0;
+      }
+
+      a.active::after {
+        width: 100%;
+        left: 0;
+      }
     }
 
-    button:hover {
-      border: 1px solid var(--color-five);
+    .login-zone {
+      display: flex;
+      flex-direction: row;
+      align-items: center;
+      margin-right: 5rem;
+      gap: 3rem;
+      font-family: var(--font-two);
+      font-style: italic;
+      color: var(--color-four);
+
+      button {
+        background: none;
+        border: 1px solid var(--color-one);
+        border-radius: 15px;
+        padding: 1rem 2rem;
+        margin: 0;
+        color: var(--color-five);
+        cursor: pointer;
+        outline: none;
+        font-family: var(--font-one);
+        transition: border 0.35s ease;
+      }
+
+      button:hover {
+        border: 1px solid var(--color-five);
+      }
     }
   }
 }

@@ -13,8 +13,8 @@ function HomePage() {
     <section className="home-page">
       <Hero image={imageOfTheDay} />
       <ArticlesPreview articles={articles} />
-      <ArtistPreview user={user} />
       <ContactCTA />
+      <ArtistPreview user={user} />
     </section>
   );
 }

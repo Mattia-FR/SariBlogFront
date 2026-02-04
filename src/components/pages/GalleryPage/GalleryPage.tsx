@@ -7,12 +7,10 @@ function GalleryPage() {
   const { images } = useLoaderData<GalleryLoaderData>();
 
   return (
-    <main>
-      <section className="gallery-grid">
-        {images.map((image) => (
-          <ImageCard key={image.id} image={image} />
-        ))}
-      </section>
+    <main className="gallery-grid">
+      {images.map((image) => (
+        <ImageCard key={image.id} image={image} />
+      ))}
     </main>
   );
 }
