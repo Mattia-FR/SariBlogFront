@@ -50,69 +50,152 @@
     }
   }
 
-  .articles-preview-title {
-    color: var(--color-five);
+  .articles-preview {
+    padding-bottom: 6rem;
+
+    .articles-preview-title {
+      color: var(--color-five);
+    }
+
+    .articles-preview-grid {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+      gap: 3rem;
+      padding: 3rem 0;
+
+      .article-card {
+        width: clamp(200px, 70vw, 500px);
+        overflow: hidden;
+        flex: 0 0 auto;
+        cursor: pointer;
+        border-radius: 15px;
+        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+
+        img {
+          width: 100%;
+          height: 200px;
+          aspect-ratio: 1 / 1;
+          object-fit: cover;
+          display: block;
+        }
+
+        h4 {
+          font-family: var(--font-one);
+          color: var(--color-three);
+          padding: 1rem;
+        }
+
+        .article-card-excerpt {
+          color: var(--color-two);
+          font-size: 0.9rem;
+          padding: 0 1rem 1rem 1rem;
+        }
+
+        .article-card-date,
+        .article-card-tags {
+          font-size: 0.75rem;
+          color: var(--color-four);
+        }
+
+        .article-card-date {
+          padding-left: 1rem;
+        }
+
+        .article-card-tags {
+          display: flex;
+          flex-direction: row;
+          gap: 1rem;
+          list-style: none;
+          justify-content: center;
+          padding-bottom: 1rem;
+        }
+
+        .article-card-tag {
+          border: 1px solid var(--color-four);
+          border-radius: 8px;
+          padding: 0.5rem;
+        }
+      }
+    }
   }
 
-  .articles-preview-grid {
-    display: flex;
-    flex-wrap: wrap;
-    justify-content: center;
-    gap: 3rem;
-    padding: 3rem 0;
+  .artist-preview {
+    padding-bottom: 6rem;
+    .artist-preview-title {
+      color: var(--color-five);
+    }
 
-    .article-card {
-      width: clamp(200px, 70vw, 500px);
-      overflow: hidden;
-      flex: 0 0 auto;
-      cursor: pointer;
-      border-radius: 15px;
-      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+    .artist-preview-main {
+      display: flex;
+      flex-direction: row;
+      justify-content: space-around;
+      padding: 3rem 0;
 
-      img {
-        width: 100%;
-        height: 200px;
+      .artist-preview-avatar {
+        height: 10rem;
+        width: 10rem;
         aspect-ratio: 1 / 1;
         object-fit: cover;
         display: block;
+        border-radius: 15px;
       }
 
-      h4 {
-        font-family: var(--font-one);
-        color: var(--color-three);
-        padding: 1rem;
-      }
-
-      .article-card-excerpt {
-        color: var(--color-two);
-        font-size: 0.9rem;
-        padding: 0 1rem 1rem 1rem;
-      }
-
-      .article-card-date,
-      .article-card-tags {
-        font-size: 0.75rem;
-        color: var(--color-four);
-      }
-
-      .article-card-date {
-        padding-left: 1rem;
-      }
-
-      .article-card-tags {
+      .artist-preview-text {
         display: flex;
-        flex-direction: row;
-        gap: 1rem;
-        list-style: none;
+        flex-direction: column;
         justify-content: center;
-        padding-bottom: 1rem;
+        align-items: flex-start;
+        gap: 1.5rem;
       }
 
-      .article-card-tag {
-        border: 1px solid var(--color-four);
-        border-radius: 8px;
-        padding: 0.5rem;
+      .artist-preview-name {
+        color: var(--color-three);
+        letter-spacing: 0.15rem;
       }
+
+      .artist-preview-bio {
+        font-size: 0.9rem;
+      }
+
+      .artist-preview-cta {
+        color: var(--color-five);
+        font-family: var(--font-one);
+        border: 1px solid var(--color-five);
+        border-radius: 15px;
+        padding: 1rem 2rem;
+        transition: all 0.35s ease;
+      }
+
+      .artist-preview-cta:hover {
+        background-color: var(--color-five);
+        color: var(--color-one);
+      }
+    }
+  }
+
+  .contact-cta {
+    padding-bottom: 6rem;
+
+    .contact-cta-title {
+      color: var(--color-five);
+    }
+
+    .contact-cta-texte {
+      display: flex;
+      flex-direction: column;
+      align-items: flex-start;
+      gap: 1.5rem;
+      padding: 3rem 0;
+    }
+
+    .contact-cta-button {
+      color: var(--color-one);
+      font-family: var(--font-one);
+      border: 1px solid var(--color-five);
+      border-radius: 15px;
+      padding: 1rem 2rem;
+      background-color: var(--color-five);
     }
   }
 }

@@ -1,82 +1,167 @@
-# Template React + TypeScript + Vite + Biome
+# Sariblog — Frontend
 
-Un template personnel minimaliste pour démarrer rapidement des projets React avec une configuration propre et moderne.
+> Interface React du CMS Sariblog, développée pour ma sœur illustratrice.
+> Première application React complète avec authentification et espace admin.
 
-## 🚀 Démarrage rapide
+## 🎯 Contexte
+
+Frontend du projet Sariblog (voir [backend](https://github.com/Mattia-FR/SariBlogBack)), créé pour gérer le portfolio professionnel de ma sœur. Premier projet où je construis une application React complète avec routing, authentification et gestion d'état.
+
+**Objectifs techniques :**
+- Maîtriser React Router pour une SPA multi-pages
+- Implémenter un système d'auth côté client (JWT + refresh)
+- Créer un backoffice fonctionnel (CRUD, gestion de contenu)
+- Découvrir Zod pour la validation de formulaires
+
+**Statut :** En cours de développement (lié au backend)
+
+## 💡 Particularités techniques
+
+- **Gestion du token** : Stockage en mémoire (pas localStorage) 
+  avec refresh automatique via cookie HttpOnly
+- **Routes protégées** : Système de rôles (admin/editor) avec 
+  ProtectedRoute
+- **Architecture** : Organisation en components/organisms/pages 
+  inspirée d'Atomic Design
+
+## Stack technique
+
+| Catégorie        | Technologie        |
+|------------------|--------------------|
+| **UI**           | React 19           |
+| **Langage**      | TypeScript 5.8     |
+| **Build / Dev**  | Vite 7             |
+| **Routing**      | React Router 7     |
+| **Validation**   | Zod 4              |
+| **Lint / Format**| Biome 2            |
+
+## Prérequis
+
+- **Node.js** 18+
+- Backend Sariblog démarré (par défaut : `http://localhost:4242`)
+
+## Installation
 
 ```bash
-# Cloner le template
-git clone https://github.com/Mattia-FR/template nom-du-projet
-cd nom-du-projet
-
-# Nettoyer l'historique git et réinitialiser
-rm -rf .git
-git init
-
-# Mettre à jour le nom du projet
-npm pkg set name="nom-du-projet"
-
-# Installer les dépendances
+cd Front
 npm install
+```
 
-# Lancer le serveur de développement
+## Configuration
+
+Variables d’environnement (optionnelles) :
+
+| Variable       | Description                    | Défaut                    |
+|----------------|--------------------------------|---------------------------|
+| `VITE_API_URL` | URL de base de l’API backend   | `http://localhost:4242/api` |
+
+Créer un fichier `.env` à la racine de `Front` si besoin :
+
+```env
+VITE_API_URL=http://localhost:4242/api
+```
+
+## Scripts
+
+| Commande        | Description                          |
+|-----------------|--------------------------------------|
+| `npm run dev`   | Serveur de développement (Vite)     |
+| `npm run build` | Compilation TypeScript + build prod  |
+| `npm run preview` | Prévisualisation du build          |
+| `npm run check` | Vérification du code (Biome, lecture seule) |
+| `npm run format`| Formatage automatique (Biome)        |
+| `npm run lint`  | Lint + format + corrections (Biome)  |
+
+## Structure du projet
+
+```
+Front/
+├── public/
+├── src/
+│   ├── components/
+│   │   ├── molecules/     # Cartes, formulaires, navbar, footer, modale…
+│   │   ├── organisms/     # Header, Hero, Login, ProtectedRoute…
+│   │   └── pages/         # Pages et loaders par route
+│   │       ├── Admin/     # Dashboard, Articles, Messages, Images
+│   │       ├── ArticlePage/
+│   │       ├── BlogPage/
+│   │       ├── ContactPage/
+│   │       ├── GalleryPage/
+│   │       ├── HomePage/
+│   │       ├── PresentationPage/
+│   │       ├── ProfilePage/
+│   │       └── RedirectionPage/  # 404, Unauthorized
+│   ├── contexts/          # AuthContext, ModalContext
+│   ├── hooks/             # useAuth, useModal
+│   ├── types/             # article, auth, image, messages, users…
+│   ├── utils/             # apiClient (JWT + refresh)
+│   ├── App.tsx
+│   ├── App.css
+│   ├── main.tsx           # Router + providers
+│   └── index.css
+├── index.html
+├── vite.config.ts
+├── tsconfig.json
+├── tsconfig.app.json
+├── tsconfig.node.json
+└── biome.json
+```
+
+## Routes
+
+| Chemin | Accès | Description |
+|--------|--------|-------------|
+| `/` | Public | Accueil |
+| `/blog` | Public | Liste des articles |
+| `/blog/:slug` | Public | Article par slug |
+| `/gallery` | Public | Galerie d’images |
+| `/presentation` | Public | Présentation |
+| `/contact` | Public | Formulaire de contact |
+| `/admin` | Admin / Editor | Tableau de bord |
+| `/admin/articles` | Admin / Editor | Gestion des articles |
+| `/admin/articles/new` | Admin / Editor | Création d’article |
+| `/admin/articles/edit/:id` | Admin / Editor | Édition d’article |
+| `/admin/messages` | Admin / Editor | Messages de contact |
+| `/admin/images` | Admin / Editor | Gestion des images |
+| `/unauthorized` | Public | Accès refusé |
+| `*` | Public | 404 |
+
+## Client API
+
+Le module `src/utils/apiClient.ts` fournit :
+
+- **`apiClient(url, options)`** : `fetch` avec injection du token Bearer et retry sur 401 après refresh
+- **`api.get/post/patch/delete(endpoint)`** : helpers qui appellent `apiClient` et renvoient le JSON (ou lèvent une erreur)
+- **Refresh token** : appel automatique à `POST /auth/refresh` avec `credentials: "include"` (cookie httpOnly), puis réessai de la requête avec le nouveau token
+
+Le token d’accès est stocké **en mémoire** (variable JS), pas dans `localStorage`.
+
+## Contexte d’authentification
+
+`AuthContext` expose :
+
+- État : `user`, `isInitializing`, `isLoading`, `error`
+- Actions : `login`, `signup`, `logout`
+- Vérification de session au chargement via `/auth/refresh`
+
+Les routes admin sont enveloppées dans `ProtectedRoute` avec `allowedRoles={["admin", "editor"]}`.
+
+## Configuration Biome
+
+- Formatage : espaces, guillemets doubles
+- Règles recommandées activées
+- Organisation automatique des imports (`organizeImports`)
+
+## Lien avec le backend
+
+Le frontend attend une API REST documentée dans le [README du backend](https://github.com/Mattia-FR/SariBlogBack/blob/main/README.md). En développement, lancer le backend (ex. port 4242) puis :
+
+```bash
 npm run dev
 ```
 
-## 🛠️ Stack technique
-
-- **React** - Bibliothèque UI
-- **TypeScript** - Typage statique
-- **Vite** - Build tool et dev server
-- **Biome** - Linter et formatter (remplace ESLint + Prettier)
-
-## 📝 Scripts disponibles
-
-```bash
-npm run dev      # Serveur de développement
-npm run build    # Build de production
-npm run preview  # Preview du build
-npm run check    # Vérification du code (lecture seule)
-npm run format   # Formatage automatique
-npm run lint     # Linting + formatage + corrections
-```
-
-## 📁 Structure du projet
-
-```
-src/
-├── App.tsx      # Composant principal (minimaliste)
-├── App.css      # Styles du composant App
-├── main.tsx     # Point d'entrée avec gestion d'erreur
-└── index.css    # Reset CSS minimal
-```
-
-## ⚙️ Configuration
-
-### Biome
-Configuration dans `biome.json` :
-- Formatage avec espaces et guillemets doubles
-- Règles recommandées activées
-- Organisation automatique des imports
-
-### TypeScript
-Configuration standard avec `tsconfig.json` pour Vite.
-
-## 🎯 Philosophie du template
-
-- **Minimaliste** - Juste l'essentiel pour commencer
-- **Moderne** - Outils récents et bonnes pratiques
-- **Propre** - Pas de CSS de démo, structure claire
-- **Évolutif** - Base solide pour grandir
-
-## 📚 Prochaines étapes suggérées
-
-Selon vos besoins, vous pouvez ajouter :
-- **State management** - Zustand, Redux Toolkit
-- **UI Library** - Tailwind CSS, Material-UI
-- **Testing** - Vitest, React Testing Library
-- **API calls** - Axios, React Query
+L’app sera servie par Vite (souvent `http://localhost:5173`).
 
 ---
 
-*Template créé pour mes projets personnels - n'hésitez pas à l'adapter selon vos besoins !*
+*Frontend du projet Sariblog — blog/portfolio CMS.*
