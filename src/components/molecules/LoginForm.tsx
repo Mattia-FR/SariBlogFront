@@ -1,7 +1,6 @@
 import type { FormEvent } from "react";
 import { useState } from "react";
 import { useAuth } from "../../hooks/useAuth";
-import "./LoginForm.css";
 
 interface LoginFormProps {
   onSuccess?: () => void;

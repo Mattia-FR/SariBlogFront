@@ -2,6 +2,8 @@ import { useAuth } from "../../hooks/useAuth";
 import { useModal } from "../../hooks/useModal";
 import LoginForm from "../molecules/LoginForm";
 import SignupForm from "../molecules/SignupForm";
+import "./Login.css";
+import "./Login.css";
 
 function Login() {
   const { user, logout } = useAuth();
@@ -11,14 +13,14 @@ function Login() {
     openModal({
       title: "Créer un compte",
       content: (
-        <div>
+        <div className="logsign-modal-content">
           <SignupForm onSuccess={closeModal} />
-          <p>
-            Déjà inscrit ?{" "}
+          <div className="logsign-modal-text">
+            <p>Déjà inscrit ?</p>
             <button type="button" onClick={openLoginModal}>
               Se connecter
             </button>
-          </p>
+          </div>
         </div>
       ),
     });
@@ -28,14 +30,14 @@ function Login() {
     openModal({
       title: "Connexion",
       content: (
-        <div>
+        <div className="logsign-modal-content">
           <LoginForm onSuccess={closeModal} />
-          <p>
-            Pas encore de compte ?{" "}
+          <div className="logsign-modal-text">
+            <p>Pas encore de compte ?</p>
             <button type="button" onClick={openSignupModal}>
               S'inscrire
             </button>
-          </p>
+          </div>
         </div>
       ),
     });

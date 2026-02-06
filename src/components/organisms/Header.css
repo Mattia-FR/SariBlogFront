@@ -9,7 +9,7 @@ header {
     margin-left: 5rem;
   }
 
-  .header-texte {
+  .header-text {
     display: flex;
     flex-direction: row;
     justify-content: space-between;

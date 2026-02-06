@@ -22,6 +22,7 @@
 body {
   background-color: var(--color-one);
   font-family: var(--font-two);
+  color: var(--color-two);
 }
 
 main {

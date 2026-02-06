@@ -14,7 +14,7 @@ function Hero({ image }: { image: Image | null }) {
       />
 
       <figcaption className="hero-caption">
-        <div className="hero-texte">
+        <div className="hero-text">
           {image.title && <h3 className="hero-title">{image.title}</h3>}
           {image.description && (
             <p className="hero-description">{image.description}</p>

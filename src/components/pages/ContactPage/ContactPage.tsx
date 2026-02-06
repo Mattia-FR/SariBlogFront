@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import { useAuth } from "../../../hooks/useAuth";
 import { api } from "../../../utils/apiClient";
+import "./ContactPage.css";
 
 function ContactPage() {
   const { user, isAuthenticated } = useAuth();
@@ -134,15 +135,16 @@ function ContactPage() {
   };
 
   return (
-    <div>
-      <h1>Contact</h1>
+    <main className="contact-main">
+      <h1>Formulaire de contact</h1>
 
-      <form onSubmit={handleSubmit}>
+      <form onSubmit={handleSubmit} className="contact-form">
         {!isAuthenticated && (
           <>
-            <label>
-              Prénom:
+            <div className="form-group">
+              <label htmlFor="firstname">Prénom :</label>
               <input
+                className="firstname"
                 type="text"
                 name="firstname"
                 value={formData.firstname}
@@ -151,11 +153,12 @@ function ContactPage() {
                 maxLength={50}
                 disabled={isSubmitting}
               />
-            </label>
+            </div>
 
-            <label>
-              Nom:
+            <div className="form-group">
+              <label htmlFor="lastname">Nom :</label>
               <input
+                className="lastname"
                 type="text"
                 name="lastname"
                 value={formData.lastname}
@@ -164,11 +167,12 @@ function ContactPage() {
                 maxLength={50}
                 disabled={isSubmitting}
               />
-            </label>
+            </div>
 
-            <label>
-              Email:
+            <div className="form-group">
+              <label htmlFor="email">Email :</label>
               <input
+                className="email"
                 type="email"
                 name="email"
                 value={formData.email}
@@ -177,13 +181,14 @@ function ContactPage() {
                 maxLength={100}
                 disabled={isSubmitting}
               />
-            </label>
+            </div>
           </>
         )}
 
-        <label>
-          Sujet:
+        <div className="form-group">
+          <label htmlFor="subject">Sujet :</label>
           <input
+            className="subject"
             type="text"
             name="subject"
             value={formData.subject}
@@ -192,18 +197,19 @@ function ContactPage() {
             maxLength={200}
             disabled={isSubmitting}
           />
-        </label>
+        </div>
 
-        <label>
-          Message:
+        <div className="form-group">
+          <label htmlFor="text">Message :</label>
           <textarea
+            className="text"
             name="text"
             value={formData.text}
             onChange={handleInputChange}
             required
             disabled={isSubmitting}
           />
-        </label>
+        </div>
 
         <button type="submit" disabled={isSubmitting}>
           {isSubmitting ? "Envoi en cours..." : "Envoyer"}
@@ -215,7 +221,7 @@ function ContactPage() {
       {submitStatus === "error" && (
         <p>Erreur lors de l'envoi. Veuillez réessayer.</p>
       )}
-    </div>
+    </main>
   );
 }
 

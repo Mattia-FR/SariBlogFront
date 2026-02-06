@@ -1,20 +1,25 @@
 import { useLoaderData } from "react-router-dom";
 import type { PresentationLoaderData } from "./presentationTypes";
+import "./PresentationPage.css";
 
 function PresentationPage() {
   const { user } = useLoaderData<PresentationLoaderData>();
 
   return (
-    <main>
-      <h1>Présentation</h1>
-      <img
-        src={user.avatarUrl ?? "/placeholder.png"}
-        alt={user.avatarUrl ? user.username : "Avatar par défaut"}
-        className="artist-avatar"
-      />
-      <h3 className="artist-name">
-        {user.firstname ?? ""} {user.lastname ?? ""}
-      </h3>
+    <main className="presentation-page">
+      <h1 className="sr-only">Présentation de l'artiste</h1>
+      <div className="presentation-info">
+        <img
+          src={user.avatarUrl ?? "/placeholder.png"}
+          alt={user.avatarUrl ? user.username : "Avatar par défaut"}
+          className="artist-avatar"
+        />
+        <div className="artist-names">
+          <h2 className="artist-name">{user.username}</h2>
+          <h3 className="artist-firstname">{user.firstname ?? ""}</h3>
+          <h3 className="artist-lastname">{user.lastname ?? ""}</h3>
+        </div>
+      </div>
       <p className="artist-bio">{user.bio ?? "Biographie à venir"}</p>
     </main>
   );

@@ -42,7 +42,7 @@ export default function SignupForm({ onSuccess }: SignupFormProps) {
   }
 
   return (
-    <form onSubmit={handleSubmit}>
+    <form onSubmit={handleSubmit} className="signup-form">
       {formError ? <p>{formError}</p> : null}
 
       <input

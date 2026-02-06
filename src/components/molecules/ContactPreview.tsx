@@ -5,7 +5,7 @@ export default function ContactCTA() {
     <section className="contact-cta">
       <div className="contact-cta-inner">
         <h2 className="contact-cta-title">Envie de collaborer ?</h2>
-        <div className="contact-cta-texte">
+        <div className="contact-cta-text">
           <p>Un projet, une question, ou simplement échanger sur l'art ?</p>
           <NavLink to="/contact" className="contact-cta-button">
             Me contacter
