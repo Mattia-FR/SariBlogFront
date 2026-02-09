@@ -6,7 +6,7 @@ interface SignupFormProps {
   onSuccess?: () => void;
 }
 
-export default function SignupForm({ onSuccess }: SignupFormProps) {
+function SignupForm({ onSuccess }: SignupFormProps) {
   const { signup, isLoading } = useAuth();
   const [formError, setFormError] = useState<string | null>(null);
 
@@ -89,3 +89,5 @@ export default function SignupForm({ onSuccess }: SignupFormProps) {
     </form>
   );
 }
+
+export default SignupForm;

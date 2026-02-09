@@ -4,6 +4,7 @@ import ImageCard from "../../molecules/ImageCard";
 import type { GalleryLoaderData } from "./galleryTypes";
 import "./GalleryPage.css";
 import { useState } from "react";
+import TagFilter from "../../molecules/TagFilter";
 
 function GalleryPage() {
   const { images, tags } = useLoaderData<GalleryLoaderData>();
@@ -28,19 +29,13 @@ function GalleryPage() {
 
   return (
     <main className="gallery-grid">
-      <select
-        value={selectedTagId}
-        onChange={(e) =>
+      <TagFilter
+        tags={tags}
+        selectedTagId={selectedTagId}
+        onTagChange={(e) =>
           setSelectedTagId(e.target.value ? Number(e.target.value) : "")
         }
-      >
-        <option value="">Tous les tags</option>
-        {tags.map((t) => (
-          <option key={t.id} value={t.id}>
-            {t.name}
-          </option>
-        ))}
-      </select>
+      />
       {filteredImages.map((image) => (
         <ImageCard key={image.id} image={image} />
       ))}

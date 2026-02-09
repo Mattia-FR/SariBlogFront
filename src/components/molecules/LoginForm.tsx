@@ -6,7 +6,7 @@ interface LoginFormProps {
   onSuccess?: () => void;
 }
 
-export default function LoginForm({ onSuccess }: LoginFormProps) {
+function LoginForm({ onSuccess }: LoginFormProps) {
   const { login, isLoading } = useAuth();
   const [formError, setFormError] = useState<string | null>(null);
 
@@ -59,3 +59,5 @@ export default function LoginForm({ onSuccess }: LoginFormProps) {
     </form>
   );
 }
+
+export default LoginForm;
