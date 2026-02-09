@@ -1,46 +1,27 @@
+import { useState } from "react";
 import { useAuth } from "../../hooks/useAuth";
-import { useModal } from "../../hooks/useModal";
 import LoginForm from "../molecules/LoginForm";
+import Modal from "../molecules/Modal";
 import SignupForm from "../molecules/SignupForm";
-import "./Login.css";
 import "./Login.css";
 
 function Login() {
   const { user, logout } = useAuth();
-  const { openModal, closeModal } = useModal();
-
-  function openSignupModal() {
-    openModal({
-      title: "Créer un compte",
-      content: (
-        <div className="logsign-modal-content">
-          <SignupForm onSuccess={closeModal} />
-          <div className="logsign-modal-text">
-            <p>Déjà inscrit ?</p>
-            <button type="button" onClick={openLoginModal}>
-              Se connecter
-            </button>
-          </div>
-        </div>
-      ),
-    });
-  }
+  const [isModalOpen, setIsModalOpen] = useState(false);
+  const [modalContent, setModalContent] = useState<"login" | "signup">("login");
 
   function openLoginModal() {
-    openModal({
-      title: "Connexion",
-      content: (
-        <div className="logsign-modal-content">
-          <LoginForm onSuccess={closeModal} />
-          <div className="logsign-modal-text">
-            <p>Pas encore de compte ?</p>
-            <button type="button" onClick={openSignupModal}>
-              S'inscrire
-            </button>
-          </div>
-        </div>
-      ),
-    });
+    setModalContent("login");
+    setIsModalOpen(true);
+  }
+
+  function openSignupModal() {
+    setModalContent("signup");
+    setIsModalOpen(true);
+  }
+
+  function closeModal() {
+    setIsModalOpen(false);
   }
 
   return (
@@ -56,6 +37,32 @@ function Login() {
           Se connecter
         </button>
       )}
+
+      <Modal isOpen={isModalOpen} onClose={closeModal}>
+        {modalContent === "login" ? (
+          <div className="logsign-modal-content">
+            <h2>Connexion</h2>
+            <LoginForm onSuccess={closeModal} />
+            <div className="logsign-modal-text">
+              <p>Pas encore de compte ?</p>
+              <button type="button" onClick={openSignupModal}>
+                S'inscrire
+              </button>
+            </div>
+          </div>
+        ) : (
+          <div className="logsign-modal-content">
+            <h2>Créer un compte</h2>
+            <SignupForm onSuccess={closeModal} />
+            <div className="logsign-modal-text">
+              <p>Déjà inscrit ?</p>
+              <button type="button" onClick={openLoginModal}>
+                Se connecter
+              </button>
+            </div>
+          </div>
+        )}
+      </Modal>
     </div>
   );
 }

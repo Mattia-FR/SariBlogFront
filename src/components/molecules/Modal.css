@@ -9,7 +9,7 @@
   padding: 16px;
 }
 
-.modal-dialog {
+.modal-content {
   width: min(720px, 100%);
   max-height: min(80vh, 720px);
   overflow: auto;

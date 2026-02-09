@@ -25,7 +25,6 @@ import { presentationLoader } from "./components/pages/PresentationPage/presenta
 import NotFoundPage from "./components/pages/RedirectionPage/NotFoundPage";
 import UnauthorizedPage from "./components/pages/RedirectionPage/UnauthorizedPage";
 import { AuthProvider } from "./contexts/AuthContext";
-import { ModalProvider } from "./contexts/ModalContext";
 
 const router = createBrowserRouter([
   {
@@ -129,9 +128,7 @@ if (!rootElement) {
 createRoot(rootElement).render(
   <StrictMode>
     <AuthProvider>
-      <ModalProvider>
-        <RouterProvider router={router} />
-      </ModalProvider>
+      <RouterProvider router={router} />
     </AuthProvider>
   </StrictMode>,
 );
