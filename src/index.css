@@ -1,4 +1,37 @@
-body {
+/* On importe les fonts */
+@import url("https://fonts.googleapis.com/css2?family=Manrope:wght@200..800&family=Merriweather:ital,opsz,wght@0,18..144,300..900;1,18..144,300..900&display=swap");
+
+/* Pour poser une base propre */
+* {
   margin: 0;
-  font-family: system-ui, sans-serif;
+  padding: 0;
+  box-sizing: border-box;
+}
+
+/* On définit les variables */
+:root {
+  --color-one: #f9faf4;
+  --color-two: #39312c; /* #2b2420 */
+  --color-three: #d6924e;
+  --color-four: #eac6a2;
+  --color-five: #6b8494;
+  --font-one: "Manrope", sans-serif;
+  --font-two: "Merriweather", serif;
+}
+
+body {
+  background-color: var(--color-one);
+  font-family: var(--font-two);
+  color: var(--color-two);
+}
+
+main {
+  max-width: clamp(320px, 90vw, 1200px);
+  margin: 0 auto;
+}
+
+h1,
+h2,
+h3 {
+  font-family: var(--font-one);
 }
