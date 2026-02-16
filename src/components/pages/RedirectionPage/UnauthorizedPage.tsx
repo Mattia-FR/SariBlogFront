@@ -1,4 +1,4 @@
-import { NavLink } from "react-router-dom";
+import { Link } from "react-router-dom";
 
 function UnauthorizedPage() {
   return (
@@ -6,7 +6,7 @@ function UnauthorizedPage() {
       <h2>403 - Accès non autorisé</h2>
       <p>
         Cette zone est réservée aux utilisateurs connectés, et ayant les droits
-        d'accès. Mais la <NavLink to="/gallery">galerie</NavLink> est totalement
+        d'accès. Mais la <Link to="/gallery">galerie</Link> est totalement
         accessible, elle.
       </p>
     </main>

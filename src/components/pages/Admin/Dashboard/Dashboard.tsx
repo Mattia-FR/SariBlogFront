@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { NavLink } from "react-router-dom";
+import { Link } from "react-router-dom";
 import { api } from "../../../../utils/apiClient";
 
 interface DashboardStats {
@@ -66,9 +66,9 @@ function Dashboard() {
 
       <section className="dashboard-actions">
         <h2>Actions rapides</h2>
-        <NavLink to="/admin/articles">📰 Gérer les articles</NavLink>
-        <NavLink to="/admin/messages">📧 Voir les messages</NavLink>
-        <NavLink to="/admin/images">🖼️ Gérer la galerie</NavLink>
+        <Link to="/admin/articles">📰 Gérer les articles</Link>
+        <Link to="/admin/messages">📧 Voir les messages</Link>
+        <Link to="/admin/images">🖼️ Gérer la galerie</Link>
       </section>
 
       {stats && (

@@ -22,7 +22,7 @@ function LoginForm({ onSuccess }: LoginFormProps) {
     const password = formData.get("password") as string;
 
     try {
-      await login({ identifier, password });
+      await login(identifier, password);
       onSuccess?.();
     } catch (err) {
       const message =

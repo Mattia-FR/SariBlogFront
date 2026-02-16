@@ -1,4 +1,4 @@
-import { NavLink } from "react-router-dom";
+import { Link } from "react-router-dom";
 
 export default function ContactCTA() {
   return (
@@ -7,9 +7,9 @@ export default function ContactCTA() {
         <h2 className="contact-cta-title">Envie de collaborer ?</h2>
         <div className="contact-cta-text">
           <p>Un projet, une question, ou simplement échanger sur l'art ?</p>
-          <NavLink to="/contact" className="contact-cta-button">
+          <Link to="/contact" className="contact-cta-button">
             Me contacter
-          </NavLink>
+          </Link>
         </div>
       </div>
     </section>

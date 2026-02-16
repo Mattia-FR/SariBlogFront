@@ -22,6 +22,8 @@ import HomePage from "./components/pages/HomePage/HomePage";
 import { homeLoader } from "./components/pages/HomePage/homeLoader";
 import PresentationPage from "./components/pages/PresentationPage/PresentationPage";
 import { presentationLoader } from "./components/pages/PresentationPage/presentationLoader";
+import ProfilePage from "./components/pages/ProfilePage/ProfilePage";
+import { profileLoader } from "./components/pages/ProfilePage/profileLoader";
 import NotFoundPage from "./components/pages/RedirectionPage/NotFoundPage";
 import UnauthorizedPage from "./components/pages/RedirectionPage/UnauthorizedPage";
 import { AuthProvider } from "./contexts/AuthContext";
@@ -58,6 +60,15 @@ const router = createBrowserRouter([
       {
         path: "/contact",
         element: <ContactPage />,
+      },
+      {
+        path: "/profile",
+        element: (
+          <ProtectedRoute>
+            <ProfilePage />
+          </ProtectedRoute>
+        ),
+        loader: profileLoader,
       },
       {
         path: "/admin",

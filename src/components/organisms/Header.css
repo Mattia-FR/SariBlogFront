@@ -82,6 +82,16 @@ header {
       button:hover {
         border: 1px solid var(--color-five);
       }
+
+      .login-username {
+        text-decoration: none;
+        font-weight: 500;
+        color: var(--color-five);
+      }
+
+      .login-username:hover {
+        text-decoration: underline;
+      }
     }
   }
 }

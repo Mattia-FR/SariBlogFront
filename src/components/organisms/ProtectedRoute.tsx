@@ -12,7 +12,8 @@ export function ProtectedRoute({
   children,
   allowedRoles,
 }: ProtectedRouteProps) {
-  const { isAuthenticated, isInitializing, user } = useAuth();
+  const { user, isInitializing } = useAuth();
+  const isAuthenticated = !!user;
 
   // Afficher un loader pendant la vérification
   if (isInitializing) {

@@ -1,4 +1,4 @@
-import { NavLink } from "react-router-dom";
+import { Link } from "react-router-dom";
 import type { ArticleCardProps } from "../../types/article";
 
 function ArticleCard({
@@ -54,9 +54,9 @@ function ArticleCard({
       : `/blog/${article.slug}`;
 
     return (
-      <NavLink to={linkTo} className="article-card-link">
+      <Link to={linkTo} className="article-card-link">
         {cardContent}
-      </NavLink>
+      </Link>
     );
   }
 

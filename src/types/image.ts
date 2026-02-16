@@ -16,4 +16,5 @@ export interface Image {
 
 export interface ImageCardProps {
   image: Image;
+  onClick?: (image: Image) => void;
 }

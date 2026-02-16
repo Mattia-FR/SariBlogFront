@@ -1,9 +1,9 @@
-import { NavLink } from "react-router-dom";
+import { Link } from "react-router-dom";
 import type { ImageCardProps } from "../../types/image";
 
-function ImageCard({ image }: ImageCardProps) {
-  return (
-    <NavLink to={`/gallery/${image.id}`} className="image-card">
+function ImageCard({ image, onClick }: ImageCardProps) {
+  const content = (
+    <>
       <img
         src={image.imageUrl}
         alt={image.alt_descr || image.title || "Image de galerie"}
@@ -22,7 +22,33 @@ function ImageCard({ image }: ImageCardProps) {
           </ul>
         </div>
       )}
-    </NavLink>
+    </>
+  );
+
+  if (onClick) {
+    return (
+      // biome-ignore lint/a11y/useSemanticElements: Modal
+      <div
+        className="image-card"
+        role="button"
+        tabIndex={0}
+        onClick={() => onClick(image)}
+        onKeyDown={(e) => {
+          if (e.key === "Enter" || e.key === " ") {
+            e.preventDefault();
+            onClick(image);
+          }
+        }}
+      >
+        {content}
+      </div>
+    );
+  }
+
+  return (
+    <Link to={`/gallery/${image.id}`} className="image-card">
+      {content}
+    </Link>
   );
 }
 

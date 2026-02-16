@@ -1,4 +1,4 @@
-import { NavLink } from "react-router-dom";
+import { Link } from "react-router-dom";
 import type { User } from "../../types/users";
 
 function ArtistPreview({ user }: { user: User }) {
@@ -19,9 +19,9 @@ function ArtistPreview({ user }: { user: User }) {
             <p className="artist-preview-bio">
               {user.bio_short ?? "Biographie à venir"}
             </p>
-            <NavLink to="/presentation" className="artist-preview-cta">
+            <Link to="/presentation" className="artist-preview-cta">
               Voir la présentation
-            </NavLink>
+            </Link>
           </div>
         </div>
       </div>

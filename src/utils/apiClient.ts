@@ -1,15 +1,10 @@
-// 🔐 Client HTTP intelligent avec gestion automatique des tokens JWT
-
 const API_BASE_URL =
   import.meta.env.VITE_API_URL || "http://localhost:4242/api";
 
-// ✨ Token stocké EN MEMOIRE (variable JS) - PAS de localStorage
+// Token stocké EN MEMOIRE (variable JS) - PAS de localStorage
 let accessToken: string | null = null;
 
-// Lock pour éviter les refresh multiples en parallèle
-let refreshPromise: Promise<string | null> | null = null;
-
-// 🔑 Getters/Setters pour le token
+// Getters/Setters pour le token
 export function getAccessToken(): string | null {
   return accessToken;
 }
@@ -22,7 +17,7 @@ export function clearAccessToken(): void {
   accessToken = null;
 }
 
-// 🔄 Rafraîchit le token avec le refresh token (cookie httpOnly)
+// Rafraîchit le token avec le refresh token (cookie httpOnly)
 async function refreshAccessToken(): Promise<string | null> {
   try {
     if (import.meta.env.DEV) {
@@ -31,7 +26,7 @@ async function refreshAccessToken(): Promise<string | null> {
 
     const response = await fetch(`${API_BASE_URL}/auth/refresh`, {
       method: "POST",
-      credentials: "include", // Envoie le cookie refreshToken
+      credentials: "include",
     });
 
     if (!response.ok) {
@@ -61,24 +56,7 @@ async function refreshAccessToken(): Promise<string | null> {
   }
 }
 
-// 🔒 Refresh avec lock pour éviter les appels multiples
-async function refreshWithLock(): Promise<string | null> {
-  // Si un refresh est déjà en cours, attendre
-  if (refreshPromise) {
-    return refreshPromise;
-  }
-
-  // Lancer le refresh
-  refreshPromise = refreshAccessToken();
-
-  try {
-    return await refreshPromise;
-  } finally {
-    refreshPromise = null;
-  }
-}
-
-// 🌐 Client API principal
+// Client API principal
 export async function apiClient(
   url: string,
   options: RequestInit = {},
@@ -86,7 +64,6 @@ export async function apiClient(
   const fullUrl = url.startsWith("http") ? url : `${API_BASE_URL}${url}`;
   const token = getAccessToken();
 
-  // Préparer les headers
   const headers = new Headers(options.headers);
 
   if (token) {
@@ -100,10 +77,9 @@ export async function apiClient(
   const enrichedOptions: RequestInit = {
     ...options,
     headers,
-    credentials: "include", // Pour les cookies
+    credentials: "include",
   };
 
-  // Faire la requête
   let response = await fetch(fullUrl, enrichedOptions);
 
   // Si 401 et qu'on a un token, tenter le refresh
@@ -112,20 +88,18 @@ export async function apiClient(
       console.log("[apiClient] 401 détecté, tentative de refresh");
     }
 
-    const newToken = await refreshWithLock();
+    const newToken = await refreshAccessToken();
 
     if (newToken) {
       if (import.meta.env.DEV) {
-        console.log("[apiClient] Réessai de la requête avec le nouveau token");
+        console.log("[apiClient] Réessai avec le nouveau token");
       }
-      // Réessayer avec le nouveau token
       headers.set("Authorization", `Bearer ${newToken}`);
       enrichedOptions.headers = headers;
       response = await fetch(fullUrl, enrichedOptions);
     } else {
-      // Refresh échoué
       if (import.meta.env.DEV) {
-        console.log("[apiClient] Refresh échoué, token supprimé");
+        console.log("[apiClient] Refresh échoué");
       }
       clearAccessToken();
     }
@@ -134,7 +108,7 @@ export async function apiClient(
   return response;
 }
 
-// 🛠️ Méthodes utilitaires
+// Méthodes utilitaires
 export const api = {
   async get<T>(endpoint: string): Promise<T> {
     const response = await apiClient(endpoint, { method: "GET" });
@@ -179,10 +153,10 @@ export const api = {
       throw new Error(`Erreur HTTP ${response.status}: ${response.statusText}`);
     }
 
-    // 204 No Content : pas de corps, ne pas appeler .json()
     if (response.status === 204) {
       return undefined as T;
     }
+
     return response.json();
   },
 };

@@ -4,6 +4,7 @@ import LoginForm from "../molecules/LoginForm";
 import Modal from "../molecules/Modal";
 import SignupForm from "../molecules/SignupForm";
 import "./Login.css";
+import { NavLink } from "react-router-dom";
 
 function Login() {
   const { user, logout } = useAuth();
@@ -26,7 +27,17 @@ function Login() {
 
   return (
     <div className="login-zone">
-      <p>Bienvenue, {user ? user.username : "visiteur"}.</p>
+      <p>
+        Bienvenue,{" "}
+        {user ? (
+          <NavLink to="/profile" className="login-username">
+            {user.username}
+          </NavLink>
+        ) : (
+          "visiteur"
+        )}
+        .
+      </p>
 
       {user ? (
         <button type="button" onClick={() => void logout()}>

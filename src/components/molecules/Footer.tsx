@@ -1,4 +1,4 @@
-import { NavLink } from "react-router-dom";
+import { Link } from "react-router-dom";
 import "./Footer.css";
 import instagramHover from "../../../public/instagram-hover.png";
 import instagramNormal from "../../../public/instagram-normal.png";
@@ -26,8 +26,8 @@ function Footer() {
         </div>
       </div>
       <div className="footer-content-right">
-        <NavLink to="/">Mentions légales</NavLink>
-        <NavLink to="/">Politique de confidentialité</NavLink>
+        <Link to="/">Mentions légales</Link>
+        <Link to="/">Politique de confidentialité</Link>
       </div>
     </footer>
   );

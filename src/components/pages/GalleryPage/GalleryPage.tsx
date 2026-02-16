@@ -1,15 +1,17 @@
+import { useState } from "react";
 import { useLoaderData } from "react-router-dom";
 import type { Image } from "../../../types/image";
 import ImageCard from "../../molecules/ImageCard";
+import Modal from "../../molecules/Modal";
+import TagFilter from "../../molecules/TagFilter";
 import type { GalleryLoaderData } from "./galleryTypes";
 import "./GalleryPage.css";
-import { useState } from "react";
-import TagFilter from "../../molecules/TagFilter";
 
 function GalleryPage() {
   const { images, tags } = useLoaderData<GalleryLoaderData>();
 
   const [selectedTagId, setSelectedTagId] = useState<number | "">("");
+  const [selectedImage, setSelectedImage] = useState<Image | null>(null);
 
   let filteredImages: Image[];
   if (selectedTagId === "") {
@@ -37,8 +39,40 @@ function GalleryPage() {
         }
       />
       {filteredImages.map((image) => (
-        <ImageCard key={image.id} image={image} />
+        <ImageCard
+          key={image.id}
+          image={image}
+          onClick={(img) => setSelectedImage(img)}
+        />
       ))}
+
+      <Modal
+        isOpen={selectedImage !== null}
+        onClose={() => setSelectedImage(null)}
+      >
+        {selectedImage && (
+          <div className="image-detail-modal">
+            <img
+              src={selectedImage.imageUrl}
+              alt={
+                selectedImage.alt_descr ||
+                selectedImage.title ||
+                "Image de galerie"
+              }
+            />
+            {selectedImage.title && (
+              <h2 className="image-detail-modal-title">
+                {selectedImage.title}
+              </h2>
+            )}
+            {selectedImage.description && (
+              <p className="image-detail-modal-description">
+                {selectedImage.description}
+              </p>
+            )}
+          </div>
+        )}
+      </Modal>
     </main>
   );
 }

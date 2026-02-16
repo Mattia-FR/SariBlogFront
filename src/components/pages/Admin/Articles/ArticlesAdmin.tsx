@@ -1,5 +1,5 @@
 import { useEffect, useState } from "react";
-import { NavLink } from "react-router-dom";
+import { Link } from "react-router-dom";
 import type { Article } from "../../../../types/article";
 import type { Tag } from "../../../../types/tags";
 import { api } from "../../../../utils/apiClient";
@@ -67,7 +67,7 @@ function ArticlesAdmin() {
           setSelectedTagId(e.target.value ? Number(e.target.value) : "")
         }
       />
-      <NavLink to="/admin/articles/new">Créer un nouvel article.</NavLink>
+      <Link to="/admin/articles/new">Créer un nouvel article.</Link>
       <section className="articles-preview-grid">
         {filteredArticles.length === 0 ? (
           <p>Aucun article.</p>

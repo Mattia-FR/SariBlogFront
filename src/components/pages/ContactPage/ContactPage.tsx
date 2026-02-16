@@ -4,7 +4,8 @@ import { api } from "../../../utils/apiClient";
 import "./ContactPage.css";
 
 function ContactPage() {
-  const { user, isAuthenticated } = useAuth();
+  const { user } = useAuth();
+  const isAuthenticated = !!user;
 
   const [formData, setFormData] = useState({
     firstname: "",
