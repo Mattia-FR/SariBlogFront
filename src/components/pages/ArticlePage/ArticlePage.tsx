@@ -1,11 +1,20 @@
+import { useState } from "react";
 import { useLoaderData } from "react-router-dom";
+import Modal from "../../molecules/Modal";
+import { useAuth } from "../../../hooks/useAuth";
 import type { ArticleLoaderData } from "./articleTypes";
+import CommentForm from "../../molecules/CommentForm";
 import "./ArticlePage.css";
 
 function ArticlePage() {
   const data = useLoaderData<ArticleLoaderData>();
+  const { user } = useAuth();
+  const [isCommentModalOpen, setIsCommentModalOpen] = useState(false);
 
-  const { article, articleImages } = data;
+  const { article, articleImages, comments } = data;
+
+  const authorDisplayName = (c: (typeof comments)[0]) =>
+    [c.firstname, c.lastname].filter(Boolean).join(" ") || c.username;
 
   return (
     <main className="article-detail">
@@ -38,6 +47,48 @@ function ArticlePage() {
       </div>
 
       <p>{article.content}</p>
+
+      <section aria-label="Commentaires">
+        <h2>Commentaires</h2>
+        {user ? (
+          <>
+            <button type="button" onClick={() => setIsCommentModalOpen(true)}>
+              Laisser un commentaire
+            </button>
+            <Modal
+              isOpen={isCommentModalOpen}
+              onClose={() => setIsCommentModalOpen(false)}
+            >
+              <CommentForm
+                articleId={article.id}
+                onSuccess={() => setIsCommentModalOpen(false)}
+              />
+            </Modal>
+          </>
+        ) : (
+          <p>Connectez-vous pour laisser un commentaire.</p>
+        )}
+        {comments.length === 0 ? (
+          <p>Aucun commentaire pour le moment.</p>
+        ) : (
+          <ul>
+            {comments.map((comment) => (
+              <li key={comment.id}>
+                <div>
+                  {comment.avatar ? (
+                    <img src={comment.avatar} alt="" width={32} height={32} />
+                  ) : null}
+                  <span>{authorDisplayName(comment)}</span>
+                  <time dateTime={comment.created_at}>
+                    {new Date(comment.created_at).toLocaleDateString("fr-FR")}
+                  </time>
+                </div>
+                <p>{comment.text}</p>
+              </li>
+            ))}
+          </ul>
+        )}
+      </section>
     </main>
   );
 }
