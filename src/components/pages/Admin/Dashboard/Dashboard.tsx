@@ -66,33 +66,34 @@ function Dashboard() {
 
       <section className="dashboard-actions">
         <h2>Actions rapides</h2>
-        <Link to="/admin/articles">📰 Gérer les articles</Link>
-        <Link to="/admin/messages">📧 Voir les messages</Link>
-        <Link to="/admin/images">🖼️ Gérer la galerie</Link>
+        <Link to="/admin/articles">Gérer les articles</Link>
+        <Link to="/admin/messages">Voir les messages</Link>
+        <Link to="/admin/images">Gérer la galerie</Link>
+        <Link to="/admin/comments">Gérer les commentaires</Link>
       </section>
 
       {stats && (
         <section className="dashboard-stats">
           <div className="stat-card">
-            <h2>📰 Articles</h2>
+            <h2>Articles</h2>
             <p>Total : {stats.articles.total}</p>
             <p>Publiés : {stats.articles.published}</p>
             <p>Brouillons : {stats.articles.drafts}</p>
           </div>
 
           <div className="stat-card">
-            <h2>🖼️ Images</h2>
+            <h2>Images</h2>
             <p>Total : {stats.images.total}</p>
             <p>En galerie : {stats.images.inGallery}</p>
           </div>
 
           <div className="stat-card">
-            <h2>🏷️ Tags</h2>
+            <h2>Tags</h2>
             <p>Total : {stats.tags.total}</p>
           </div>
 
           <div className="stat-card">
-            <h2>📧 Messages</h2>
+            <h2>Messages</h2>
             <p className="highlight">Non lus : {stats.messages.unread}</p>
             <p>Lus : {stats.messages.read}</p>
             <p>Archivés : {stats.messages.archived}</p>

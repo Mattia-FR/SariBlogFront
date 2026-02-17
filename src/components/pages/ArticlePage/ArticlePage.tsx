@@ -1,10 +1,11 @@
 import { useState } from "react";
 import { useLoaderData } from "react-router-dom";
-import Modal from "../../molecules/Modal";
 import { useAuth } from "../../../hooks/useAuth";
-import type { ArticleLoaderData } from "./articleTypes";
 import CommentForm from "../../molecules/CommentForm";
+import Modal from "../../molecules/Modal";
+import type { ArticleLoaderData } from "./articleTypes";
 import "./ArticlePage.css";
+import CommentCard from "../../molecules/CommentCard";
 
 function ArticlePage() {
   const data = useLoaderData<ArticleLoaderData>();
@@ -12,9 +13,6 @@ function ArticlePage() {
   const [isCommentModalOpen, setIsCommentModalOpen] = useState(false);
 
   const { article, articleImages, comments } = data;
-
-  const authorDisplayName = (c: (typeof comments)[0]) =>
-    [c.firstname, c.lastname].filter(Boolean).join(" ") || c.username;
 
   return (
     <main className="article-detail">
@@ -72,19 +70,8 @@ function ArticlePage() {
           <p>Aucun commentaire pour le moment.</p>
         ) : (
           <ul>
-            {comments.map((comment) => (
-              <li key={comment.id}>
-                <div>
-                  {comment.avatar ? (
-                    <img src={comment.avatar} alt="" width={32} height={32} />
-                  ) : null}
-                  <span>{authorDisplayName(comment)}</span>
-                  <time dateTime={comment.created_at}>
-                    {new Date(comment.created_at).toLocaleDateString("fr-FR")}
-                  </time>
-                </div>
-                <p>{comment.text}</p>
-              </li>
+            {comments.map((c) => (
+              <CommentCard key={c.id} comment={c} />
             ))}
           </ul>
         )}

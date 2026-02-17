@@ -26,7 +26,13 @@ function SignupForm({ onSuccess }: SignupFormProps) {
     const lastname = (formData.get("lastname") as string) || "";
 
     try {
-      await signup(username, email, password, firstname || null, lastname || null);
+      await signup(
+        username,
+        email,
+        password,
+        firstname || null,
+        lastname || null,
+      );
       onSuccess?.();
     } catch (err) {
       const message =
