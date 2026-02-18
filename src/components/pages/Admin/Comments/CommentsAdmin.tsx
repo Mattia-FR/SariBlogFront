@@ -1,4 +1,5 @@
 import { useCallback, useEffect, useState } from "react";
+import { toast } from "react-toastify";
 import type { Comment, CommentStatus } from "../../../../types/comment";
 import { api } from "../../../../utils/apiClient";
 import CommentCard from "../../../molecules/CommentCard";
@@ -14,9 +15,10 @@ function CommentsAdmin() {
       const data = await api.get<Comment[]>("/admin/comments");
       setComments(data);
     } catch (err) {
-      setError(
-        err instanceof Error ? err.message : "Erreur lors du chargement",
-      );
+      const message =
+        err instanceof Error ? err.message : "Erreur lors du chargement";
+      setError(message);
+      toast.error(message);
     } finally {
       setLoading(false);
     }
@@ -30,8 +32,10 @@ function CommentsAdmin() {
     try {
       await api.patch(`/admin/comments/${commentId}/status`, { status });
       await fetchComments();
+      toast.success("Statut mis à jour");
     } catch (err) {
       console.error(err);
+      toast.error("Erreur lors de la mise à jour du statut");
     }
   }
 
@@ -39,8 +43,10 @@ function CommentsAdmin() {
     try {
       await api.delete(`/admin/comments/${commentId}`);
       await fetchComments();
+      toast.success("Commentaire supprimé");
     } catch (err) {
       console.error(err);
+      toast.error("Erreur lors de la suppression");
     }
   }
 

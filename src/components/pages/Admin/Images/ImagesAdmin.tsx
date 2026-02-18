@@ -1,4 +1,5 @@
 import { useEffect, useState } from "react";
+import { toast } from "react-toastify";
 import type { Image } from "../../../../types/image";
 import type { Tag } from "../../../../types/tags";
 import { api } from "../../../../utils/apiClient";
@@ -24,9 +25,10 @@ function ImagesAdmin() {
         setImages(imagesData);
         setTags(tagsData);
       } catch (err) {
-        setError(
-          err instanceof Error ? err.message : "Erreur lors du chargement",
-        );
+        const message =
+          err instanceof Error ? err.message : "Erreur lors du chargement";
+        setError(message);
+        toast.error(message);
       } finally {
         setLoading(false);
       }

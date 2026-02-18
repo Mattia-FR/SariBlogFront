@@ -1,9 +1,9 @@
 import { Link } from "react-router-dom";
 import "./Footer.css";
-import instagramHover from "../../../public/instagram-hover.png";
-import instagramNormal from "../../../public/instagram-normal.png";
-import mailHover from "../../../public/mail-hover.png";
-import mailNormal from "../../../public/mail-normal.png";
+import instagramHover from "../../assets/instagram-hover.png";
+import instagramNormal from "../../assets/instagram-normal.png";
+import mailHover from "../../assets/mail-hover.png";
+import mailNormal from "../../assets/mail-normal.png";
 
 function Footer() {
   return (
@@ -26,8 +26,8 @@ function Footer() {
         </div>
       </div>
       <div className="footer-content-right">
-        <Link to="/">Mentions légales</Link>
-        <Link to="/">Politique de confidentialité</Link>
+        <Link to="/mentions-legales">Mentions légales</Link>
+        <Link to="/politique-confidentialite">Politique de confidentialité</Link>
       </div>
     </footer>
   );

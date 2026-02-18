@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
+import { toast } from "react-toastify";
 import type { Article } from "../../../../types/article";
 import type { Image } from "../../../../types/image";
 import { api } from "../../../../utils/apiClient";
@@ -45,14 +46,14 @@ function ArticleEdit() {
 
     try {
       await api.patch(`/admin/articles/${id}`, data);
-      alert("Article modifié !");
+      toast.success("Article modifié !");
       setIsEditing(false);
 
       const updatedArticle = await api.get<Article>(`/admin/articles/${id}`);
       setArticle(updatedArticle);
     } catch (err) {
       console.error(err);
-      alert("Erreur lors de la modification");
+      toast.error("Erreur lors de la modification");
     }
   }
 
@@ -63,11 +64,11 @@ function ArticleEdit() {
 
     try {
       await api.delete(`/admin/articles/${id}`);
-      alert("Article supprimé !");
+      toast.success("Article supprimé !");
       navigate("/admin/articles");
     } catch (err) {
       console.error(err);
-      alert("Erreur lors de la suppression");
+      toast.error("Erreur lors de la suppression");
     }
   }
 

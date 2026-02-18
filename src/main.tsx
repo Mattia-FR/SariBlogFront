@@ -18,6 +18,8 @@ import BlogPage from "./components/pages/BlogPage/BlogPage";
 import { blogLoader } from "./components/pages/BlogPage/blogLoader";
 import ContactPage from "./components/pages/ContactPage/ContactPage";
 import GalleryPage from "./components/pages/GalleryPage/GalleryPage";
+import LegalNoticePage from "./components/pages/LegalNoticePage/LegalNoticePage";
+import PrivacyPolicyPage from "./components/pages/PrivacyPolicyPage/PrivacyPolicyPage";
 import { galleryLoader } from "./components/pages/GalleryPage/galleryLoader";
 import HomePage from "./components/pages/HomePage/HomePage";
 import { homeLoader } from "./components/pages/HomePage/homeLoader";
@@ -61,6 +63,14 @@ const router = createBrowserRouter([
       {
         path: "/contact",
         element: <ContactPage />,
+      },
+      {
+        path: "/mentions-legales",
+        element: <LegalNoticePage />,
+      },
+      {
+        path: "/politique-confidentialite",
+        element: <PrivacyPolicyPage />,
       },
       {
         path: "/profile",

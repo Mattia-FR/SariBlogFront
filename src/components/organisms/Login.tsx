@@ -1,4 +1,5 @@
 import { useState } from "react";
+import { toast } from "react-toastify";
 import { useAuth } from "../../hooks/useAuth";
 import LoginForm from "../molecules/LoginForm";
 import Modal from "../molecules/Modal";
@@ -40,7 +41,12 @@ function Login() {
       </p>
 
       {user ? (
-        <button type="button" onClick={() => void logout()}>
+        <button
+          type="button"
+          onClick={() =>
+            logout().then(() => toast.info("Vous êtes déconnecté"))
+          }
+        >
           Se déconnecter
         </button>
       ) : (

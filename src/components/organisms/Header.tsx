@@ -1,7 +1,7 @@
 import Navbar from "../molecules/Navbar";
 import Login from "./Login";
 import "./Header.css";
-import logo from "../../../public/logo.png";
+import logo from "../../assets/logo.png";
 
 function Header() {
   return (

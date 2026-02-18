@@ -1,4 +1,5 @@
 import { useEffect, useState } from "react";
+import { toast } from "react-toastify";
 import type { Message } from "../../../../types/messages";
 import { api } from "../../../../utils/apiClient";
 import MessageCard from "../../../molecules/MessageCard";
@@ -15,9 +16,10 @@ function MessagesAdmin() {
         const data = await api.get<Message[]>("/admin/messages");
         setMessages(data);
       } catch (err) {
-        setError(
-          err instanceof Error ? err.message : "Erreur lors du chargement",
-        );
+        const message =
+          err instanceof Error ? err.message : "Erreur lors du chargement";
+        setError(message);
+        toast.error(message);
       } finally {
         setLoading(false);
       }

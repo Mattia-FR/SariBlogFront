@@ -1,4 +1,5 @@
 import { useEffect, useState } from "react";
+import { toast } from "react-toastify";
 import { useAuth } from "../../../hooks/useAuth";
 import { api } from "../../../utils/apiClient";
 import "./ContactPage.css";
@@ -16,9 +17,6 @@ function ContactPage() {
   });
 
   const [isSubmitting, setIsSubmitting] = useState(false);
-  const [submitStatus, setSubmitStatus] = useState<"success" | "error" | null>(
-    null,
-  );
 
   // Préremplir les champs si l'utilisateur est connecté
   useEffect(() => {
@@ -74,9 +72,6 @@ function ContactPage() {
     // 2. Indiquer qu'on est en train d'envoyer (pour désactiver le formulaire)
     setIsSubmitting(true);
 
-    // 3. Réinitialiser le message de statut précédent
-    setSubmitStatus(null);
-
     try {
       // 4. Préparer les données à envoyer
       const dataToSend =
@@ -102,8 +97,8 @@ function ContactPage() {
       // 5. Envoyer les données au backend via le client API
       await api.post("/messages", dataToSend);
 
-      // 6. Succès : afficher un message de confirmation
-      setSubmitStatus("success");
+      // 6. Succès : afficher un toast
+      toast.success("Message envoyé avec succès !");
 
       // Réinitialiser le formulaire
       if (isAuthenticated && user) {
@@ -128,7 +123,7 @@ function ContactPage() {
     } catch (error) {
       // 7. En cas d'erreur réseau ou autre
       console.error("Erreur lors de l'envoi du message :", error);
-      setSubmitStatus("error");
+      toast.error("Erreur lors de l'envoi. Veuillez réessayer.");
     } finally {
       // 8. Dans tous les cas, réactiver le formulaire
       setIsSubmitting(false);
@@ -216,12 +211,6 @@ function ContactPage() {
           {isSubmitting ? "Envoi en cours..." : "Envoyer"}
         </button>
       </form>
-
-      {submitStatus === "success" && <p>Message envoyé avec succès !</p>}
-
-      {submitStatus === "error" && (
-        <p>Erreur lors de l'envoi. Veuillez réessayer.</p>
-      )}
     </main>
   );
 }

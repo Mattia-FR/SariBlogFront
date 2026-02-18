@@ -1,4 +1,5 @@
 import type { FormEvent } from "react";
+import { toast } from "react-toastify";
 import { api } from "../../../../utils/apiClient";
 
 function ArticleCreate() {
@@ -13,10 +14,10 @@ function ArticleCreate() {
 
     try {
       await api.post("/articles", data);
-      alert("Article créé avec succès !");
+      toast.success("Article créé avec succès !");
     } catch (error) {
       console.error(error);
-      alert("Erreur lors de la création de l'article");
+      toast.error("Erreur lors de la création de l'article");
     }
   }
 

@@ -1,4 +1,5 @@
 import { createContext, type ReactNode, useEffect, useState } from "react";
+import { toast } from "react-toastify";
 import type { User } from "../types/users";
 import {
   api,
@@ -50,6 +51,7 @@ export function AuthProvider({ children }: AuthProviderProps) {
         }
       } catch (err) {
         console.error("Pas de session valide");
+        throw err;
       } finally {
         setIsInitializing(false);
       }
@@ -125,6 +127,7 @@ export function AuthProvider({ children }: AuthProviderProps) {
       await apiClient("/auth/logout", { method: "POST" });
     } catch (err) {
       console.error("Erreur déconnexion:", err);
+      toast.error("Erreur lors de la déconnexion");
     } finally {
       clearAccessToken();
       setUser(null);

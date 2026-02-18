@@ -1,5 +1,6 @@
 import type { FormEvent } from "react";
 import { useState } from "react";
+import { toast } from "react-toastify";
 import { useAuth } from "../../hooks/useAuth";
 
 interface LoginFormProps {
@@ -23,11 +24,13 @@ function LoginForm({ onSuccess }: LoginFormProps) {
 
     try {
       await login(identifier, password);
+      toast.success("Connexion réussie");
       onSuccess?.();
     } catch (err) {
       const message =
         err instanceof Error ? err.message : "Erreur de connexion";
       setFormError(message);
+      toast.error(message);
     }
   }
 

@@ -1,5 +1,6 @@
 import type { FormEvent } from "react";
 import { useState } from "react";
+import { toast } from "react-toastify";
 import { useAuth } from "../../hooks/useAuth";
 
 interface SignupFormProps {
@@ -33,11 +34,13 @@ function SignupForm({ onSuccess }: SignupFormProps) {
         firstname || null,
         lastname || null,
       );
+      toast.success("Compte créé avec succès");
       onSuccess?.();
     } catch (err) {
       const message =
         err instanceof Error ? err.message : "Erreur d'inscription";
       setFormError(message);
+      toast.error(message);
     }
   }
 

@@ -1,5 +1,6 @@
 import type { FormEvent } from "react";
 import { useState } from "react";
+import { toast } from "react-toastify";
 import { api } from "../../utils/apiClient";
 
 interface CommentFormProps {
@@ -27,6 +28,7 @@ function CommentForm({ articleId, onSuccess }: CommentFormProps) {
     try {
       await api.post("/comments", { text, article_id: articleId });
       form.reset();
+      toast.success("Commentaire envoyé");
       onSuccess?.();
     } catch (err) {
       const message =
@@ -34,6 +36,7 @@ function CommentForm({ articleId, onSuccess }: CommentFormProps) {
           ? err.message
           : "Erreur lors de l'envoi du commentaire.";
       setFormError(message);
+      toast.error(message);
     } finally {
       setIsLoading(false);
     }

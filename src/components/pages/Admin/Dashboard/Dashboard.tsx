@@ -1,5 +1,6 @@
 import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
+import { toast } from "react-toastify";
 import { api } from "../../../../utils/apiClient";
 
 interface DashboardStats {
@@ -35,7 +36,9 @@ function Dashboard() {
         setStats(data);
       } catch (err) {
         console.error("Erreur chargement stats:", err);
-        setError("Impossible de charger les statistiques");
+        const message = "Impossible de charger les statistiques";
+        setError(message);
+        toast.error(message);
       } finally {
         setIsLoading(false);
       }
