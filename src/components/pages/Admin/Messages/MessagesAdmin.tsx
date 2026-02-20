@@ -1,6 +1,6 @@
-import { useEffect, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 import { toast } from "react-toastify";
-import type { Message } from "../../../../types/messages";
+import type { Message, MessageStatus } from "../../../../types/messages";
 import { api } from "../../../../utils/apiClient";
 import MessageCard from "../../../molecules/MessageCard";
 
@@ -10,26 +10,49 @@ function MessagesAdmin() {
   const [error, setError] = useState<string | null>(null);
   const [selectedStatus, setSelectedStatus] = useState<string | "">("");
 
-  useEffect(() => {
-    const fetchMessages = async () => {
-      try {
-        const data = await api.get<Message[]>("/admin/messages");
-        setMessages(data);
-      } catch (err) {
-        const message =
-          err instanceof Error ? err.message : "Erreur lors du chargement";
-        setError(message);
-        toast.error(message);
-      } finally {
-        setLoading(false);
-      }
-    };
-
-    fetchMessages();
+  const fetchMessages = useCallback(async () => {
+    try {
+      const data = await api.get<Message[]>("/admin/messages");
+      setMessages(data);
+    } catch (err) {
+      const message =
+        err instanceof Error ? err.message : "Erreur lors du chargement";
+      setError(message);
+      toast.error(message);
+    } finally {
+      setLoading(false);
+    }
   }, []);
 
-  // 1. Extraire tous les statuts uniques
-  const allStatuses = Array.from(new Set(messages.map((msg) => msg.status)));
+  useEffect(() => {
+    fetchMessages();
+  }, [fetchMessages]);
+
+  async function handleStatusChange(messageId: number, status: MessageStatus) {
+    try {
+      await api.patch(`/admin/messages/${messageId}/status`, { status });
+      await fetchMessages();
+      toast.success("Statut mis à jour");
+    } catch (err) {
+      console.error(err);
+      toast.error("Erreur lors de la mise à jour du statut");
+    }
+  }
+
+  async function handleDelete(messageId: number) {
+    try {
+      await api.delete(`/admin/messages/${messageId}`);
+      await fetchMessages();
+      toast.success("Message supprimé");
+    } catch (err) {
+      console.error(err);
+      toast.error("Erreur lors de la suppression");
+    }
+  }
+
+  const allStatuses = Array.from(
+    new Set(messages.map((msg) => msg.status)),
+  ) as MessageStatus[];
 
   // 2. Filtrer les messages selon le statut sélectionné
   let filteredMessages: Message[];
@@ -77,7 +100,38 @@ function MessagesAdmin() {
 
       <section className="messages-grid">
         {filteredMessages.map((message) => (
-          <MessageCard key={message.id} message={message} />
+          <div key={message.id}>
+            <MessageCard message={message} />
+            <div>
+              {message.status !== "unread" && (
+                <button
+                  type="button"
+                  onClick={() => handleStatusChange(message.id, "unread")}
+                >
+                  Non lu
+                </button>
+              )}
+              {message.status !== "read" && (
+                <button
+                  type="button"
+                  onClick={() => handleStatusChange(message.id, "read")}
+                >
+                  Lu
+                </button>
+              )}
+              {message.status !== "archived" && (
+                <button
+                  type="button"
+                  onClick={() => handleStatusChange(message.id, "archived")}
+                >
+                  Archivé
+                </button>
+              )}
+              <button type="button" onClick={() => handleDelete(message.id)}>
+                Supprimer
+              </button>
+            </div>
+          </div>
         ))}
       </section>
     </main>
