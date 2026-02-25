@@ -12,19 +12,20 @@ import CommentsAdmin from "./components/pages/Admin/Comments/CommentsAdmin";
 import Dashboard from "./components/pages/Admin/Dashboard/Dashboard";
 import ImagesAdmin from "./components/pages/Admin/Images/ImagesAdmin";
 import MessagesAdmin from "./components/pages/Admin/Messages/MessagesAdmin";
+import TagsAdmin from "./components/pages/Admin/Tags/TagsAdmin";
 import ArticlePage from "./components/pages/ArticlePage/ArticlePage";
 import { articleLoader } from "./components/pages/ArticlePage/articleLoader";
 import BlogPage from "./components/pages/BlogPage/BlogPage";
 import { blogLoader } from "./components/pages/BlogPage/blogLoader";
 import ContactPage from "./components/pages/ContactPage/ContactPage";
 import GalleryPage from "./components/pages/GalleryPage/GalleryPage";
-import LegalNoticePage from "./components/pages/LegalNoticePage/LegalNoticePage";
-import PrivacyPolicyPage from "./components/pages/PrivacyPolicyPage/PrivacyPolicyPage";
 import { galleryLoader } from "./components/pages/GalleryPage/galleryLoader";
 import HomePage from "./components/pages/HomePage/HomePage";
 import { homeLoader } from "./components/pages/HomePage/homeLoader";
+import LegalNoticePage from "./components/pages/LegalNoticePage/LegalNoticePage";
 import PresentationPage from "./components/pages/PresentationPage/PresentationPage";
 import { presentationLoader } from "./components/pages/PresentationPage/presentationLoader";
+import PrivacyPolicyPage from "./components/pages/PrivacyPolicyPage/PrivacyPolicyPage";
 import ProfilePage from "./components/pages/ProfilePage/ProfilePage";
 import { profileLoader } from "./components/pages/ProfilePage/profileLoader";
 import NotFoundPage from "./components/pages/RedirectionPage/NotFoundPage";
@@ -137,6 +138,15 @@ const router = createBrowserRouter([
           </ProtectedRoute>
         ),
       },
+      {
+        path: "/admin/tags",
+        element: (
+          <ProtectedRoute allowedRoles={["admin", "editor"]}>
+            <TagsAdmin />
+          </ProtectedRoute>
+        ),
+      },
+
       {
         path: "/unauthorized",
         element: <UnauthorizedPage />,

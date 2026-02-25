@@ -27,7 +27,9 @@ function Footer() {
       </div>
       <div className="footer-content-right">
         <Link to="/mentions-legales">Mentions légales</Link>
-        <Link to="/politique-confidentialite">Politique de confidentialité</Link>
+        <Link to="/politique-confidentialite">
+          Politique de confidentialité
+        </Link>
       </div>
     </footer>
   );

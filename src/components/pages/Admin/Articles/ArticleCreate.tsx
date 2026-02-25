@@ -1,10 +1,11 @@
-import type { FormEvent } from "react";
+import { type FormEvent, useId } from "react";
 import { useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
 import { api } from "../../../../utils/apiClient";
 
 function ArticleCreate() {
   const navigate = useNavigate();
+  const id = useId();
 
   async function handleSubmit(event: FormEvent<HTMLFormElement>) {
     event.preventDefault();
@@ -31,9 +32,9 @@ function ArticleCreate() {
       <h2>Nouvel article</h2>
       <form onSubmit={handleSubmit}>
         <div>
-          <label htmlFor="article-title">Titre</label>
+          <label htmlFor={`${id}-title`}>Titre</label>
           <input
-            id="article-title"
+            id={`${id}-title`}
             type="text"
             name="title"
             placeholder="Titre de l'article"
@@ -41,9 +42,9 @@ function ArticleCreate() {
           />
         </div>
         <div>
-          <label htmlFor="article-content">Contenu</label>
+          <label htmlFor={`${id}-content`}>Contenu</label>
           <textarea
-            id="article-content"
+            id={`${id}-content`}
             name="content"
             placeholder="Contenu de l'article"
             rows={10}
