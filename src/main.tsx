@@ -8,6 +8,7 @@ import { ProtectedRoute } from "./components/organisms/ProtectedRoute";
 import ArticleCreate from "./components/pages/Admin/Articles/ArticleCreate";
 import ArticleEdit from "./components/pages/Admin/Articles/ArticleEdit";
 import ArticlesAdmin from "./components/pages/Admin/Articles/ArticlesAdmin";
+import CategoriesAdmin from "./components/pages/Admin/Categories/CategoriesAdmin";
 import CommentsAdmin from "./components/pages/Admin/Comments/CommentsAdmin";
 import Dashboard from "./components/pages/Admin/Dashboard/Dashboard";
 import ImagesAdmin from "./components/pages/Admin/Images/ImagesAdmin";
@@ -146,7 +147,14 @@ const router = createBrowserRouter([
           </ProtectedRoute>
         ),
       },
-
+      {
+        path: "/admin/categories",
+        element: (
+          <ProtectedRoute allowedRoles={["admin", "editor"]}>
+            <CategoriesAdmin />
+          </ProtectedRoute>
+        ),
+      },
       {
         path: "/unauthorized",
         element: <UnauthorizedPage />,

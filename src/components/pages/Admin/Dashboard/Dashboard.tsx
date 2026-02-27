@@ -74,6 +74,7 @@ function Dashboard() {
         <Link to="/admin/images">Gérer la galerie</Link>
         <Link to="/admin/comments">Gérer les commentaires</Link>
         <Link to="/admin/tags">Gérer les tags</Link>
+        <Link to="/admin/categories">Gérer les catégories</Link>
       </section>
 
       {stats && (

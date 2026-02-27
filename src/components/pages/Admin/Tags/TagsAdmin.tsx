@@ -8,6 +8,7 @@ function TagsAdmin() {
   const [tags, setTags] = useState<Tag[]>([]);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
+  const [editingId, setEditingId] = useState<number | null>(null);
 
   const fetchTags = useCallback(async () => {
     try {
@@ -51,6 +52,30 @@ function TagsAdmin() {
     }
   }
 
+  async function handleUpdate(
+    tagId: number,
+    event: FormEvent<HTMLFormElement>,
+  ) {
+    event.preventDefault();
+    const formData = new FormData(event.currentTarget);
+    const name = String(formData.get("name") ?? "").trim();
+
+    if (!name) {
+      toast.error("Le nom est requis");
+      return;
+    }
+
+    try {
+      await api.patch<Tag>(`/admin/tags/${tagId}`, { name });
+      toast.success("Tag modifié");
+      setEditingId(null);
+      await fetchTags();
+    } catch (err) {
+      console.error(err);
+      toast.error("Erreur lors de la modification du tag");
+    }
+  }
+
   async function handleDelete(tagId: number) {
     try {
       await api.delete(`/admin/tags/${tagId}`);
@@ -87,14 +112,51 @@ function TagsAdmin() {
         <ul>
           {tags.map((tag) => (
             <li key={tag.id}>
-              <span>{tag.name}</span>
-              <button
-                type="button"
-                onClick={() => handleDelete(tag.id)}
-                aria-label={`Supprimer le tag ${tag.name}`}
-              >
-                Supprimer
-              </button>
+              {editingId === tag.id ? (
+                <form
+                  onSubmit={(e) => handleUpdate(tag.id, e)}
+                  className="tag-edit-form"
+                >
+                  <div>
+                    <label htmlFor={`${id}-edit-${tag.id}-name`}>Nom</label>
+                    <input
+                      id={`${id}-edit-${tag.id}-name`}
+                      type="text"
+                      name="name"
+                      defaultValue={tag.name}
+                      required
+                    />
+                  </div>
+                  <button type="submit">Enregistrer</button>
+                  <button
+                    type="button"
+                    onClick={() => setEditingId(null)}
+                    aria-label="Annuler la modification"
+                  >
+                    Annuler
+                  </button>
+                </form>
+              ) : (
+                <>
+                  <span>
+                    {tag.name} ({tag.slug})
+                  </span>
+                  <button
+                    type="button"
+                    onClick={() => setEditingId(tag.id)}
+                    aria-label={`Modifier le tag ${tag.name}`}
+                  >
+                    Modifier
+                  </button>
+                  <button
+                    type="button"
+                    onClick={() => handleDelete(tag.id)}
+                    aria-label={`Supprimer le tag ${tag.name}`}
+                  >
+                    Supprimer
+                  </button>
+                </>
+              )}
             </li>
           ))}
         </ul>
