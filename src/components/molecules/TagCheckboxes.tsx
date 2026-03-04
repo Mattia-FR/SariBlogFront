@@ -26,7 +26,10 @@ function TagCheckboxes({
   return (
     <div>
       <span className="tag-checkboxes-label">Tags</span>
-      <ul className="tag-checkboxes-list" style={{ listStyle: "none", padding: 0, margin: 0 }}>
+      <ul
+        className="tag-checkboxes-list"
+        style={{ listStyle: "none", padding: 0, margin: 0 }}
+      >
         {tags.map((tag) => (
           <li key={tag.id}>
             <label>

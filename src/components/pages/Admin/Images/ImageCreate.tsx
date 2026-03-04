@@ -12,7 +12,10 @@ function ImageCreate() {
   const [selectedTagIds, setSelectedTagIds] = useState<number[]>([]);
 
   useEffect(() => {
-    api.get<Tag[]>("/tags").then(setTags).catch(() => {});
+    api
+      .get<Tag[]>("/tags")
+      .then(setTags)
+      .catch(() => {});
   }, []);
 
   async function handleSubmit(event: FormEvent<HTMLFormElement>) {

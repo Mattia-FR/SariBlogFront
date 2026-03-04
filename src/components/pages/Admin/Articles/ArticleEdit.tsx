@@ -47,9 +47,9 @@ function ArticleEdit() {
     event.preventDefault();
     const formData = new FormData(event.currentTarget);
     const status = formData.get("status") as string | null;
-    const featuredImageIdRaw = formData.get(
-      "featured_image_id",
-    ) as string | null;
+    const featuredImageIdRaw = formData.get("featured_image_id") as
+      | string
+      | null;
 
     const data: Record<string, unknown> = {
       title: formData.get("title"),

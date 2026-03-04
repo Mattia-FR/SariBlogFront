@@ -1,4 +1,4 @@
-import { useEffect, type FormEvent, useId, useState } from "react";
+import { type FormEvent, useEffect, useId, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import { toast } from "react-toastify";
 import type { Image } from "../../../../types/image";
@@ -96,7 +96,9 @@ function ImageEdit() {
           />
         </div>
         <div>
-          <label htmlFor={`${generatedId}-alt_descr`}>Texte alternatif (alt)</label>
+          <label htmlFor={`${generatedId}-alt_descr`}>
+            Texte alternatif (alt)
+          </label>
           <input
             id={`${generatedId}-alt_descr`}
             type="text"
