@@ -1,4 +1,5 @@
 import { useEffect, useState } from "react";
+import { Link } from "react-router-dom";
 import { toast } from "react-toastify";
 import type { Image } from "../../../../types/image";
 import type { Tag } from "../../../../types/tags";
@@ -59,6 +60,7 @@ function ImagesAdmin() {
   return (
     <main>
       <h2>Gestion des images</h2>
+      <Link to="/admin/images/new">Ajouter une image</Link>
       <TagFilter
         tags={tags}
         selectedTagId={selectedTagId}

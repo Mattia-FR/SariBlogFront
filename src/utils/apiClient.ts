@@ -133,6 +133,26 @@ export const api = {
     return response.json();
   },
 
+  /* POST avec FormData (ex. upload de fichier avec multer) : on n'envoie pas Content-Type
+  pour que le navigateur mette multipart/form-data + boundary
+  apiClient ne met pas application/json quand le body est un FormData */
+  async postFormData<T>(endpoint: string, formData: FormData): Promise<T> {
+    const response = await apiClient(endpoint, {
+      method: "POST",
+      body: formData,
+    });
+
+    if (!response.ok) {
+      throw new Error(`Erreur HTTP ${response.status}: ${response.statusText}`);
+    }
+
+    if (response.status === 204) {
+      return undefined as T;
+    }
+
+    return response.json();
+  },
+
   async patch<T>(endpoint: string, data?: unknown): Promise<T> {
     const response = await apiClient(endpoint, {
       method: "PATCH",

@@ -1,6 +1,7 @@
 import { type FormEvent, useId } from "react";
 import { useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
+import type { Article } from "../../../../types/article";
 import { api } from "../../../../utils/apiClient";
 
 function ArticleCreate() {
@@ -10,7 +11,8 @@ function ArticleCreate() {
   async function handleSubmit(event: FormEvent<HTMLFormElement>) {
     event.preventDefault();
 
-    const formData = new FormData(event.currentTarget);
+    const form = event.currentTarget;
+    const formData = new FormData(form);
     const data = {
       title: String(formData.get("title") ?? "").trim(),
       content: String(formData.get("content") ?? "").trim(),
@@ -18,7 +20,19 @@ function ArticleCreate() {
     };
 
     try {
-      await api.post("/admin/articles", data);
+      const newArticle = await api.post<Article>("/admin/articles", data);
+
+      const files = formData.getAll("images") as File[];
+      if (files.length > 0) {
+        for (const file of files) {
+          if (file.size === 0) continue;
+          const imageFormData = new FormData();
+          imageFormData.append("image", file);
+          imageFormData.append("article_id", String(newArticle.id));
+          await api.postFormData("/admin/images", imageFormData);
+        }
+      }
+
       toast.success("Article créé avec succès !");
       navigate("/admin/articles");
     } catch (error) {
@@ -49,6 +63,16 @@ function ArticleCreate() {
             placeholder="Contenu de l'article"
             rows={10}
             required
+          />
+        </div>
+        <div>
+          <label htmlFor={`${id}-images`}>Images (optionnel)</label>
+          <input
+            id={`${id}-images`}
+            type="file"
+            name="images"
+            accept="image/*"
+            multiple
           />
         </div>
         <button type="submit">Créer l'article</button>
