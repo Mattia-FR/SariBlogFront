@@ -1,12 +1,20 @@
-import { type FormEvent, useId } from "react";
+import { type FormEvent, useEffect, useId, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
 import type { Article } from "../../../../types/article";
+import type { Tag } from "../../../../types/tags";
 import { api } from "../../../../utils/apiClient";
+import TagCheckboxes from "../../../molecules/TagCheckboxes";
 
 function ArticleCreate() {
   const navigate = useNavigate();
   const id = useId();
+  const [tags, setTags] = useState<Tag[]>([]);
+  const [selectedTagIds, setSelectedTagIds] = useState<number[]>([]);
+
+  useEffect(() => {
+    api.get<Tag[]>("/tags").then(setTags).catch(() => {});
+  }, []);
 
   async function handleSubmit(event: FormEvent<HTMLFormElement>) {
     event.preventDefault();
@@ -17,6 +25,7 @@ function ArticleCreate() {
       title: String(formData.get("title") ?? "").trim(),
       content: String(formData.get("content") ?? "").trim(),
       status: "draft" as const,
+      tag_ids: selectedTagIds,
     };
 
     try {
@@ -63,6 +72,14 @@ function ArticleCreate() {
             placeholder="Contenu de l'article"
             rows={10}
             required
+          />
+        </div>
+        <div>
+          <TagCheckboxes
+            tags={tags}
+            selectedIds={selectedTagIds}
+            onChange={setSelectedTagIds}
+            idPrefix={`${id}-article-tag`}
           />
         </div>
         <div>

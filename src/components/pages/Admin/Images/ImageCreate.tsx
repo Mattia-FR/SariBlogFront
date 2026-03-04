@@ -1,11 +1,19 @@
-import { type FormEvent, useId } from "react";
+import { type FormEvent, useEffect, useId, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
+import type { Tag } from "../../../../types/tags";
 import { api } from "../../../../utils/apiClient";
+import TagCheckboxes from "../../../molecules/TagCheckboxes";
 
 function ImageCreate() {
   const navigate = useNavigate();
   const id = useId();
+  const [tags, setTags] = useState<Tag[]>([]);
+  const [selectedTagIds, setSelectedTagIds] = useState<number[]>([]);
+
+  useEffect(() => {
+    api.get<Tag[]>("/tags").then(setTags).catch(() => {});
+  }, []);
 
   async function handleSubmit(event: FormEvent<HTMLFormElement>) {
     event.preventDefault();
@@ -17,6 +25,10 @@ function ImageCreate() {
     if (!file || file.size === 0) {
       toast.error("Veuillez sélectionner un fichier à télécharger");
       return;
+    }
+
+    if (selectedTagIds.length > 0) {
+      formData.set("tag_ids", JSON.stringify(selectedTagIds));
     }
 
     try {
@@ -68,6 +80,14 @@ function ImageCreate() {
             type="text"
             name="alt_descr"
             placeholder="Description pour l'accessibilité"
+          />
+        </div>
+        <div>
+          <TagCheckboxes
+            tags={tags}
+            selectedIds={selectedTagIds}
+            onChange={setSelectedTagIds}
+            idPrefix={`${id}-image-tag`}
           />
         </div>
         <div>

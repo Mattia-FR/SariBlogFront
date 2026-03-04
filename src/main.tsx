@@ -12,6 +12,7 @@ import CategoriesAdmin from "./components/pages/Admin/Categories/CategoriesAdmin
 import CommentsAdmin from "./components/pages/Admin/Comments/CommentsAdmin";
 import Dashboard from "./components/pages/Admin/Dashboard/Dashboard";
 import ImageCreate from "./components/pages/Admin/Images/ImageCreate";
+import ImageEdit from "./components/pages/Admin/Images/ImageEdit";
 import ImagesAdmin from "./components/pages/Admin/Images/ImagesAdmin";
 import MessagesAdmin from "./components/pages/Admin/Messages/MessagesAdmin";
 import TagsAdmin from "./components/pages/Admin/Tags/TagsAdmin";
@@ -145,6 +146,14 @@ const router = createBrowserRouter([
         element: (
           <ProtectedRoute allowedRoles={["admin", "editor"]}>
             <ImageCreate />
+          </ProtectedRoute>
+        ),
+      },
+      {
+        path: "/admin/images/edit/:id",
+        element: (
+          <ProtectedRoute allowedRoles={["admin", "editor"]}>
+            <ImageEdit />
           </ProtectedRoute>
         ),
       },
