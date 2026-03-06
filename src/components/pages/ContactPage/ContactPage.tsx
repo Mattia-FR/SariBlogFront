@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 import { toast } from "react-toastify";
 import { useAuth } from "../../../hooks/useAuth";
 import { api } from "../../../utils/apiClient";
+import { messageVisitorSchema, messageConnectedSchema } from "../../../schemas/messageSchemas";
 import "./ContactPage.css";
 
 function ContactPage() {
@@ -17,6 +18,7 @@ function ContactPage() {
   });
 
   const [isSubmitting, setIsSubmitting] = useState(false);
+  const [fieldErrors, setFieldErrors] = useState<Record<string, string>>({});
 
   // Préremplir les champs si l'utilisateur est connecté
   useEffect(() => {
@@ -33,15 +35,10 @@ function ContactPage() {
   const handleInputChange = (
     event: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>,
   ) => {
-    // 1. Récupérer l'élément HTML qui a changé
     const changedElement = event.target;
-    // 2. Récupérer son nom (attribut "name" dans le HTML)
     const fieldName = changedElement.name;
-    // 3. Récupérer sa nouvelle valeur (ce que l'utilisateur a tapé)
     const newValue = changedElement.value;
-    // 4. Obtenir la valeur actuelle de formData (avant changement)
     const previousValues = formData;
-    // 5. Créer un NOUVEL objet qui copie toutes les anciennes valeurs
     const updatedValues = {
       firstname: previousValues.firstname,
       lastname: previousValues.lastname,
@@ -49,7 +46,7 @@ function ContactPage() {
       subject: previousValues.subject,
       text: previousValues.text,
     };
-    // 6. Modifier SEULEMENT le champ qui a changé
+    
     if (fieldName === "firstname") {
       updatedValues.firstname = newValue;
     } else if (fieldName === "lastname") {
@@ -61,48 +58,71 @@ function ContactPage() {
     } else if (fieldName === "text") {
       updatedValues.text = newValue;
     }
-    // 7. Mettre à jour l'état avec le nouvel objet
+    
     setFormData(updatedValues);
   };
 
   const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
-    // 1. Empêcher le rechargement de la page (comportement par défaut des formulaires)
     event.preventDefault();
-
-    // 2. Indiquer qu'on est en train d'envoyer (pour désactiver le formulaire)
     setIsSubmitting(true);
+    setFieldErrors({});
 
     try {
-      // 4. Préparer les données à envoyer
-      const dataToSend =
-        isAuthenticated && user
-          ? {
-              // Utilisateur connecté : envoyer username et données utilisateur
-              username: user.username,
-              email: user.email,
-              firstname: user.firstname || null,
-              lastname: user.lastname || null,
-              subject: formData.subject,
-              text: formData.text,
-            }
-          : {
-              // Visiteur non connecté : envoyer toutes les données du formulaire
-              firstname: formData.firstname,
-              lastname: formData.lastname,
-              email: formData.email,
-              subject: formData.subject,
-              text: formData.text,
-            };
+      // Validation Zod selon le type d'utilisateur
+      if (isAuthenticated && user) {
+        // Utilisateur connecté : valider avec messageConnectedSchema
+        const result = messageConnectedSchema.safeParse({
+          subject: formData.subject,
+          text: formData.text,
+        });
 
-      // 5. Envoyer les données au backend via le client API
-      await api.post("/messages", dataToSend);
+        if (!result.success) {
+          const errors: Record<string, string> = {};
+          for (const issue of result.error.issues) {
+            const field = issue.path[0] as string;
+            errors[field] = issue.message;
+          }
+          setFieldErrors(errors);
+          return;
+        }
 
-      // 6. Succès : afficher un toast
+        // Envoyer avec les données utilisateur
+        await api.post("/messages", {
+          username: user.username,
+          email: user.email,
+          firstname: user.firstname || null,
+          lastname: user.lastname || null,
+          subject: result.data.subject,
+          text: result.data.text,
+        });
+      } else {
+        // Visiteur : valider avec messageVisitorSchema
+        const result = messageVisitorSchema.safeParse({
+          firstname: formData.firstname,
+          lastname: formData.lastname,
+          email: formData.email,
+          subject: formData.subject,
+          text: formData.text,
+        });
+
+        if (!result.success) {
+          const errors: Record<string, string> = {};
+          for (const issue of result.error.issues) {
+            const field = issue.path[0] as string;
+            errors[field] = issue.message;
+          }
+          setFieldErrors(errors);
+          return;
+        }
+
+        // Envoyer les données visiteur
+        await api.post("/messages", result.data);
+      }
+
       toast.success("Message envoyé avec succès !");
 
       // Réinitialiser le formulaire
       if (isAuthenticated && user) {
-        // Utilisateur connecté : garder email, firstname, lastname
         setFormData({
           firstname: user.firstname || "",
           lastname: user.lastname || "",
@@ -111,7 +131,6 @@ function ContactPage() {
           text: "",
         });
       } else {
-        // Visiteur non connecté : tout réinitialiser
         setFormData({
           firstname: "",
           lastname: "",
@@ -121,11 +140,9 @@ function ContactPage() {
         });
       }
     } catch (error) {
-      // 7. En cas d'erreur réseau ou autre
       console.error("Erreur lors de l'envoi du message :", error);
       toast.error("Erreur lors de l'envoi. Veuillez réessayer.");
     } finally {
-      // 8. Dans tous les cas, réactiver le formulaire
       setIsSubmitting(false);
     }
   };
@@ -149,6 +166,7 @@ function ContactPage() {
                 maxLength={50}
                 disabled={isSubmitting}
               />
+              {fieldErrors.firstname && <p className="field-error">{fieldErrors.firstname}</p>}
             </div>
 
             <div className="form-group">
@@ -163,6 +181,7 @@ function ContactPage() {
                 maxLength={50}
                 disabled={isSubmitting}
               />
+              {fieldErrors.lastname && <p className="field-error">{fieldErrors.lastname}</p>}
             </div>
 
             <div className="form-group">
@@ -177,6 +196,7 @@ function ContactPage() {
                 maxLength={100}
                 disabled={isSubmitting}
               />
+              {fieldErrors.email && <p className="field-error">{fieldErrors.email}</p>}
             </div>
           </>
         )}
@@ -193,6 +213,7 @@ function ContactPage() {
             maxLength={200}
             disabled={isSubmitting}
           />
+          {fieldErrors.subject && <p className="field-error">{fieldErrors.subject}</p>}
         </div>
 
         <div className="form-group">
@@ -205,6 +226,7 @@ function ContactPage() {
             required
             disabled={isSubmitting}
           />
+          {fieldErrors.text && <p className="field-error">{fieldErrors.text}</p>}
         </div>
 
         <button type="submit" disabled={isSubmitting}>
