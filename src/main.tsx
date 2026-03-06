@@ -4,6 +4,7 @@ import { createBrowserRouter, RouterProvider } from "react-router-dom";
 import "./index.css";
 
 import App from "./App";
+import ErrorBoundary from "./components/organisms/ErrorBoundary";
 import { ProtectedRoute } from "./components/organisms/ProtectedRoute";
 import ArticleCreate from "./components/pages/Admin/Articles/ArticleCreate";
 import ArticleEdit from "./components/pages/Admin/Articles/ArticleEdit";
@@ -21,6 +22,7 @@ import { articleLoader } from "./components/pages/ArticlePage/articleLoader";
 import BlogPage from "./components/pages/BlogPage/BlogPage";
 import { blogLoader } from "./components/pages/BlogPage/blogLoader";
 import ContactPage from "./components/pages/ContactPage/ContactPage";
+import { ErrorPage } from "./components/pages/ErrorPage/ErrorPage";
 import GalleryHubPage from "./components/pages/GalleryPage/GalleryHubPage";
 import GalleryPage from "./components/pages/GalleryPage/GalleryPage";
 import { galleryCategoryLoader } from "./components/pages/GalleryPage/galleryCategoryLoader";
@@ -36,8 +38,6 @@ import { profileLoader } from "./components/pages/ProfilePage/profileLoader";
 import NotFoundPage from "./components/pages/RedirectionPage/NotFoundPage";
 import UnauthorizedPage from "./components/pages/RedirectionPage/UnauthorizedPage";
 import { AuthProvider } from "./contexts/AuthContext";
-import { ErrorPage } from "./components/pages/ErrorPage/ErrorPage";
-import ErrorBoundary from "./components/organisms/ErrorBoundary";
 
 const router = createBrowserRouter([
   {

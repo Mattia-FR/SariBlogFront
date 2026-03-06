@@ -1,8 +1,8 @@
 import type { LoaderFunctionArgs } from "react-router-dom";
-import { api } from "../../../utils/apiClient";
 import type { Category } from "../../../types/categories";
 import type { Image } from "../../../types/image";
 import type { Tag } from "../../../types/tags";
+import { api } from "../../../utils/apiClient";
 import type { GalleryLoaderData } from "./galleryTypes";
 
 export async function galleryCategoryLoader({

@@ -1,5 +1,5 @@
-import type { GalleryHubLoaderData } from "./galleryHubTypes";
 import { Link, useLoaderData } from "react-router-dom";
+import type { GalleryHubLoaderData } from "./galleryHubTypes";
 
 function GalleryHubPage() {
   const { categories } = useLoaderData<GalleryHubLoaderData>();
