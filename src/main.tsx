@@ -21,8 +21,10 @@ import { articleLoader } from "./components/pages/ArticlePage/articleLoader";
 import BlogPage from "./components/pages/BlogPage/BlogPage";
 import { blogLoader } from "./components/pages/BlogPage/blogLoader";
 import ContactPage from "./components/pages/ContactPage/ContactPage";
+import GalleryHubPage from "./components/pages/GalleryPage/GalleryHubPage";
 import GalleryPage from "./components/pages/GalleryPage/GalleryPage";
-import { galleryLoader } from "./components/pages/GalleryPage/galleryLoader";
+import { galleryCategoryLoader } from "./components/pages/GalleryPage/galleryCategoryLoader";
+import { galleryHubLoader } from "./components/pages/GalleryPage/galleryHubLoader";
 import HomePage from "./components/pages/HomePage/HomePage";
 import { homeLoader } from "./components/pages/HomePage/homeLoader";
 import LegalNoticePage from "./components/pages/LegalNoticePage/LegalNoticePage";
@@ -59,8 +61,13 @@ const router = createBrowserRouter([
       },
       {
         path: "/gallery",
+        element: <GalleryHubPage />,
+        loader: galleryHubLoader,
+      },
+      {
+        path: "/gallery/:slug",
         element: <GalleryPage />,
-        loader: galleryLoader,
+        loader: galleryCategoryLoader,
       },
       {
         path: "/presentation",

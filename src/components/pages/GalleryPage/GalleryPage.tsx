@@ -8,7 +8,7 @@ import type { GalleryLoaderData } from "./galleryTypes";
 import "./GalleryPage.css";
 
 function GalleryPage() {
-  const { images, tags } = useLoaderData<GalleryLoaderData>();
+  const { images, tags, category } = useLoaderData<GalleryLoaderData>();
 
   const [selectedTagId, setSelectedTagId] = useState<number | "">("");
   const [selectedImage, setSelectedImage] = useState<Image | null>(null);
@@ -31,6 +31,9 @@ function GalleryPage() {
 
   return (
     <main className="gallery-grid">
+      {category && (
+        <h1 className="gallery-grid__title">Galerie : {category.name}</h1>
+      )}
       <TagFilter
         tags={tags}
         selectedTagId={selectedTagId}
