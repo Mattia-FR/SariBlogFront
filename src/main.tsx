@@ -34,10 +34,13 @@ import { profileLoader } from "./components/pages/ProfilePage/profileLoader";
 import NotFoundPage from "./components/pages/RedirectionPage/NotFoundPage";
 import UnauthorizedPage from "./components/pages/RedirectionPage/UnauthorizedPage";
 import { AuthProvider } from "./contexts/AuthContext";
+import { ErrorPage } from "./components/pages/ErrorPage/ErrorPage";
+import ErrorBoundary from "./components/organisms/ErrorBoundary";
 
 const router = createBrowserRouter([
   {
     element: <App />,
+    errorElement: <ErrorPage />,
     children: [
       {
         path: "/",
@@ -193,8 +196,10 @@ if (!rootElement) {
 
 createRoot(rootElement).render(
   <StrictMode>
-    <AuthProvider>
-      <RouterProvider router={router} />
-    </AuthProvider>
+    <ErrorBoundary>
+      <AuthProvider>
+        <RouterProvider router={router} />
+      </AuthProvider>
+    </ErrorBoundary>
   </StrictMode>,
 );
