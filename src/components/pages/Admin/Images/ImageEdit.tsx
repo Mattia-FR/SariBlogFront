@@ -31,6 +31,7 @@ function ImageEdit() {
       } catch (err) {
         setError("Erreur lors du chargement de l'image");
         toast.error("Erreur lors du chargement");
+        console.error(err);
       } finally {
         setLoading(false);
       }
@@ -56,6 +57,7 @@ function ImageEdit() {
       navigate("/admin/images");
     } catch (err) {
       toast.error("Erreur lors de la mise à jour");
+      console.error(err);
     }
   }
 

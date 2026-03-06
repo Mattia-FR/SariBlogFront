@@ -1,8 +1,8 @@
 import type { FormEvent } from "react";
 import { useState } from "react";
 import { toast } from "react-toastify";
-import { api } from "../../utils/apiClient";
 import { commentCreateSchema } from "../../schemas/commentSchemas";
+import { api } from "../../utils/apiClient";
 
 interface CommentFormProps {
   articleId: number;
@@ -63,7 +63,7 @@ function CommentForm({ articleId, onSuccess }: CommentFormProps) {
     <form onSubmit={handleSubmit} className="comment-form">
       {formError ? <p>{formError}</p> : null}
       {fieldErrors.text && <p>{fieldErrors.text}</p>}
-      
+
       <textarea
         name="text"
         placeholder="Votre commentaire..."
@@ -71,7 +71,7 @@ function CommentForm({ articleId, onSuccess }: CommentFormProps) {
         required
         disabled={isLoading}
       />
-      
+
       <button type="submit" disabled={isLoading}>
         {isLoading ? "Envoi..." : "Envoyer"}
       </button>

@@ -1,8 +1,11 @@
 import { useEffect, useState } from "react";
 import { toast } from "react-toastify";
 import { useAuth } from "../../../hooks/useAuth";
+import {
+  messageConnectedSchema,
+  messageVisitorSchema,
+} from "../../../schemas/messageSchemas";
 import { api } from "../../../utils/apiClient";
-import { messageVisitorSchema, messageConnectedSchema } from "../../../schemas/messageSchemas";
 import "./ContactPage.css";
 
 function ContactPage() {
@@ -46,7 +49,7 @@ function ContactPage() {
       subject: previousValues.subject,
       text: previousValues.text,
     };
-    
+
     if (fieldName === "firstname") {
       updatedValues.firstname = newValue;
     } else if (fieldName === "lastname") {
@@ -58,7 +61,7 @@ function ContactPage() {
     } else if (fieldName === "text") {
       updatedValues.text = newValue;
     }
-    
+
     setFormData(updatedValues);
   };
 
@@ -166,7 +169,9 @@ function ContactPage() {
                 maxLength={50}
                 disabled={isSubmitting}
               />
-              {fieldErrors.firstname && <p className="field-error">{fieldErrors.firstname}</p>}
+              {fieldErrors.firstname && (
+                <p className="field-error">{fieldErrors.firstname}</p>
+              )}
             </div>
 
             <div className="form-group">
@@ -181,7 +186,9 @@ function ContactPage() {
                 maxLength={50}
                 disabled={isSubmitting}
               />
-              {fieldErrors.lastname && <p className="field-error">{fieldErrors.lastname}</p>}
+              {fieldErrors.lastname && (
+                <p className="field-error">{fieldErrors.lastname}</p>
+              )}
             </div>
 
             <div className="form-group">
@@ -196,7 +203,9 @@ function ContactPage() {
                 maxLength={100}
                 disabled={isSubmitting}
               />
-              {fieldErrors.email && <p className="field-error">{fieldErrors.email}</p>}
+              {fieldErrors.email && (
+                <p className="field-error">{fieldErrors.email}</p>
+              )}
             </div>
           </>
         )}
@@ -213,7 +222,9 @@ function ContactPage() {
             maxLength={200}
             disabled={isSubmitting}
           />
-          {fieldErrors.subject && <p className="field-error">{fieldErrors.subject}</p>}
+          {fieldErrors.subject && (
+            <p className="field-error">{fieldErrors.subject}</p>
+          )}
         </div>
 
         <div className="form-group">
@@ -226,7 +237,9 @@ function ContactPage() {
             required
             disabled={isSubmitting}
           />
-          {fieldErrors.text && <p className="field-error">{fieldErrors.text}</p>}
+          {fieldErrors.text && (
+            <p className="field-error">{fieldErrors.text}</p>
+          )}
         </div>
 
         <button type="submit" disabled={isSubmitting}>

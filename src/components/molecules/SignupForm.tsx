@@ -69,7 +69,7 @@ function SignupForm({ onSuccess }: SignupFormProps) {
     <form onSubmit={handleSubmit} className="signup-form">
       {formError ? <p>{formError}</p> : null}
       {fieldErrors.username && <p>{fieldErrors.username}</p>}
-      
+
       <input
         type="text"
         name="username"
@@ -77,27 +77,27 @@ function SignupForm({ onSuccess }: SignupFormProps) {
         required
         disabled={isLoading}
       />
-      
+
       {fieldErrors.firstname && <p>{fieldErrors.firstname}</p>}
-      
+
       <input
         type="text"
         name="firstname"
         placeholder="Prénom (optionnel)"
         disabled={isLoading}
       />
-      
+
       {fieldErrors.lastname && <p>{fieldErrors.lastname}</p>}
-      
+
       <input
         type="text"
         name="lastname"
         placeholder="Nom (optionnel)"
         disabled={isLoading}
       />
-      
+
       {fieldErrors.email && <p>{fieldErrors.email}</p>}
-      
+
       <input
         type="email"
         name="email"
@@ -105,9 +105,9 @@ function SignupForm({ onSuccess }: SignupFormProps) {
         required
         disabled={isLoading}
       />
-      
+
       {fieldErrors.password && <p>{fieldErrors.password}</p>}
-      
+
       <input
         type="password"
         name="password"
@@ -115,7 +115,7 @@ function SignupForm({ onSuccess }: SignupFormProps) {
         required
         disabled={isLoading}
       />
-      
+
       <button type="submit" disabled={isLoading}>
         {isLoading ? "Création..." : "Créer mon compte"}
       </button>

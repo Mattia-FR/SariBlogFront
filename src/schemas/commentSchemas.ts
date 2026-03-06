@@ -1,7 +1,10 @@
 import { z } from "zod";
 
 export const commentCreateSchema = z.object({
-  article_id: z.coerce.number().int().positive("L'ID de l'article doit être un entier positif"),
+  article_id: z.coerce
+    .number()
+    .int()
+    .positive("L'ID de l'article doit être un entier positif"),
   text: z
     .string()
     .trim()

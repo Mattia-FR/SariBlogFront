@@ -54,7 +54,7 @@ function LoginForm({ onSuccess }: LoginFormProps) {
     <form onSubmit={handleSubmit} className="login-form">
       {formError ? <p>{formError}</p> : null}
       {fieldErrors.identifier && <p>{fieldErrors.identifier}</p>}
-      
+
       <input
         type="text"
         name="identifier"
@@ -63,9 +63,9 @@ function LoginForm({ onSuccess }: LoginFormProps) {
         disabled={isLoading}
         className="login-input-user"
       />
-      
+
       {fieldErrors.password && <p>{fieldErrors.password}</p>}
-      
+
       <input
         type="password"
         name="password"
@@ -74,7 +74,7 @@ function LoginForm({ onSuccess }: LoginFormProps) {
         disabled={isLoading}
         className="login-input-password"
       />
-      
+
       <button type="submit" disabled={isLoading}>
         {isLoading ? "Connexion..." : "Se connecter"}
       </button>
