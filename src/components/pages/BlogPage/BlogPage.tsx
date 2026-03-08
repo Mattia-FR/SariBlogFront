@@ -34,7 +34,7 @@ function BlogPage() {
   }
 
   return (
-    <main className="articles-preview">
+    <main className="blog-articles-preview">
       <TagFilter
         tags={tags}
         selectedTagId={selectedTagId}

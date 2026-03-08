@@ -9,29 +9,31 @@
     padding: 4rem 0;
 
     .hero-image {
-      max-width: 50vw;
+      width: clamp(260px, 75vw, 1200px);
       max-height: 70vh;
       object-fit: contain;
       margin: auto;
-      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
     }
 
     .hero-caption {
       display: flex;
       flex-direction: row;
-      justify-content: space-between;
+      justify-content: space-evenly;
       align-items: center;
-      padding: 3rem 0;
+      padding-top: 3rem;
+      flex-wrap: wrap;
+      gap: 2rem;
 
       .hero-title {
         font-family: var(--font-one);
+        font-size: clamp(1rem, 1vw + 1rem, 1.5rem);
         color: var(--color-three);
         padding-bottom: 1rem;
       }
 
       .hero-description {
         color: var(--color-two);
-        font-size: 0.9rem;
+        font-size: clamp(0.7rem, 1vw + 0.6rem, 0.9rem);
       }
 
       .hero-link {
@@ -51,21 +53,42 @@
   }
 
   .articles-preview {
-    padding: 4rem 0;
+    position: relative;
+    padding: 4rem 0 3rem 0;
 
     .articles-preview-title {
       color: var(--color-five);
     }
 
     .articles-preview-grid {
+      /* Passer en 100vw */
+      width: 100vw;
+      position: relative;
+      left: 50%;
+      right: 50%;
+      margin-left: -50vw;
+      margin-right: -50vw;
+      /* Fin du "trick" */
       display: flex;
-      flex-wrap: wrap;
-      justify-content: center;
-      gap: 3rem;
-      padding: 3rem 0;
+      flex-wrap: nowrap;
+      overflow-x: auto;
+      scroll-snap-type: x proximity;
+      scroll-padding-left: 1rem;
+      gap: 1rem;
+      scrollbar-width: none;
+      padding: 2rem 0 2rem 1rem;
+
+      @media (min-width: 720px) {
+        display: flex;
+        flex-wrap: wrap;
+        justify-content: center;
+        gap: 3rem;
+        padding: 3rem 0;
+      }
 
       .article-card {
-        width: clamp(200px, 70vw, 500px);
+        scroll-snap-align: start;
+        width: clamp(200px, 85vw, 500px);
         overflow: hidden;
         flex: 0 0 auto;
         cursor: pointer;
@@ -73,24 +96,37 @@
         box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
         transition: all 0.35s ease;
 
+        @media (min-width: 720px) {
+          width: clamp(200px, 95vw, 500px);
+        }
+
         img {
           width: 100%;
+          min-height: 200px;
           height: 200px;
           aspect-ratio: 1 / 1;
           object-fit: cover;
           display: block;
         }
 
+        .article-card-info {
+          display: flex;
+          flex-wrap: wrap;
+          gap: 1rem;
+          padding: 1rem 0;
+        }
+
         h4 {
           font-family: var(--font-one);
+          font-size: clamp(0.8rem, 1vw + 0.8rem, 1.3rem);
           color: var(--color-three);
-          padding: 1rem;
+          padding: 0 1rem;
         }
 
         .article-card-excerpt {
           color: var(--color-two);
-          font-size: 0.9rem;
-          padding: 0 1rem 1rem 1rem;
+          font-size: clamp(0.7rem, 1vw + 0.6rem, 0.9rem);
+          padding: 0 1rem;
         }
 
         .article-card-date,
@@ -101,6 +137,7 @@
 
         .article-card-date {
           padding-left: 1rem;
+          width: 100%;
         }
 
         .article-card-tags {
@@ -109,7 +146,7 @@
           gap: 1rem;
           list-style: none;
           justify-content: center;
-          padding-bottom: 1rem;
+          margin: 0 auto;
         }
 
         .article-card-tag {
@@ -126,7 +163,22 @@
     }
   }
 
-  .artist-preview {
+  .articles-preview::before {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 1px;
+    background: linear-gradient(
+      to right,
+      transparent,
+      var(--color-five),
+      transparent
+    );
+  }
+
+  .contact-cta {
     /* Passer en 100vw */
     width: 100vw;
     position: relative;
@@ -137,11 +189,48 @@
     /* Fin du "trick" */
     display: flex;
     justify-content: center;
+    background-color: var(--color-five);
     padding: 4rem 0;
 
-    .artist-preview-inner {
-      width: clamp(320px, 90vw, 1200px);
+    .contact-cta-inner {
+      width: clamp(320px, 95vw, 1200px);
     }
+
+    .contact-cta-title {
+      color: var(--color-one);
+    }
+
+    .contact-cta-text {
+      padding-top: 3rem;
+      display: flex;
+      flex-direction: column;
+      align-items: flex-start;
+      gap: 1.5rem;
+      color: var(--color-one);
+    }
+
+    .contact-cta-button {
+      color: var(--color-one);
+      font-family: var(--font-one);
+      border: 1px solid var(--color-three);
+      border-radius: 15px;
+      padding: 1rem 2rem;
+      background-color: var(--color-three);
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+      transition: all 0.35s ease;
+    }
+
+    .contact-cta-button:hover {
+      transform: scale(1.2);
+      box-shadow: 0 8px 24px rgba(0, 0, 0, 0.3);
+    }
+  }
+
+  .artist-preview {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    padding: 4rem 0;
 
     .artist-preview-title {
       color: var(--color-five);
@@ -193,54 +282,6 @@
         background-color: var(--color-five);
         color: var(--color-one);
       }
-    }
-  }
-
-  .contact-cta {
-    /* Passer en 100vw */
-    width: 100vw;
-    position: relative;
-    left: 50%;
-    right: 50%;
-    margin-left: -50vw;
-    margin-right: -50vw;
-    /* Fin du "trick" */
-    display: flex;
-    justify-content: center;
-    background-color: var(--color-five);
-    padding: 4rem 0;
-
-    .contact-cta-inner {
-      width: clamp(320px, 90vw, 1200px);
-    }
-
-    .contact-cta-title {
-      color: var(--color-one);
-    }
-
-    .contact-cta-text {
-      padding: 3rem 0;
-      display: flex;
-      flex-direction: column;
-      align-items: flex-start;
-      gap: 1.5rem;
-      color: var(--color-one);
-    }
-
-    .contact-cta-button {
-      color: var(--color-one);
-      font-family: var(--font-one);
-      border: 1px solid var(--color-three);
-      border-radius: 15px;
-      padding: 1rem 2rem;
-      background-color: var(--color-three);
-      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
-      transition: all 0.35s ease;
-    }
-
-    .contact-cta-button:hover {
-      transform: scale(1.2);
-      box-shadow: 0 8px 24px rgba(0, 0, 0, 0.3);
     }
   }
 }
