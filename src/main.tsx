@@ -15,6 +15,7 @@ import Dashboard from "./components/pages/Admin/Dashboard/Dashboard";
 import ImageCreate from "./components/pages/Admin/Images/ImageCreate";
 import ImageEdit from "./components/pages/Admin/Images/ImageEdit";
 import ImagesAdmin from "./components/pages/Admin/Images/ImagesAdmin";
+import LoginPage from "./components/pages/Admin/Login/LoginPage";
 import MessagesAdmin from "./components/pages/Admin/Messages/MessagesAdmin";
 import TagsAdmin from "./components/pages/Admin/Tags/TagsAdmin";
 import ArticlePage from "./components/pages/ArticlePage/ArticlePage";
@@ -94,6 +95,10 @@ const router = createBrowserRouter([
           </ProtectedRoute>
         ),
         loader: profileLoader,
+      },
+      {
+        path: "/login",
+        element: <LoginPage />,
       },
       {
         path: "/admin",

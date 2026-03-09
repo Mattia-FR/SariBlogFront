@@ -18,11 +18,11 @@ function ArtistPreview({ user }: { user: User }) {
           <p className="artist-preview-bio">
             {user.bio_short ?? "Biographie à venir"}
           </p>
-          <Link to="/presentation" className="artist-preview-cta">
-            Voir la présentation
-          </Link>
         </div>
       </div>
+      <Link to="/presentation" className="artist-preview-cta">
+        Voir la présentation
+      </Link>
     </section>
   );
 }

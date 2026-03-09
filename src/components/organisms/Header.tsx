@@ -1,5 +1,4 @@
 import Navbar from "../molecules/Navbar";
-import Login from "./Login";
 import "./Header.css";
 import logo from "../../assets/logo.png";
 
@@ -9,7 +8,6 @@ function Header() {
       <img src={logo} alt="logo" className="header-logo" />
       <div className="header-text">
         <Navbar />
-        <Login />
       </div>
     </header>
   );

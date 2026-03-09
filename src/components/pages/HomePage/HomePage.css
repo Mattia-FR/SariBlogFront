@@ -231,6 +231,7 @@
     flex-direction: column;
     justify-content: center;
     padding: 4rem 0;
+    width: clamp(320px, 95vw, 1200px);
 
     .artist-preview-title {
       color: var(--color-five);
@@ -268,20 +269,21 @@
       .artist-preview-bio {
         font-size: 0.9rem;
       }
+    }
 
-      .artist-preview-cta {
-        color: var(--color-five);
-        font-family: var(--font-one);
-        border: 1px solid var(--color-five);
-        border-radius: 15px;
-        padding: 1rem 2rem;
-        transition: all 0.35s ease;
-      }
+    .artist-preview-cta {
+      color: var(--color-five);
+      font-family: var(--font-one);
+      border: 1px solid var(--color-five);
+      border-radius: 15px;
+      padding: 1rem 2rem;
+      width: fit-content;
+      transition: all 0.35s ease;
+    }
 
-      .artist-preview-cta:hover {
-        background-color: var(--color-five);
-        color: var(--color-one);
-      }
+    .artist-preview-cta:hover {
+      background-color: var(--color-five);
+      color: var(--color-one);
     }
   }
 }
