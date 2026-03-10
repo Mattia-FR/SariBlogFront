@@ -24,11 +24,17 @@ function CommentForm({ articleId, onSuccess }: CommentFormProps) {
     const form = event.currentTarget;
     const formData = new FormData(form);
     const text = (formData.get("text") as string) || "";
+    const firstname = (formData.get("firstname") as string) || "";
+    const lastname = (formData.get("lastname") as string) || "";
+    const email = (formData.get("email") as string) || "";
 
     // Validation Zod
     const result = commentCreateSchema.safeParse({
       article_id: articleId,
       text,
+      firstname,
+      lastname,
+      email,
     });
 
     if (!result.success) {
@@ -62,8 +68,34 @@ function CommentForm({ articleId, onSuccess }: CommentFormProps) {
   return (
     <form onSubmit={handleSubmit} className="comment-form">
       {formError ? <p>{formError}</p> : null}
+      {fieldErrors.firstname && <p>{fieldErrors.firstname}</p>}
+      <input
+        type="text"
+        name="firstname"
+        placeholder="Prénom"
+        required
+        disabled={isLoading}
+        aria-label="Prénom"
+      />
+      {fieldErrors.lastname && <p>{fieldErrors.lastname}</p>}
+      <input
+        type="text"
+        name="lastname"
+        placeholder="Nom"
+        required
+        disabled={isLoading}
+        aria-label="Nom"
+      />
+      {fieldErrors.email && <p>{fieldErrors.email}</p>}
+      <input
+        type="email"
+        name="email"
+        placeholder="Email"
+        required
+        disabled={isLoading}
+        aria-label="Email"
+      />
       {fieldErrors.text && <p>{fieldErrors.text}</p>}
-
       <textarea
         name="text"
         placeholder="Votre commentaire..."

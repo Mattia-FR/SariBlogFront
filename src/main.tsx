@@ -17,6 +17,8 @@ import ImageEdit from "./components/pages/Admin/Images/ImageEdit";
 import ImagesAdmin from "./components/pages/Admin/Images/ImagesAdmin";
 import LoginPage from "./components/pages/Admin/Login/LoginPage";
 import MessagesAdmin from "./components/pages/Admin/Messages/MessagesAdmin";
+import ProfilePage from "./components/pages/Admin/Profile/ProfilePage";
+import { profileLoader } from "./components/pages/Admin/Profile/profileLoader";
 import TagsAdmin from "./components/pages/Admin/Tags/TagsAdmin";
 import ArticlePage from "./components/pages/ArticlePage/ArticlePage";
 import { articleLoader } from "./components/pages/ArticlePage/articleLoader";
@@ -34,8 +36,6 @@ import LegalNoticePage from "./components/pages/LegalNoticePage/LegalNoticePage"
 import PresentationPage from "./components/pages/PresentationPage/PresentationPage";
 import { presentationLoader } from "./components/pages/PresentationPage/presentationLoader";
 import PrivacyPolicyPage from "./components/pages/PrivacyPolicyPage/PrivacyPolicyPage";
-import ProfilePage from "./components/pages/ProfilePage/ProfilePage";
-import { profileLoader } from "./components/pages/ProfilePage/profileLoader";
 import NotFoundPage from "./components/pages/RedirectionPage/NotFoundPage";
 import UnauthorizedPage from "./components/pages/RedirectionPage/UnauthorizedPage";
 import { AuthProvider } from "./contexts/AuthContext";
@@ -88,9 +88,9 @@ const router = createBrowserRouter([
         element: <PrivacyPolicyPage />,
       },
       {
-        path: "/profile",
+        path: "/admin/profile",
         element: (
-          <ProtectedRoute>
+          <ProtectedRoute allowedRoles={["admin", "editor"]}>
             <ProfilePage />
           </ProtectedRoute>
         ),

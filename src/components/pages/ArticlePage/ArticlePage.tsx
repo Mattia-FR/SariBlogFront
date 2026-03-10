@@ -1,6 +1,5 @@
 import { useState } from "react";
 import { useLoaderData } from "react-router-dom";
-import { useAuth } from "../../../hooks/useAuth";
 import CommentForm from "../../molecules/CommentForm";
 import Modal from "../../molecules/Modal";
 import type { ArticleLoaderData } from "./articleTypes";
@@ -9,7 +8,6 @@ import CommentCard from "../../molecules/CommentCard";
 
 function ArticlePage() {
   const data = useLoaderData<ArticleLoaderData>();
-  const { user } = useAuth();
   const [isCommentModalOpen, setIsCommentModalOpen] = useState(false);
 
   const { article, articleImages, comments } = data;
@@ -48,24 +46,18 @@ function ArticlePage() {
 
       <section aria-label="Commentaires">
         <h2>Commentaires</h2>
-        {user ? (
-          <>
-            <button type="button" onClick={() => setIsCommentModalOpen(true)}>
-              Laisser un commentaire
-            </button>
-            <Modal
-              isOpen={isCommentModalOpen}
-              onClose={() => setIsCommentModalOpen(false)}
-            >
-              <CommentForm
-                articleId={article.id}
-                onSuccess={() => setIsCommentModalOpen(false)}
-              />
-            </Modal>
-          </>
-        ) : (
-          <p>Connectez-vous pour laisser un commentaire.</p>
-        )}
+        <button type="button" onClick={() => setIsCommentModalOpen(true)}>
+          Laisser un commentaire
+        </button>
+        <Modal
+          isOpen={isCommentModalOpen}
+          onClose={() => setIsCommentModalOpen(false)}
+        >
+          <CommentForm
+            articleId={article.id}
+            onSuccess={() => setIsCommentModalOpen(false)}
+          />
+        </Modal>
         {comments.length === 0 ? (
           <p>Aucun commentaire pour le moment.</p>
         ) : (

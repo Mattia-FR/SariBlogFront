@@ -13,13 +13,6 @@ interface AuthContextValue {
   isInitializing: boolean;
   isLoading: boolean;
   login: (identifier: string, password: string) => Promise<void>;
-  signup: (
-    username: string,
-    email: string,
-    password: string,
-    firstname?: string | null,
-    lastname?: string | null,
-  ) => Promise<void>;
   logout: () => Promise<void>;
 }
 
@@ -84,43 +77,6 @@ export function AuthProvider({ children }: AuthProviderProps) {
     }
   }
 
-  async function signup(
-    username: string,
-    email: string,
-    password: string,
-    firstname?: string | null,
-    lastname?: string | null,
-  ) {
-    try {
-      setIsLoading(true);
-
-      const response = await apiClient("/auth/signup", {
-        method: "POST",
-        body: JSON.stringify({
-          username,
-          email,
-          password,
-          firstname: firstname ?? null,
-          lastname: lastname ?? null,
-        }),
-      });
-
-      if (!response.ok) {
-        const data = await response.json();
-        throw new Error(data.error || "Erreur d'inscription");
-      }
-
-      const data = await response.json();
-      setAccessToken(data.accessToken);
-      setUser(data.user);
-    } catch (err) {
-      console.error("Erreur d'inscription:", err);
-      throw err;
-    } finally {
-      setIsLoading(false);
-    }
-  }
-
   async function logout() {
     try {
       setIsLoading(true);
@@ -140,7 +96,6 @@ export function AuthProvider({ children }: AuthProviderProps) {
     isInitializing,
     isLoading,
     login,
-    signup,
     logout,
   };
 
