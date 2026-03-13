@@ -8,7 +8,11 @@ interface TagFilterProps {
 
 function TagFilter({ tags, selectedTagId, onTagChange }: TagFilterProps) {
   return (
-    <select value={selectedTagId} onChange={onTagChange}>
+    <select
+      value={selectedTagId}
+      onChange={onTagChange}
+      className="tag-filter-btn"
+    >
       <option value="">Tous les tags</option>
       {tags.map((tag) => (
         <option key={tag.id} value={tag.id}>

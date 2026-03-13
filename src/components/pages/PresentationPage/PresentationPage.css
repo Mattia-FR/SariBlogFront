@@ -1,4 +1,5 @@
 .presentation-page {
+  width: clamp(320px, 95vw, 1200px);
   padding: 4rem 0;
 
   .sr-only {
@@ -17,12 +18,13 @@
     display: flex;
     flex-direction: row;
     align-items: center;
-    justify-content: space-evenly;
+    justify-content: center;
+    gap: 3rem;
     padding-bottom: 3rem;
 
     .artist-avatar {
-      height: 10rem;
-      width: 10rem;
+      height: 40vw;
+      width: 40vw;
       aspect-ratio: 1 / 1;
       object-fit: cover;
       display: block;
@@ -46,6 +48,6 @@
   }
 
   .artist-bio {
-    max-width: 50vw;
+    line-height: 1.5rem;
   }
 }

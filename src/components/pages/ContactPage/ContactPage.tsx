@@ -4,8 +4,33 @@ import { messageVisitorSchema } from "../../../schemas/messageSchemas";
 import { api } from "../../../utils/apiClient";
 import "./ContactPage.css";
 
+type FormFields = "firstname" | "lastname" | "email" | "subject" | "text";
+
+const CHAR_LIMITS: Partial<Record<FormFields, number>> = {
+  firstname: 50,
+  lastname: 50,
+  email: 100,
+  subject: 200,
+  text: 5000,
+};
+
+function getInlineError(field: FormFields, value: string): string {
+  switch (field) {
+    case "firstname":
+    case "lastname":
+      if (value.length > 0 && value.trim().length < 1)
+        return "Ce champ est requis.";
+      break;
+    case "email":
+      if (value.length > 0 && !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(value))
+        return "Adresse email invalide.";
+      break;
+  }
+  return "";
+}
+
 function ContactPage() {
-  const [formData, setFormData] = useState({
+  const [formData, setFormData] = useState<Record<FormFields, string>>({
     firstname: "",
     lastname: "",
     email: "",
@@ -15,35 +40,30 @@ function ContactPage() {
 
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [fieldErrors, setFieldErrors] = useState<Record<string, string>>({});
+  const [touched, setTouched] = useState<Record<string, boolean>>({});
 
   const handleInputChange = (
     event: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>,
   ) => {
-    const changedElement = event.target;
-    const fieldName = changedElement.name;
-    const newValue = changedElement.value;
-    const previousValues = formData;
-    const updatedValues = {
-      firstname: previousValues.firstname,
-      lastname: previousValues.lastname,
-      email: previousValues.email,
-      subject: previousValues.subject,
-      text: previousValues.text,
-    };
+    const { name, value } = event.target;
+    setFormData((prev) => ({ ...prev, [name]: value }));
 
-    if (fieldName === "firstname") {
-      updatedValues.firstname = newValue;
-    } else if (fieldName === "lastname") {
-      updatedValues.lastname = newValue;
-    } else if (fieldName === "email") {
-      updatedValues.email = newValue;
-    } else if (fieldName === "subject") {
-      updatedValues.subject = newValue;
-    } else if (fieldName === "text") {
-      updatedValues.text = newValue;
+    // Réinitialise touched pour stopper la réévaluation inline pendant la frappe
+    setTouched((prev) => ({ ...prev, [name]: false }));
+
+    if (fieldErrors[name]) {
+      setFieldErrors((prev) => {
+        const next = { ...prev };
+        delete next[name];
+        return next;
+      });
     }
+  };
 
-    setFormData(updatedValues);
+  const handleBlur = (
+    event: React.FocusEvent<HTMLInputElement | HTMLTextAreaElement>,
+  ) => {
+    setTouched((prev) => ({ ...prev, [event.target.name]: true }));
   };
 
   const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
@@ -51,14 +71,17 @@ function ContactPage() {
     setIsSubmitting(true);
     setFieldErrors({});
 
+    // Mark all fields as touched on submit
+    setTouched({
+      firstname: true,
+      lastname: true,
+      email: true,
+      subject: true,
+      text: true,
+    });
+
     try {
-      const result = messageVisitorSchema.safeParse({
-        firstname: formData.firstname,
-        lastname: formData.lastname,
-        email: formData.email,
-        subject: formData.subject,
-        text: formData.text,
-      });
+      const result = messageVisitorSchema.safeParse(formData);
 
       if (!result.success) {
         const errors: Record<string, string> = {};
@@ -81,6 +104,7 @@ function ContactPage() {
         subject: "",
         text: "",
       });
+      setTouched({});
     } catch (error) {
       console.error("Erreur lors de l'envoi du message :", error);
       toast.error("Erreur lors de l'envoi. Veuillez réessayer.");
@@ -89,93 +113,94 @@ function ContactPage() {
     }
   };
 
+  /**
+   * Returns the error message to display for a field.
+   * Zod errors (post-submit) take priority over inline errors.
+   */
+  const getDisplayError = (field: FormFields): string => {
+    if (fieldErrors[field]) return fieldErrors[field];
+    if (touched[field]) return getInlineError(field, formData[field]);
+    return "";
+  };
+
+  const renderField = (
+    field: FormFields,
+    label: string,
+    type: "text" | "email" | "textarea" = "text",
+  ) => {
+    const error = getDisplayError(field);
+    const limit = CHAR_LIMITS[field];
+    const showCounter =
+      (field === "subject" || field === "text") &&
+      limit != null &&
+      formData[field].length > 0;
+
+    return (
+      <div className="form-group">
+        <label htmlFor={field}>{label}</label>
+
+        {type === "textarea" ? (
+          <textarea
+            rows={4}
+            id={field}
+            className={`text${error ? " field-invalid" : ""}`}
+            name={field}
+            value={formData[field]}
+            onChange={handleInputChange}
+            onBlur={handleBlur}
+            required
+            disabled={isSubmitting}
+            aria-describedby={error ? `${field}-error` : undefined}
+            maxLength={limit}
+            aria-invalid={!!error}
+          />
+        ) : (
+          <input
+            id={field}
+            className={`${field}${error ? " field-invalid" : ""}`}
+            type={type}
+            name={field}
+            value={formData[field]}
+            onChange={handleInputChange}
+            onBlur={handleBlur}
+            required
+            maxLength={limit}
+            disabled={isSubmitting}
+            aria-describedby={error ? `${field}-error` : undefined}
+            aria-invalid={!!error}
+          />
+        )}
+
+        <div className="field-footer">
+          {error ? (
+            <p id={`${field}-error`} className="field-error" role="alert">
+              {error}
+            </p>
+          ) : (
+            <span /> // préserve le layout
+          )}
+          {showCounter && limit && (
+            <span
+              className={`char-count${formData[field].length >= limit * 0.9 ? " char-count--warn" : ""}`}
+            >
+              {formData[field].length}/{limit}
+            </span>
+          )}
+        </div>
+      </div>
+    );
+  };
+
   return (
     <main className="contact-main">
-      <h1>Formulaire de contact</h1>
+      <h1>Me contacter :</h1>
 
-      <form onSubmit={handleSubmit} className="contact-form">
-        <div className="form-group">
-          <label htmlFor="firstname">Prénom :</label>
-          <input
-            className="firstname"
-            type="text"
-            name="firstname"
-            value={formData.firstname}
-            onChange={handleInputChange}
-            required
-            maxLength={50}
-            disabled={isSubmitting}
-          />
-          {fieldErrors.firstname && (
-            <p className="field-error">{fieldErrors.firstname}</p>
-          )}
-        </div>
-
-        <div className="form-group">
-          <label htmlFor="lastname">Nom :</label>
-          <input
-            className="lastname"
-            type="text"
-            name="lastname"
-            value={formData.lastname}
-            onChange={handleInputChange}
-            required
-            maxLength={50}
-            disabled={isSubmitting}
-          />
-          {fieldErrors.lastname && (
-            <p className="field-error">{fieldErrors.lastname}</p>
-          )}
-        </div>
-
-        <div className="form-group">
-          <label htmlFor="email">Email :</label>
-          <input
-            className="email"
-            type="email"
-            name="email"
-            value={formData.email}
-            onChange={handleInputChange}
-            required
-            maxLength={100}
-            disabled={isSubmitting}
-          />
-          {fieldErrors.email && (
-            <p className="field-error">{fieldErrors.email}</p>
-          )}
-        </div>
-
-        <div className="form-group">
-          <label htmlFor="subject">Sujet :</label>
-          <input
-            className="subject"
-            type="text"
-            name="subject"
-            value={formData.subject}
-            onChange={handleInputChange}
-            required
-            maxLength={200}
-            disabled={isSubmitting}
-          />
-          {fieldErrors.subject && (
-            <p className="field-error">{fieldErrors.subject}</p>
-          )}
-        </div>
-
-        <div className="form-group">
-          <label htmlFor="text">Message :</label>
-          <textarea
-            className="text"
-            name="text"
-            value={formData.text}
-            onChange={handleInputChange}
-            required
-            disabled={isSubmitting}
-          />
-          {fieldErrors.text && (
-            <p className="field-error">{fieldErrors.text}</p>
-          )}
-        </div>
+      <form onSubmit={handleSubmit} className="contact-form" noValidate>
+        {renderField("firstname", "Prénom :")}
+        {renderField("lastname", "Nom :")}
+        {renderField("email", "Email :", "email")}
+        {renderField("subject", "Sujet :")}
+        {renderField("text", "Message :", "textarea")}
 
         <button type="submit" disabled={isSubmitting}>
           {isSubmitting ? "Envoi en cours..." : "Envoyer"}

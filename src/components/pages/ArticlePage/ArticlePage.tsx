@@ -14,10 +14,10 @@ function ArticlePage() {
 
   return (
     <main className="article-detail">
-      <h1 className="article-title">{article.title}</h1>
+      <h1 className="article-detail-title">{article.title}</h1>
 
       {article.published_at && (
-        <p className="article-date">
+        <p className="article-detail-date">
           {new Date(article.published_at).toLocaleDateString("fr-FR")}
         </p>
       )}
@@ -32,7 +32,7 @@ function ArticlePage() {
         </ul>
       )}
 
-      <div className="article-images">
+      <div className="article-detail-images">
         {articleImages.map((image) => (
           <img
             key={image.id}
@@ -42,11 +42,15 @@ function ArticlePage() {
         ))}
       </div>
 
-      <p>{article.content}</p>
+      <p className="article-detail-content">{article.content}</p>
 
-      <section aria-label="Commentaires">
-        <h2>Commentaires</h2>
-        <button type="button" onClick={() => setIsCommentModalOpen(true)}>
+      <section aria-label="Commentaires" className="article-detail-comments">
+        <h2 className="article-detail-comments-title">Commentaires</h2>
+        <button
+          className="article-detail-comments-btn"
+          type="button"
+          onClick={() => setIsCommentModalOpen(true)}
+        >
           Laisser un commentaire
         </button>
         <Modal

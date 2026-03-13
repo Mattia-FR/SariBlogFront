@@ -32,7 +32,7 @@ function GalleryPage() {
   return (
     <main className="gallery-grid">
       {category && (
-        <h1 className="gallery-grid__title">Galerie : {category.name}</h1>
+        <h1 className="gallery-grid-title">Galerie : {category.name}</h1>
       )}
       <TagFilter
         tags={tags}
@@ -41,13 +41,15 @@ function GalleryPage() {
           setSelectedTagId(e.target.value ? Number(e.target.value) : "")
         }
       />
-      {filteredImages.map((image) => (
-        <ImageCard
-          key={image.id}
-          image={image}
-          onClick={(img) => setSelectedImage(img)}
-        />
-      ))}
+      <div className="gallery-grid-content">
+        {filteredImages.map((image) => (
+          <ImageCard
+            key={image.id}
+            image={image}
+            onClick={(img) => setSelectedImage(img)}
+          />
+        ))}
+      </div>
 
       <Modal
         isOpen={selectedImage !== null}
