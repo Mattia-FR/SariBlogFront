@@ -9,5 +9,12 @@ export async function blogLoader(): Promise<BlogLoaderData> {
     api.get<Tag[]>("/tags"),
   ]);
 
-  return { articles, tags };
+  // flatMap = .map(...).flat() et permet d'obtenir un seul tableau
+  // Set est une structure qui dédoublonne automatiquement.
+  const usedTagIds = new Set(
+    articles.flatMap((article) => article.tags?.map((t) => t.id) ?? []),
+  );
+  const filteredTags = tags.filter((tag) => usedTagIds.has(tag.id));
+
+  return { articles, tags: filteredTags };
 }

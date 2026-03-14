@@ -16,6 +16,9 @@
   }
 
   .article-detail-tags {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.5rem;
     color: var(--color-four);
     list-style: none;
 
@@ -33,12 +36,11 @@
     flex-wrap: wrap;
     justify-content: center;
     gap: 3rem;
+    padding: 2rem 0;
 
     img {
-      width: 20rem;
-      height: 20rem;
-      aspect-ratio: 1 / 1;
-      object-fit: cover;
+      width: clamp(20rem, 90vw, 50rem);
+      object-fit: contain;
       display: block;
     }
   }
@@ -65,6 +67,30 @@
       color: var(--color-one);
       font-family: var(--font-two);
       width: fit-content;
+    }
+
+    .article-detail-comments-no {
+      font-size: 0.9rem;
+      font-style: italic;
+    }
+
+    .comment-card {
+      .comment-card-meta {
+        color: var(--color-three);
+      }
+
+      ul {
+        list-style: none;
+      }
+
+      .comment-card-date {
+        font-style: italic;
+        font-size: 0.9rem;
+      }
+
+      .comment-card-text {
+        font-size: 0.9rem;
+      }
     }
   }
 }

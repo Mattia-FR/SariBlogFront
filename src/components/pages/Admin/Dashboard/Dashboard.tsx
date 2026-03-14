@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import { toast } from "react-toastify";
 import { api } from "../../../../utils/apiClient";
+import "./Dashboard.css";
 
 interface DashboardStats {
   articles: {
@@ -64,17 +65,17 @@ function Dashboard() {
   }
 
   return (
-    <main>
-      <h1>Tableau de bord</h1>
-
+    <main className="dashboard">
       <section className="dashboard-actions">
         <h2>Actions rapides</h2>
-        <Link to="/admin/articles">Gérer les articles</Link>
-        <Link to="/admin/messages">Voir les messages</Link>
-        <Link to="/admin/images">Gérer la galerie</Link>
-        <Link to="/admin/comments">Gérer les commentaires</Link>
-        <Link to="/admin/tags">Gérer les tags</Link>
-        <Link to="/admin/categories">Gérer les catégories</Link>
+        <div className="dashboard-nav">
+          <Link to="/admin/articles">Gérer les articles</Link>
+          <Link to="/admin/messages">Voir les messages</Link>
+          <Link to="/admin/images">Gérer la galerie</Link>
+          <Link to="/admin/comments">Gérer les commentaires</Link>
+          <Link to="/admin/tags">Gérer les tags</Link>
+          <Link to="/admin/categories">Gérer les catégories</Link>
+        </div>
       </section>
 
       {stats && (

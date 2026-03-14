@@ -1,31 +1,24 @@
+import "./LegalNoticePage.css";
+
 function LegalNoticePage() {
   return (
     <main className="legal-page">
-      <h1>Mentions légales</h1>
+      <h1 className="legal-page-title">Mentions légales</h1>
       <p className="legal-page-updated">
         Dernière mise à jour : [À REMPLIR - ex. 18 février 2026]
       </p>
 
       <section>
         <h2>1. Éditeur du site</h2>
-        <p>
-          Le site <strong>Le blog de Sari</strong> (Sariblog) est édité par :
-        </p>
+        <p>Le site Le blog de Sari (Sariblog) est édité par :</p>
         <ul>
-          <li>
-            <strong>Nom / Raison sociale :</strong> [À REMPLIR - ex. Sari
-            Eliott]
-          </li>
-          <li>
-            <strong>Adresse :</strong> [À REMPLIR - adresse postale complète]
-          </li>
-          <li>
-            <strong>Email :</strong> [À REMPLIR - ex. contact@exemple.com]
-          </li>
+          <li>Nom / Raison sociale : [À REMPLIR - ex. Sari Eliott]</li>
+          <li>Adresse : [À REMPLIR - adresse postale complète]</li>
+          <li>Email : [À REMPLIR - ex. contact@exemple.com]</li>
           {/*
             Si activité économique, décommenter et remplir :
-          <li><strong>Numéro SIRET / SIREN :</strong> [À REMPLIR]</li>
-          <li><strong>Numéro de TVA intracommunautaire :</strong> [À REMPLIR si assujetti]</li>
+          <li>Numéro SIRET / SIREN : [À REMPLIR]</li>
+          <li>Numéro de TVA intracommunautaire : [À REMPLIR si assujetti]</li>
           */}
         </ul>
       </section>
@@ -42,16 +35,9 @@ function LegalNoticePage() {
         <h2>3. Hébergeur</h2>
         <p>Le site est hébergé par :</p>
         <ul>
-          <li>
-            <strong>Raison sociale :</strong> [À REMPLIR - ex. OVH, Hostinger,
-            etc.]
-          </li>
-          <li>
-            <strong>Adresse :</strong> [À REMPLIR - adresse de l’hébergeur]
-          </li>
-          <li>
-            <strong>Téléphone :</strong> [À REMPLIR - si disponible]
-          </li>
+          <li>Raison sociale : [À REMPLIR - ex. OVH, Hostinger, etc.]</li>
+          <li>Adresse : [À REMPLIR - adresse de l’hébergeur]</li>
+          <li>Téléphone : [À REMPLIR - si disponible]</li>
         </ul>
       </section>
 

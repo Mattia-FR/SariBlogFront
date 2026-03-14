@@ -47,12 +47,12 @@ function ProfilePage() {
 
         <div className="profile-meta">
           <p>
-            <strong>Membre depuis :</strong>{" "}
+            Membre depuis :{" "}
             {new Date(user.created_at).toLocaleDateString("fr-FR")}
           </p>
           {user.updated_at && (
             <p>
-              <strong>Dernière mise à jour :</strong>{" "}
+              Dernière mise à jour :{" "}
               {new Date(user.updated_at).toLocaleDateString("fr-FR")}
             </p>
           )}

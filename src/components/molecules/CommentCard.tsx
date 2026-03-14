@@ -9,8 +9,8 @@ function CommentCard({ comment, showStatus = false }: CommentCardProps) {
     <article className="comment-card">
       <header className="comment-card-meta">
         <ul>
-          <li>{author}</li>
-          <li>
+          <li className="comment-card-autor">{author}</li>
+          <li className="comment-card-date">
             <time dateTime={comment.created_at}>
               {new Date(comment.created_at).toLocaleDateString("fr-FR")}
             </time>

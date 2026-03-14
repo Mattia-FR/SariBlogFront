@@ -40,9 +40,7 @@
 
       .image-card-img {
         width: 20rem;
-        height: 20rem;
-        aspect-ratio: 1 / 1;
-        object-fit: cover;
+        object-fit: contain;
         display: block;
         transition: filter 0.3s ease;
       }

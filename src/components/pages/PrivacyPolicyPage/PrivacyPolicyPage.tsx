@@ -1,7 +1,7 @@
 function PrivacyPolicyPage() {
   return (
     <main className="legal-page">
-      <h1>Politique de confidentialité</h1>
+      <h1 className="legal-page-title">Politique de confidentialité</h1>
       <p className="legal-page-updated">
         Dernière mise à jour : [À REMPLIR - ex. 18 février 2026]
       </p>
@@ -13,15 +13,9 @@ function PrivacyPolicyPage() {
           ce site est :
         </p>
         <ul>
-          <li>
-            <strong>Identité :</strong> [À REMPLIR - ex. Sari Eliott]
-          </li>
-          <li>
-            <strong>Adresse :</strong> [À REMPLIR - adresse postale]
-          </li>
-          <li>
-            <strong>Email :</strong> [À REMPLIR - pour exercer vos droits]
-          </li>
+          <li>Identité : [À REMPLIR - ex. Sari Eliott]</li>
+          <li>Adresse : [À REMPLIR - adresse postale]</li>
+          <li>Email : [À REMPLIR - pour exercer vos droits]</li>
         </ul>
       </section>
 
@@ -30,27 +24,25 @@ function PrivacyPolicyPage() {
         <p>Les données suivantes peuvent être collectées :</p>
         <ul>
           <li>
-            <strong>Compte utilisateur (inscription / connexion)</strong> :
-            identifiant, adresse email, mot de passe (stocké de manière
-            sécurisée), prénom et nom si renseignés. Finalité : création et
-            gestion du compte, authentification.
+            Compte utilisateur (inscription / connexion) : identifiant, adresse
+            email, mot de passe (stocké de manière sécurisée), prénom et nom si
+            renseignés. Finalité : création et gestion du compte,
+            authentification.
           </li>
           <li>
-            <strong>Formulaire de contact</strong> : prénom, nom, email, sujet,
-            message. L’adresse IP est également enregistrée à des fins de
-            sécurité et de preuve en cas d’abus. Finalité : traitement de votre
-            demande et réponse.
+            Formulaire de contact : prénom, nom, email, sujet, message.
+            L’adresse IP est également enregistrée à des fins de sécurité et de
+            preuve en cas d’abus. Finalité : traitement de votre demande et
+            réponse.
           </li>
           <li>
-            <strong>Commentaires</strong> : contenu du commentaire et identité
-            (via le compte connecté). Finalité : affichage des commentaires et
-            modération.
+            Commentaires : contenu du commentaire et identité (via le compte
+            connecté). Finalité : affichage des commentaires et modération.
           </li>
           <li>
-            <strong>Navigation</strong> : un cookie technique (refresh token)
-            est utilisé pour maintenir votre session connectée. Aucun cookie
-            publicitaire ni outil de mesure d’audience n’est utilisé sur ce
-            site.
+            Navigation : un cookie technique (refresh token) est utilisé pour
+            maintenir votre session connectée. Aucun cookie publicitaire ni
+            outil de mesure d’audience n’est utilisé sur ce site.
           </li>
         </ul>
       </section>
@@ -68,21 +60,15 @@ function PrivacyPolicyPage() {
         <h2>4. Durée de conservation</h2>
         <ul>
           <li>
-            <strong>Données de compte :</strong> [À REMPLIR - ex. tant que le
-            compte est actif, puis X ans après clôture].
+            Données de compte : [À REMPLIR - ex. tant que le compte est actif,
+            puis X ans après clôture].
           </li>
           <li>
-            <strong>Messages de contact :</strong> [À REMPLIR - ex. 3 ans à
-            compter du dernier contact].
+            Messages de contact : [À REMPLIR - ex. 3 ans à compter du dernier
+            contact].
           </li>
-          <li>
-            <strong>Adresse IP (formulaire de contact) :</strong> [À REMPLIR -
-            ex. 1 an].
-          </li>
-          <li>
-            <strong>Cookie de session :</strong> 7 jours (durée technique du
-            cookie).
-          </li>
+          <li>Adresse IP (formulaire de contact) : [À REMPLIR - ex. 1 an].</li>
+          <li>Cookie de session : 7 jours (durée technique du cookie).</li>
         </ul>
       </section>
 

@@ -1,0 +1,30 @@
+.legal-page {
+  display: flex;
+  flex-direction: column;
+  width: clamp(320px, 95vw, 1200px);
+  gap: 1.5rem;
+  padding: 3rem 0;
+
+  .legal-page-title {
+    color: var(--color-three);
+  }
+
+  .legal-page-updated {
+    font-style: italic;
+    color: var(--color-four);
+  }
+
+  h2 {
+    color: var(--color-three);
+    font-size: 1.2rem;
+    padding-bottom: 0.5rem;
+  }
+
+  section {
+    padding: 0 1rem;
+
+    ul {
+      list-style: none;
+    }
+  }
+}

@@ -63,7 +63,9 @@ function ArticlePage() {
           />
         </Modal>
         {comments.length === 0 ? (
-          <p>Aucun commentaire pour le moment.</p>
+          <p className="article-detail-comments-no">
+            Aucun commentaire pour le moment.
+          </p>
         ) : (
           <ul>
             {comments.map((c) => (
