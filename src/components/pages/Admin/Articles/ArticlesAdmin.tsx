@@ -5,6 +5,7 @@ import type { Tag } from "../../../../types/tags";
 import { api } from "../../../../utils/apiClient";
 import ArticleCard from "../../../molecules/ArticleCard";
 import TagFilter from "../../../molecules/TagFilter";
+import "./ArticlesAdmin.css";
 
 function ArticlesAdmin() {
   const [articles, setArticles] = useState<Article[]>([]);
@@ -58,8 +59,8 @@ function ArticlesAdmin() {
   }
 
   return (
-    <main className="articles-preview">
-      <h2 className="articles-preview-title">Tous les articles</h2>
+    <main className="articles-admin">
+      <h2 className="articles-admin-title">Tous les articles</h2>
       <TagFilter
         tags={tags}
         selectedTagId={selectedTagId}
@@ -67,8 +68,10 @@ function ArticlesAdmin() {
           setSelectedTagId(e.target.value ? Number(e.target.value) : "")
         }
       />
-      <Link to="/admin/articles/new">Créer un nouvel article.</Link>
-      <section className="articles-preview-grid">
+      <Link to="/admin/articles/new" className="articles-admin-new">
+        Créer un nouvel article.
+      </Link>
+      <section className="articles-admin-grid">
         {filteredArticles.length === 0 ? (
           <p>Aucun article.</p>
         ) : (

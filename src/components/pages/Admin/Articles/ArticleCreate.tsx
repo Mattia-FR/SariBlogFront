@@ -5,6 +5,7 @@ import type { Article } from "../../../../types/article";
 import type { Tag } from "../../../../types/tags";
 import { api } from "../../../../utils/apiClient";
 import TagCheckboxes from "../../../molecules/TagCheckboxes";
+import "./ArticleCreate.css";
 
 function ArticleCreate() {
   const navigate = useNavigate();
@@ -54,11 +55,11 @@ function ArticleCreate() {
   }
 
   return (
-    <main>
-      <h2>Nouvel article</h2>
-      <form onSubmit={handleSubmit}>
-        <div>
-          <label htmlFor={`${id}-title`}>Titre</label>
+    <main className="article-create">
+      <h2 className="article-create-title">Nouvel article</h2>
+      <form onSubmit={handleSubmit} className="article-create-form">
+        <div className="article-create-field">
+          <label htmlFor={`${id}-title`}>Titre :</label>
           <input
             id={`${id}-title`}
             type="text"
@@ -67,8 +68,8 @@ function ArticleCreate() {
             required
           />
         </div>
-        <div>
-          <label htmlFor={`${id}-content`}>Contenu</label>
+        <div className="article-create-field">
+          <label htmlFor={`${id}-content`}>Contenu :</label>
           <textarea
             id={`${id}-content`}
             name="content"
@@ -85,8 +86,8 @@ function ArticleCreate() {
             idPrefix={`${id}-article-tag`}
           />
         </div>
-        <div>
-          <label htmlFor={`${id}-images`}>Images (optionnel)</label>
+        <div className="article-create-field">
+          <label htmlFor={`${id}-images`}>Images (optionnel) :</label>
           <input
             id={`${id}-images`}
             type="file"
@@ -95,7 +96,12 @@ function ArticleCreate() {
             multiple
           />
         </div>
-        <button type="submit">Créer l'article</button>
+        <div className="article-create-buttons">
+          <button type="submit">Créer l&apos;article</button>
+          <button type="button" onClick={() => navigate("/admin/articles")}>
+            Annuler
+          </button>
+        </div>
       </form>
     </main>
   );

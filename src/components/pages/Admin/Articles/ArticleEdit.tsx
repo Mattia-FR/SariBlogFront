@@ -6,6 +6,7 @@ import type { Image } from "../../../../types/image";
 import type { Tag } from "../../../../types/tags";
 import { api } from "../../../../utils/apiClient";
 import TagCheckboxes from "../../../molecules/TagCheckboxes";
+import "./ArticleEdit.css";
 
 function ArticleEdit() {
   const { id } = useParams();
@@ -111,10 +112,10 @@ function ArticleEdit() {
   // MODE ÉDITION
   if (isEditing) {
     return (
-      <main>
-        <h2>Modifier l'article</h2>
-        <form onSubmit={handleUpdate}>
-          <div>
+      <main className="article-edit">
+        <h2 className="article-edit-title">Modifier l&apos;article</h2>
+        <form onSubmit={handleUpdate} className="article-edit-form">
+          <div className="article-edit-field">
             <label>
               Titre
               <input
@@ -125,7 +126,7 @@ function ArticleEdit() {
               />
             </label>
           </div>
-          <div>
+          <div className="article-edit-field">
             <label>
               Contenu
               <textarea
@@ -136,7 +137,7 @@ function ArticleEdit() {
               />
             </label>
           </div>
-          <div>
+          <div className="article-edit-field">
             <label>
               Statut
               <select name="status" defaultValue={article.status}>
@@ -146,7 +147,7 @@ function ArticleEdit() {
               </select>
             </label>
           </div>
-          <div>
+          <div className="article-edit-field">
             <label>
               Image à la une
               <select
@@ -168,10 +169,12 @@ function ArticleEdit() {
             onChange={setSelectedTagIds}
             idPrefix="article-edit-tag"
           />
-          <button type="submit">Enregistrer</button>
-          <button type="button" onClick={() => setIsEditing(false)}>
-            Annuler
-          </button>
+          <div className="article-edit-buttons">
+            <button type="submit">Enregistrer</button>
+            <button type="button" onClick={() => setIsEditing(false)}>
+              Annuler
+            </button>
+          </div>
         </form>
       </main>
     );
@@ -179,22 +182,23 @@ function ArticleEdit() {
 
   // MODE AFFICHAGE
   return (
-    <main>
-      <article className="article-detail">
-        <h2>{article.title}</h2>
+    <main className="article-edit">
+      <article className="article-edit-detail">
+        <h2 className="article-edit-title">{article.title}</h2>
 
         {articleImages.map((image) => (
           <img
             key={image.id}
             src={image.imageUrl}
             alt={image.alt_descr || image.title || article.title}
+            className="article-edit-detail-image"
           />
         ))}
 
-        <p>{article.content}</p>
+        <p className="article-edit-detail-content">{article.content}</p>
       </article>
 
-      <div>
+      <div className="article-edit-buttons">
         <button type="button" onClick={() => setIsEditing(true)}>
           Modifier
         </button>
