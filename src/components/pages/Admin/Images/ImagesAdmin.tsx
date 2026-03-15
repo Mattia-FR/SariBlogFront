@@ -7,6 +7,7 @@ import { api } from "../../../../utils/apiClient";
 import ImageCard from "../../../molecules/ImageCard";
 import Modal from "../../../molecules/Modal";
 import TagFilter from "../../../molecules/TagFilter";
+import "./ImagesAdmin.css";
 
 function ImagesAdmin() {
   const [images, setImages] = useState<Image[]>([]);
@@ -65,9 +66,11 @@ function ImagesAdmin() {
   }
 
   return (
-    <main>
+    <main className="gallery-admin">
       <h2>Gestion des images</h2>
-      <Link to="/admin/images/new">Ajouter une image</Link>
+      <Link to="/admin/images/new" className="gallery-admin-new">
+        Ajouter une image
+      </Link>
       <TagFilter
         tags={tags}
         selectedTagId={selectedTagId}
@@ -75,7 +78,7 @@ function ImagesAdmin() {
           setSelectedTagId(e.target.value ? Number(e.target.value) : "")
         }
       />
-      <section className="gallery-grid">
+      <section className="gallery-admin-grid">
         {filteredImages.map((image) => (
           <ImageCard
             key={image.id}
@@ -109,18 +112,14 @@ function ImagesAdmin() {
                 {selectedImage.description}
               </p>
             )}
-            <div style={{ display: "flex", gap: "0.5rem", marginTop: "1rem" }}>
+            <div className="image-detail-modal-link">
               <Link
                 to={`/admin/images/edit/${selectedImage.id}`}
                 onClick={() => setSelectedImage(null)}
               >
                 Modifier
               </Link>
-              <button
-                type="button"
-                onClick={() => handleDelete(selectedImage)}
-                style={{ color: "var(--error, #c00)" }}
-              >
+              <button type="button" onClick={() => handleDelete(selectedImage)}>
                 Supprimer
               </button>
             </div>

@@ -5,6 +5,7 @@ import type {
   CategoryUpdateData,
 } from "../../../../types/categories";
 import { api } from "../../../../utils/apiClient";
+import "./CategoriesAdmin.css";
 
 function CategoriesAdmin() {
   const id = useId();
@@ -42,7 +43,7 @@ function CategoriesAdmin() {
     const display_order =
       display_orderRaw !== null && display_orderRaw !== ""
         ? Number(display_orderRaw)
-        : 0;
+        : undefined;
 
     if (!name) {
       toast.error("Le nom est requis");
@@ -52,7 +53,8 @@ function CategoriesAdmin() {
     try {
       await api.post<Category>("/admin/categories", {
         name,
-        ...(Number.isInteger(display_order) && { display_order }),
+        ...(display_order !== undefined &&
+          Number.isInteger(display_order) && { display_order }),
       });
       toast.success("Catégorie créée avec succès");
       event.currentTarget.reset();
@@ -110,14 +112,14 @@ function CategoriesAdmin() {
   }
 
   return (
-    <main>
-      <h2>Gestion des catégories</h2>
+    <main className="categories">
+      <h2 className="categories-title">Gestion des catégories</h2>
 
       <section className="categories-form">
         <h3>Nouvelle catégorie</h3>
         <form onSubmit={handleSubmit}>
-          <div>
-            <label htmlFor={`${id}-name`}>Nom</label>
+          <div className="categories-form-field">
+            <label htmlFor={`${id}-name`}>Nom :</label>
             <input
               id={`${id}-name`}
               type="text"
@@ -126,9 +128,9 @@ function CategoriesAdmin() {
               required
             />
           </div>
-          <div>
+          <div className="categories-form-field">
             <label htmlFor={`${id}-display_order`}>
-              Ordre d&apos;affichage (optionnel)
+              Ordre d&apos;affichage :
             </label>
             <input
               id={`${id}-display_order`}
@@ -136,10 +138,12 @@ function CategoriesAdmin() {
               name="display_order"
               min={0}
               step={1}
-              defaultValue={0}
+              placeholder="Dernière position par défaut"
             />
           </div>
-          <button type="submit">Créer la catégorie</button>
+          <button type="submit" className="categories-form-button">
+            Créer la catégorie
+          </button>
         </form>
       </section>
 
@@ -152,9 +156,9 @@ function CategoriesAdmin() {
                   onSubmit={(e) => handleUpdate(category.id, e)}
                   className="category-edit-form"
                 >
-                  <div>
+                  <div className="categories-form-field">
                     <label htmlFor={`${id}-edit-${category.id}-name`}>
-                      Nom
+                      Nom :
                     </label>
                     <input
                       id={`${id}-edit-${category.id}-name`}
@@ -164,9 +168,9 @@ function CategoriesAdmin() {
                       required
                     />
                   </div>
-                  <div>
+                  <div className="categories-form-field">
                     <label htmlFor={`${id}-edit-${category.id}-order`}>
-                      Ordre d&apos;affichage
+                      Ordre d&apos;affichage :
                     </label>
                     <input
                       id={`${id}-edit-${category.id}-order`}
@@ -177,36 +181,39 @@ function CategoriesAdmin() {
                       step={1}
                     />
                   </div>
-                  <button type="submit">Enregistrer</button>
-                  <button
-                    type="button"
-                    onClick={() => setEditingId(null)}
-                    aria-label="Annuler la modification"
-                  >
-                    Annuler
-                  </button>
+                  <div className="categories-list-buttons">
+                    <button type="submit">Enregistrer</button>
+                    <button
+                      type="button"
+                      onClick={() => setEditingId(null)}
+                      aria-label="Annuler la modification"
+                    >
+                      Annuler
+                    </button>
+                  </div>
                 </form>
               ) : (
-                <>
-                  <span>
-                    {category.name} ({category.slug}) — ordre{" "}
-                    {category.display_order}
-                  </span>
-                  <button
-                    type="button"
-                    onClick={() => setEditingId(category.id)}
-                    aria-label={`Modifier la catégorie ${category.name}`}
-                  >
-                    Modifier
-                  </button>
-                  <button
-                    type="button"
-                    onClick={() => handleDelete(category.id)}
-                    aria-label={`Supprimer la catégorie ${category.name}`}
-                  >
-                    Supprimer
-                  </button>
-                </>
+                <div className="categories-list-list">
+                  <div>
+                    {category.name} — position {category.display_order}
+                  </div>
+                  <div className="categories-list-buttons">
+                    <button
+                      type="button"
+                      onClick={() => setEditingId(category.id)}
+                      aria-label={`Modifier la catégorie ${category.name}`}
+                    >
+                      Modifier
+                    </button>
+                    <button
+                      type="button"
+                      onClick={() => handleDelete(category.id)}
+                      aria-label={`Supprimer la catégorie ${category.name}`}
+                    >
+                      Supprimer
+                    </button>
+                  </div>
+                </div>
               )}
             </li>
           ))}

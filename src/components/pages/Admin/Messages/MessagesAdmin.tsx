@@ -3,6 +3,7 @@ import { toast } from "react-toastify";
 import type { Message, MessageStatus } from "../../../../types/messages";
 import { api } from "../../../../utils/apiClient";
 import MessageCard from "../../../molecules/MessageCard";
+import "./MessagesAdmin.css";
 
 function MessagesAdmin() {
   const [messages, setMessages] = useState<Message[]>([]);
@@ -54,32 +55,30 @@ function MessagesAdmin() {
     new Set(messages.map((msg) => msg.status)),
   ) as MessageStatus[];
 
-  // 2. Filtrer les messages selon le statut sélectionné
-  let filteredMessages: Message[];
-  if (selectedStatus === "") {
-    filteredMessages = messages;
-  } else {
-    filteredMessages = messages.filter(
-      (message) => message.status === selectedStatus,
-    );
-  }
+  const filteredMessages: Message[] =
+    selectedStatus === ""
+      ? messages
+      : messages.filter((message) => message.status === selectedStatus);
 
   if (loading) return <p>Chargement des messages…</p>;
   if (error) return <p>{error}</p>;
 
   return (
-    <main>
-      <h2>Gestion des messages</h2>
+    <main className="messages-admin">
+      <h2 className="messages-admin-title">Gestion des messages</h2>
 
-      {/* 3. Boutons de filtrage par statut */}
-      <div>
-        <button onClick={() => setSelectedStatus("")} type="button">
+      <div className="messages-admin-filters">
+        <button
+          className={selectedStatus === "" ? "active" : ""}
+          onClick={() => setSelectedStatus("")}
+          type="button"
+        >
           Tous ({messages.length})
         </button>
-
         {allStatuses.map((status) => (
           <button
             key={status}
+            className={selectedStatus === status ? "active" : ""}
             onClick={() => setSelectedStatus(status)}
             type="button"
           >
@@ -88,9 +87,8 @@ function MessagesAdmin() {
         ))}
       </div>
 
-      {/* 4. Indicateur du filtre actif */}
       {selectedStatus !== "" && (
-        <div>
+        <div className="messages-admin-filter-active">
           <p>Filtré par : {selectedStatus}</p>
           <button type="button" onClick={() => setSelectedStatus("")}>
             × Effacer le filtre
@@ -98,11 +96,11 @@ function MessagesAdmin() {
         </div>
       )}
 
-      <section className="messages-grid">
+      <section className="messages-admin-grid">
         {filteredMessages.map((message) => (
-          <div key={message.id}>
+          <div key={message.id} className="messages-admin-item">
             <MessageCard message={message} />
-            <div>
+            <div className="messages-admin-item-buttons">
               {message.status !== "unread" && (
                 <button
                   type="button"

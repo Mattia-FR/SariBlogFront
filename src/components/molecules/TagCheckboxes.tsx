@@ -24,15 +24,15 @@ function TagCheckboxes({
   }
 
   return (
-    <div>
-      <span className="tag-checkboxes-label">Tags</span>
+    <div className="tag-checkboxes">
+      <h3 className="tag-checkboxes-title">Tags</h3>
       <ul
         className="tag-checkboxes-list"
         style={{ listStyle: "none", padding: 0, margin: 0 }}
       >
         {tags.map((tag) => (
           <li key={tag.id}>
-            <label>
+            <label className="tag-checkboxes-label">
               <input
                 type="checkbox"
                 name={name}

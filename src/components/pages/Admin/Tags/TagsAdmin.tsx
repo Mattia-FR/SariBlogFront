@@ -2,6 +2,7 @@ import { type FormEvent, useCallback, useEffect, useId, useState } from "react";
 import { toast } from "react-toastify";
 import type { Tag } from "../../../../types/tags";
 import { api } from "../../../../utils/apiClient";
+import "./TagsAdmin.css";
 
 function TagsAdmin() {
   const id = useId();
@@ -88,14 +89,14 @@ function TagsAdmin() {
   }
 
   return (
-    <main>
-      <h2>Gestion des tags</h2>
+    <main className="tags">
+      <h2 className="tags-title">Gestion des tags</h2>
 
       <section className="tags-form">
         <h3>Nouveau tag</h3>
         <form onSubmit={handleSubmit}>
-          <div>
-            <label htmlFor={`${id}-name`}>Nom</label>
+          <div className="tags-form-field">
+            <label htmlFor={`${id}-name`}>Nom :</label>
             <input
               id={`${id}-name`}
               type="text"
@@ -104,7 +105,9 @@ function TagsAdmin() {
               required
             />
           </div>
-          <button type="submit">Créer le tag</button>
+          <button type="submit" className="tags-form-button">
+            Créer le tag
+          </button>
         </form>
       </section>
 
@@ -117,8 +120,8 @@ function TagsAdmin() {
                   onSubmit={(e) => handleUpdate(tag.id, e)}
                   className="tag-edit-form"
                 >
-                  <div>
-                    <label htmlFor={`${id}-edit-${tag.id}-name`}>Nom</label>
+                  <div className="tags-form-field">
+                    <label htmlFor={`${id}-edit-${tag.id}-name`}>Nom :</label>
                     <input
                       id={`${id}-edit-${tag.id}-name`}
                       type="text"
@@ -127,35 +130,39 @@ function TagsAdmin() {
                       required
                     />
                   </div>
-                  <button type="submit">Enregistrer</button>
-                  <button
-                    type="button"
-                    onClick={() => setEditingId(null)}
-                    aria-label="Annuler la modification"
-                  >
-                    Annuler
-                  </button>
+                  <div className="tags-list-buttons">
+                    <button type="submit">Enregistrer</button>
+                    <button
+                      type="button"
+                      onClick={() => setEditingId(null)}
+                      aria-label="Annuler la modification"
+                    >
+                      Annuler
+                    </button>
+                  </div>
                 </form>
               ) : (
-                <>
+                <div className="tags-list-list">
                   <span>
                     {tag.name} ({tag.slug})
                   </span>
-                  <button
-                    type="button"
-                    onClick={() => setEditingId(tag.id)}
-                    aria-label={`Modifier le tag ${tag.name}`}
-                  >
-                    Modifier
-                  </button>
-                  <button
-                    type="button"
-                    onClick={() => handleDelete(tag.id)}
-                    aria-label={`Supprimer le tag ${tag.name}`}
-                  >
-                    Supprimer
-                  </button>
-                </>
+                  <div className="tags-list-buttons">
+                    <button
+                      type="button"
+                      onClick={() => setEditingId(tag.id)}
+                      aria-label={`Modifier le tag ${tag.name}`}
+                    >
+                      Modifier
+                    </button>
+                    <button
+                      type="button"
+                      onClick={() => handleDelete(tag.id)}
+                      aria-label={`Supprimer le tag ${tag.name}`}
+                    >
+                      Supprimer
+                    </button>
+                  </div>
+                </div>
               )}
             </li>
           ))}

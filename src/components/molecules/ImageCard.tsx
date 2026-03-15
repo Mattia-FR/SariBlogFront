@@ -3,7 +3,7 @@ import type { ImageCardProps } from "../../types/image";
 
 function ImageCard({ image, onClick }: ImageCardProps) {
   const content = (
-    <>
+    <div className="images-card">
       <img
         src={image.imageUrl}
         alt={image.alt_descr || image.title || "Image de galerie"}
@@ -22,7 +22,7 @@ function ImageCard({ image, onClick }: ImageCardProps) {
           </ul>
         </div>
       )}
-    </>
+    </div>
   );
 
   if (onClick) {

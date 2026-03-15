@@ -4,6 +4,7 @@ import { toast } from "react-toastify";
 import type { Tag } from "../../../../types/tags";
 import { api } from "../../../../utils/apiClient";
 import TagCheckboxes from "../../../molecules/TagCheckboxes";
+import "./ImageCreate.css";
 
 function ImageCreate() {
   const navigate = useNavigate();
@@ -45,11 +46,11 @@ function ImageCreate() {
   }
 
   return (
-    <main>
-      <h2>Nouvelle image</h2>
-      <form onSubmit={handleSubmit}>
-        <div>
-          <label htmlFor={`${id}-image`}>Fichier</label>
+    <main className="image-admin-create">
+      <h2 className="image-admin-create-title">Nouvelle image</h2>
+      <form onSubmit={handleSubmit} className="image-admin-create-form">
+        <div className="image-admin-create-field">
+          <label htmlFor={`${id}-image`}>Fichier :</label>
           <input
             id={`${id}-image`}
             type="file"
@@ -58,8 +59,8 @@ function ImageCreate() {
             required
           />
         </div>
-        <div>
-          <label htmlFor={`${id}-title`}>Titre</label>
+        <div className="image-admin-create-field">
+          <label htmlFor={`${id}-title`}>Titre :</label>
           <input
             id={`${id}-title`}
             type="text"
@@ -67,17 +68,17 @@ function ImageCreate() {
             placeholder="Titre de l'image"
           />
         </div>
-        <div>
-          <label htmlFor={`${id}-description`}>Description</label>
+        <div className="image-admin-create-field">
+          <label htmlFor={`${id}-description`}>Description :</label>
           <textarea
             id={`${id}-description`}
             name="description"
             placeholder="Description"
-            rows={3}
+            rows={4}
           />
         </div>
-        <div>
-          <label htmlFor={`${id}-alt_descr`}>Texte alternatif (alt)</label>
+        <div className="image-admin-create-field">
+          <label htmlFor={`${id}-alt_descr`}>Texte alternatif (alt) :</label>
           <input
             id={`${id}-alt_descr`}
             type="text"
@@ -94,7 +95,10 @@ function ImageCreate() {
           />
         </div>
         <div>
-          <label htmlFor={`${id}-is_in_gallery`}>
+          <label
+            htmlFor={`${id}-is_in_gallery`}
+            className="image-admin-create-gallery"
+          >
             <input
               id={`${id}-is_in_gallery`}
               type="checkbox"
@@ -104,7 +108,12 @@ function ImageCreate() {
             Afficher dans la galerie
           </label>
         </div>
-        <button type="submit">Créer l'image</button>
+        <div className="image-admin-create-buttons">
+          <button type="submit">Créer l&apos;image</button>
+          <button type="button" onClick={() => navigate("/admin/images")}>
+            Annuler
+          </button>
+        </div>
       </form>
     </main>
   );
