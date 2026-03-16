@@ -7,19 +7,21 @@ function CommentCard({ comment, showStatus = false }: CommentCardProps) {
 
   return (
     <article className="comment-card">
-      <header className="comment-card-meta">
+      <div className="comment-card-meta">
         <ul>
-          <li className="comment-card-autor">{author}</li>
-          <li className="comment-card-date">
+          <li className="comment-card-meta-author">{author}</li>
+          <li className="comment-card-meta-date">
             <time dateTime={comment.created_at}>
               {new Date(comment.created_at).toLocaleDateString("fr-FR")}
             </time>
           </li>
           {showStatus && comment.status != null ? (
-            <li>Statut : {comment.status}</li>
+            <li className="comment-card-meta-status">
+              Statut : {comment.status}
+            </li>
           ) : null}
         </ul>
-      </header>
+      </div>
       <p className="comment-card-text">{comment.text}</p>
     </article>
   );

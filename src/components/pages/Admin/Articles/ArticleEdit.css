@@ -10,8 +10,6 @@
     font-size: 1.3rem;
   }
 
-  /* MODE ÉDITION */
-
   .article-edit-form {
     display: flex;
     flex-direction: column;
@@ -71,8 +69,6 @@
       font-family: var(--font-one);
     }
   }
-
-  /* MODE AFFICHAGE */
 
   .article-edit-detail {
     display: flex;
