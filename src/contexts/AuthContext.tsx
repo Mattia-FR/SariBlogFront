@@ -42,9 +42,8 @@ export function AuthProvider({ children }: AuthProviderProps) {
           const currentUser = await api.get<User>("/users/me");
           setUser(currentUser);
         }
-      } catch (err) {
+      } catch {
         console.error("Pas de session valide");
-        throw err;
       } finally {
         setIsInitializing(false);
       }

@@ -27,21 +27,13 @@ function ImageCard({ image, onClick }: ImageCardProps) {
 
   if (onClick) {
     return (
-      // biome-ignore lint/a11y/useSemanticElements: Modal
-      <div
+      <button
+        type="button"
         className="image-card"
-        role="button"
-        tabIndex={0}
         onClick={() => onClick(image)}
-        onKeyDown={(e) => {
-          if (e.key === "Enter" || e.key === " ") {
-            e.preventDefault();
-            onClick(image);
-          }
-        }}
       >
         {content}
-      </div>
+      </button>
     );
   }
 

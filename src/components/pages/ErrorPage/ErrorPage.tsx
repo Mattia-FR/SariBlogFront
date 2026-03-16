@@ -1,22 +1,14 @@
-import { isRouteErrorResponse, useRouteError } from "react-router-dom";
+import { Link } from "react-router-dom";
+import "./ErrorPage.css";
 
 export function ErrorPage() {
-  const error = useRouteError();
-
-  const message = isRouteErrorResponse(error)
-    ? error.statusText
-    : error instanceof Error
-      ? error.message
-      : "Erreur inconnue";
-
   return (
-    <main>
-      <h1>Oups !</h1>
+    <main className="redirection-main">
+      <h2>Oups !</h2>
       <p>
-        Une erreur est survenue. Rechargez la page ou revenez à la page
-        d'accueil.
+        Une erreur est survenue. Rechargez la page ou revenez à la{" "}
+        <Link to="/">page d'accueil</Link>.
       </p>
-      <p>{message}</p>
     </main>
   );
 }
