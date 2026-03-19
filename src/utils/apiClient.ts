@@ -70,7 +70,12 @@ export async function apiClient(
     headers.set("Authorization", `Bearer ${token}`);
   }
 
-  if (options.body && !headers.has("Content-Type")) {
+  // Si on envoie un FormData (upload multipart), on laisse le navigateur définir
+  // `multipart/form-data` + `boundary`. Sinon, on sérialise en JSON.
+  const isFormDataBody =
+    typeof FormData !== "undefined" && options.body instanceof FormData;
+
+  if (options.body && !isFormDataBody && !headers.has("Content-Type")) {
     headers.set("Content-Type", "application/json");
   }
 

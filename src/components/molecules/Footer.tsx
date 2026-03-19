@@ -2,8 +2,6 @@ import { Link } from "react-router-dom";
 import "./Footer.css";
 import instagramHover from "../../assets/instagram-hover.png";
 import instagramNormal from "../../assets/instagram-normal.png";
-import mailHover from "../../assets/mail-hover.png";
-import mailNormal from "../../assets/mail-normal.png";
 
 function Footer() {
   return (
@@ -18,10 +16,6 @@ function Footer() {
               className="icon-normal"
             />
             <img src={instagramHover} alt="instagram" className="icon-hover" />
-          </a>
-          <a href="mailto:votre@email.com" className="icon-link">
-            <img src={mailNormal} alt="mail" className="icon-normal" />
-            <img src={mailHover} alt="mail" className="icon-hover" />
           </a>
         </div>
       </div>

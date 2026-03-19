@@ -30,7 +30,11 @@ function BlogPage() {
   }
 
   if (articles.length === 0) {
-    return null;
+    return (
+      <main className="blog-articles-preview">
+        <p>Aucun article</p>
+      </main>
+    );
   }
 
   return (

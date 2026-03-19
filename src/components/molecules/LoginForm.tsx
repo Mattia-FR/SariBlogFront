@@ -1,5 +1,5 @@
 import type { FormEvent } from "react";
-import { useState } from "react";
+import { useId, useState } from "react";
 import { toast } from "react-toastify";
 import { useAuth } from "../../hooks/useAuth";
 import { loginSchema } from "../../schemas/authSchemas";
@@ -10,6 +10,10 @@ interface LoginFormProps {
 
 function LoginForm({ onSuccess }: LoginFormProps) {
   const { login, isLoading } = useAuth();
+  const identifierId = useId();
+  const passwordId = useId();
+  const identifierErrorId = `${identifierId}-error`;
+  const passwordErrorId = `${passwordId}-error`;
   const [formError, setFormError] = useState<string | null>(null);
   const [fieldErrors, setFieldErrors] = useState<Record<string, string>>({});
 
@@ -53,25 +57,43 @@ function LoginForm({ onSuccess }: LoginFormProps) {
   return (
     <form onSubmit={handleSubmit} className="login-form">
       {formError ? <p>{formError}</p> : null}
-      {fieldErrors.identifier && <p>{fieldErrors.identifier}</p>}
+      {fieldErrors.identifier ? (
+        <p id={identifierErrorId}>{fieldErrors.identifier}</p>
+      ) : null}
 
+      <label className="sr-only" htmlFor={identifierId}>
+        Email ou nom d'utilisateur
+      </label>
       <input
         type="text"
+        id={identifierId}
         name="identifier"
         placeholder="Email ou nom d'utilisateur"
         required
         disabled={isLoading}
+        aria-invalid={fieldErrors.identifier ? true : undefined}
+        aria-describedby={
+          fieldErrors.identifier ? identifierErrorId : undefined
+        }
         className="login-input-user"
       />
 
-      {fieldErrors.password && <p>{fieldErrors.password}</p>}
+      {fieldErrors.password ? (
+        <p id={passwordErrorId}>{fieldErrors.password}</p>
+      ) : null}
 
+      <label className="sr-only" htmlFor={passwordId}>
+        Mot de passe
+      </label>
       <input
         type="password"
+        id={passwordId}
         name="password"
         placeholder="Mot de passe"
         required
         disabled={isLoading}
+        aria-invalid={fieldErrors.password ? true : undefined}
+        aria-describedby={fieldErrors.password ? passwordErrorId : undefined}
         className="login-input-password"
       />
 

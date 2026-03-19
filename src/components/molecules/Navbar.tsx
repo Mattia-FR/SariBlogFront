@@ -1,27 +1,30 @@
 import { useState } from "react";
-import { NavLink } from "react-router-dom";
-
-const links = [
-  { to: "/", label: "Accueil" },
-  { to: "/gallery", label: "Galerie" },
-  { to: "/blog", label: "Blog" },
-  { to: "/presentation", label: "À propos" },
-  { to: "/contact", label: "Contact" },
-];
+import { useLocation } from "react-router-dom";
+import { useAuth } from "../../hooks/useAuth";
+import AdminNavLinks from "./AdminNavLinks";
+import PublicNavLinks from "./PublicNavLinks";
 
 function Navbar() {
+  const location = useLocation();
+  const { user, isInitializing } = useAuth();
   const [isOpen, setIsOpen] = useState(false);
+
+  const isAdminRoute =
+    location.pathname === "/admin" || location.pathname.startsWith("/admin/");
+  const isAdminAuthorized =
+    !!user && (user.role === "admin" || user.role === "editor");
+
+  const navContent =
+    isAdminRoute && !isInitializing && isAdminAuthorized ? (
+      <AdminNavLinks />
+    ) : (
+      <PublicNavLinks />
+    );
 
   return (
     <nav>
       {/* Desktop : toujours visible, caché en mobile via CSS */}
-      <section className="nav-links">
-        {links.map(({ to, label }) => (
-          <NavLink key={to} to={to}>
-            <p>{label}</p>
-          </NavLink>
-        ))}
-      </section>
+      <section className="nav-links">{navContent}</section>
 
       {/* Burger : visible uniquement en mobile via CSS */}
       <button
@@ -36,11 +39,11 @@ function Navbar() {
       {/* Overlay mobile */}
       {isOpen && (
         <div className="menu-overlay">
-          {links.map(({ to, label }) => (
-            <NavLink key={to} to={to} onClick={() => setIsOpen(false)}>
-              <p>{label}</p>
-            </NavLink>
-          ))}
+          {isAdminRoute && !isInitializing && isAdminAuthorized ? (
+            <AdminNavLinks onNavigate={() => setIsOpen(false)} />
+          ) : (
+            <PublicNavLinks onNavigate={() => setIsOpen(false)} />
+          )}
         </div>
       )}
     </nav>
