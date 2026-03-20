@@ -12,6 +12,7 @@ interface AuthContextValue {
   user: User | null;
   isInitializing: boolean;
   isLoading: boolean;
+  setCurrentUser: (user: User) => void;
   login: (identifier: string, password: string) => Promise<void>;
   logout: () => Promise<void>;
 }
@@ -39,7 +40,7 @@ export function AuthProvider({ children }: AuthProviderProps) {
           const data = await response.json();
           setAccessToken(data.accessToken);
 
-          const currentUser = await api.get<User>("/users/me");
+          const currentUser = await api.get<User>("/admin/users/me");
           setUser(currentUser);
         }
       } catch {
@@ -90,10 +91,15 @@ export function AuthProvider({ children }: AuthProviderProps) {
     }
   }
 
+  function setCurrentUser(currentUser: User) {
+    setUser(currentUser);
+  }
+
   const value = {
     user,
     isInitializing,
     isLoading,
+    setCurrentUser,
     login,
     logout,
   };

@@ -18,7 +18,6 @@ import ImagesAdmin from "./components/pages/Admin/Images/ImagesAdmin";
 import LoginPage from "./components/pages/Admin/Login/LoginPage";
 import MessagesAdmin from "./components/pages/Admin/Messages/MessagesAdmin";
 import ProfilePage from "./components/pages/Admin/Profile/ProfilePage";
-import { profileLoader } from "./components/pages/Admin/Profile/profileLoader";
 import TagsAdmin from "./components/pages/Admin/Tags/TagsAdmin";
 import ArticlePage from "./components/pages/ArticlePage/ArticlePage";
 import { articleLoader } from "./components/pages/ArticlePage/articleLoader";
@@ -87,15 +86,7 @@ const router = createBrowserRouter([
         path: "/politique-confidentialite",
         element: <PrivacyPolicyPage />,
       },
-      {
-        path: "/admin/profile",
-        element: (
-          <ProtectedRoute allowedRoles={["admin", "editor"]}>
-            <ProfilePage />
-          </ProtectedRoute>
-        ),
-        loader: profileLoader,
-      },
+
       {
         path: "/login",
         element: <LoginPage />,
@@ -185,6 +176,14 @@ const router = createBrowserRouter([
         element: (
           <ProtectedRoute allowedRoles={["admin", "editor"]}>
             <CategoriesAdmin />
+          </ProtectedRoute>
+        ),
+      },
+      {
+        path: "/admin/profile",
+        element: (
+          <ProtectedRoute allowedRoles={["admin", "editor"]}>
+            <ProfilePage />
           </ProtectedRoute>
         ),
       },
