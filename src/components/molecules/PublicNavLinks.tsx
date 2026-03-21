@@ -1,4 +1,5 @@
 import { NavLink } from "react-router-dom";
+import { useAuth } from "../../hooks/useAuth";
 
 type PublicNavLinksProps = {
   onNavigate?: () => void;
@@ -13,6 +14,10 @@ const links = [
 ];
 
 function PublicNavLinks({ onNavigate }: PublicNavLinksProps) {
+  const { user } = useAuth();
+  const isAdminAuthorized =
+    !!user && (user.role === "admin" || user.role === "editor");
+
   return (
     <>
       {links.map(({ to, label }) => (
@@ -20,6 +25,11 @@ function PublicNavLinks({ onNavigate }: PublicNavLinksProps) {
           <p>{label}</p>
         </NavLink>
       ))}
+      {isAdminAuthorized && (
+        <NavLink to="/admin" onClick={onNavigate}>
+          <p>Admin</p>
+        </NavLink>
+      )}
     </>
   );
 }

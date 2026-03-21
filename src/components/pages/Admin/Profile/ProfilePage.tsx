@@ -70,8 +70,6 @@ function ProfilePage() {
   return (
     <section className="profile-page">
       <div className="profile-container">
-        <h1>Mon Profil</h1>
-
         {isEditing ? (
           <form onSubmit={handleUpdate} className="profile-edit-form">
             <p className="profile-role">Rôle : {profile.role}</p>

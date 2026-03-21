@@ -69,8 +69,9 @@ function Dashboard() {
       <section className="dashboard-actions">
         <h2>Actions rapides</h2>
         <div className="dashboard-nav">
+          <Link to="/admin/profile">Gérer le profil</Link>
           <Link to="/admin/articles">Gérer les articles</Link>
-          <Link to="/admin/messages">Voir les messages</Link>
+          <Link to="/admin/messages">Gérer les messages</Link>
           <Link to="/admin/images">Gérer la galerie</Link>
           <Link to="/admin/comments">Gérer les commentaires</Link>
           <Link to="/admin/tags">Gérer les tags</Link>

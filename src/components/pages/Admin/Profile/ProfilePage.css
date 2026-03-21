@@ -5,10 +5,6 @@
     width: clamp(320px, 95vw, 1200px);
     gap: 1.5rem;
     padding: 2rem 0;
-
-    h1 {
-      color: var(--color-five);
-    }
   }
 
   .profile-header {
@@ -20,7 +16,8 @@
 
   .profile-avatar {
     width: 10rem;
-    border-radius: 50%;
+    border-radius: 15px;
+    aspect-ratio: 1 / 1;
     object-fit: cover;
   }
 
