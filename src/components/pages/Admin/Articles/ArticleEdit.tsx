@@ -26,7 +26,7 @@ function ArticleEdit() {
         setLoading(true);
         const [data, tagsData] = await Promise.all([
           api.get<Article>(`/admin/articles/${id}`),
-          api.get<Tag[]>("/tags"),
+          api.get<Tag[]>("/admin/tags"),
         ]);
         setArticle(data);
         setTags(tagsData);

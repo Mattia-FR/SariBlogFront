@@ -15,7 +15,7 @@ function ArticleCreate() {
 
   useEffect(() => {
     api
-      .get<Tag[]>("/tags")
+      .get<Tag[]>("/admin/tags")
       .then(setTags)
       .catch(() => {});
   }, []);

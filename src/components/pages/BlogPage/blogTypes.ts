@@ -6,4 +6,6 @@ export type BlogLoaderData = {
   tags: Tag[];
   page: number;
   totalPages: number;
+  /** null = tous les tags (pas de filtre dans l’URL). */
+  tagId: number | null;
 };

@@ -21,7 +21,7 @@ function ImagesAdmin() {
     try {
       const [imagesData, tagsData] = await Promise.all([
         api.get<Image[]>("/admin/images"),
-        api.get<Tag[]>("/tags"),
+        api.get<Tag[]>("/admin/tags"),
       ]);
       setImages(imagesData);
       setTags(tagsData);

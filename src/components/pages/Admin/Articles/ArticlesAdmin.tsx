@@ -20,7 +20,7 @@ function ArticlesAdmin() {
         // Charger articles et tags en parallèle
         const [articlesData, tagsData] = await Promise.all([
           api.get<Article[]>("/admin/articles"),
-          api.get<Tag[]>("/tags"),
+          api.get<Tag[]>("/admin/tags"),
         ]);
 
         setArticles(articlesData);

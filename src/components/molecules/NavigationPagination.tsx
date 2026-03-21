@@ -7,6 +7,7 @@ function NavigationPagination({
   page,
   totalPages,
   basePath,
+  searchParams,
 }: NavigationPaginationProps) {
   const navigate = useNavigate();
 
@@ -14,7 +15,14 @@ function NavigationPagination({
     <Pagination
       page={page}
       totalPages={totalPages}
-      onPageChange={(newPage) => navigate(`${basePath}?page=${newPage}`)}
+      onPageChange={(newPage) => {
+        const p = searchParams
+          ? new URLSearchParams(searchParams)
+          : new URLSearchParams();
+        p.set("page", String(newPage));
+        const q = p.toString();
+        navigate(q ? `${basePath}?${q}` : basePath);
+      }}
     />
   );
 }

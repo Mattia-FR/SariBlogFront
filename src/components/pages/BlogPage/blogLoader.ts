@@ -10,21 +10,29 @@ export async function blogLoader({
 }): Promise<BlogLoaderData> {
   const url = new URL(request.url);
   const page = Number(url.searchParams.get("page")) || 1;
+  const tagIdRaw = url.searchParams.get("tagId");
+  let tagId: number | null = null;
+  if (tagIdRaw != null && tagIdRaw !== "") {
+    const n = Number(tagIdRaw);
+    if (!Number.isInteger(n) || n < 1) {
+      throw new Response("Paramètre tagId invalide", { status: 400 });
+    }
+    tagId = n;
+  }
+
+  const publishedQuery = new URLSearchParams({ page: String(page) });
+  if (tagId != null) {
+    publishedQuery.set("tagId", String(tagId));
+  }
 
   const [{ articles, total, limit }, tags] = await Promise.all([
     api.get<{ articles: Article[]; total: number; limit: number }>(
-      `/articles/published?page=${page}`,
+      `/articles/published?${publishedQuery.toString()}`,
     ),
-    api.get<Tag[]>("/tags"),
+    api.get<Tag[]>("/tags/published-articles"),
   ]);
 
-  // flatMap = .map(...).flat() et permet d'obtenir un seul tableau
-  // Set est une structure qui dédoublonne automatiquement.
-  const usedTagIds = new Set(
-    articles.flatMap((article) => article.tags?.map((t) => t.id) ?? []),
-  );
-  const filteredTags = tags.filter((tag) => usedTagIds.has(tag.id));
   const totalPages = Math.ceil(total / limit);
 
-  return { articles, tags: filteredTags, page, totalPages };
+  return { articles, tags, page, totalPages, tagId };
 }

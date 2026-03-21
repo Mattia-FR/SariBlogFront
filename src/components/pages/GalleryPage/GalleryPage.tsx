@@ -1,32 +1,32 @@
+import type { ChangeEvent } from "react";
 import { useState } from "react";
-import { useLoaderData } from "react-router-dom";
+import { useLoaderData, useSearchParams } from "react-router-dom";
 import type { Image } from "../../../types/image";
 import ImageCard from "../../molecules/ImageCard";
 import Modal from "../../molecules/Modal";
+import NavigationPagination from "../../molecules/NavigationPagination";
 import TagFilter from "../../molecules/TagFilter";
 import type { GalleryLoaderData } from "./galleryTypes";
 import "./GalleryPage.css";
 
 function GalleryPage() {
-  const { images, tags, category } = useLoaderData<GalleryLoaderData>();
-
-  const [selectedTagId, setSelectedTagId] = useState<number | "">("");
+  const { images, tags, category, page, totalPages, tagId } =
+    useLoaderData<GalleryLoaderData>();
+  const [searchParams, setSearchParams] = useSearchParams();
   const [selectedImage, setSelectedImage] = useState<Image | null>(null);
 
-  let filteredImages: Image[];
-  if (selectedTagId === "") {
-    // Mode "show all" : pas de filtre
-    filteredImages = images;
-  } else {
-    // Mode "filter by tag" : on filtre par ID
-    filteredImages = images.filter((image) => {
-      // Si l'image n'a pas de tags, elle ne passe pas le filtre
-      if (!image.tags) return false;
+  const selectedTagId: number | "" = tagId === null ? "" : tagId;
 
-      // Cherche si au moins un tag correspond
-      const hasMatchingTag = image.tags.some((tag) => tag.id === selectedTagId);
-      return hasMatchingTag;
-    });
+  function handleTagChange(e: ChangeEvent<HTMLSelectElement>) {
+    const next = new URLSearchParams(searchParams);
+    const v = e.target.value;
+    if (v === "") {
+      next.delete("tagId");
+    } else {
+      next.set("tagId", v);
+    }
+    next.set("page", "1");
+    setSearchParams(next);
   }
 
   return (
@@ -37,19 +37,30 @@ function GalleryPage() {
       <TagFilter
         tags={tags}
         selectedTagId={selectedTagId}
-        onTagChange={(e) =>
-          setSelectedTagId(e.target.value ? Number(e.target.value) : "")
-        }
+        onTagChange={handleTagChange}
       />
-      <div className="gallery-grid-content">
-        {filteredImages.map((image) => (
-          <ImageCard
-            key={image.id}
-            image={image}
-            onClick={(img) => setSelectedImage(img)}
-          />
-        ))}
-      </div>
+      {images.length === 0 ? (
+        <p>Aucune image</p>
+      ) : (
+        <div className="gallery-grid-content">
+          {images.map((image) => (
+            <ImageCard
+              key={image.id}
+              image={image}
+              onClick={(img) => setSelectedImage(img)}
+            />
+          ))}
+        </div>
+      )}
+
+      {category && (
+        <NavigationPagination
+          page={page}
+          totalPages={totalPages}
+          basePath={`/gallery/${category.slug}`}
+          searchParams={searchParams}
+        />
+      )}
 
       <Modal
         isOpen={selectedImage !== null}

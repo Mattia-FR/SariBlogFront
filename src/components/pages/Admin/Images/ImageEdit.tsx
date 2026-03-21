@@ -23,7 +23,7 @@ function ImageEdit() {
       try {
         const [imageData, tagsData] = await Promise.all([
           api.get<Image>(`/admin/images/${id}`),
-          api.get<Tag[]>("/tags"),
+          api.get<Tag[]>("/admin/tags"),
         ]);
         setImage(imageData);
         setTags(tagsData);
