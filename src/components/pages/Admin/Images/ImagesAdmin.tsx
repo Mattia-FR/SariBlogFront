@@ -1,30 +1,60 @@
+import type { ChangeEvent } from "react";
 import { useCallback, useEffect, useState } from "react";
-import { Link } from "react-router-dom";
+import { Link, useSearchParams } from "react-router-dom";
 import { toast } from "react-toastify";
 import type { Image } from "../../../../types/image";
 import type { Tag } from "../../../../types/tags";
 import { api } from "../../../../utils/apiClient";
 import ImageCard from "../../../molecules/ImageCard";
 import Modal from "../../../molecules/Modal";
+import NavigationPagination from "../../../molecules/NavigationPagination";
 import TagFilter from "../../../molecules/TagFilter";
 import "./ImagesAdmin.css";
 
 function ImagesAdmin() {
+  const [searchParams, setSearchParams] = useSearchParams();
+  const page = Number(searchParams.get("page")) || 1;
+  const tagIdParam = searchParams.get("tagId");
+  let tagId: number | null = null;
+  if (tagIdParam != null && tagIdParam !== "") {
+    const n = Number(tagIdParam);
+    if (Number.isInteger(n) && n >= 1) {
+      tagId = n;
+    }
+  }
+
   const [images, setImages] = useState<Image[]>([]);
   const [tags, setTags] = useState<Tag[]>([]);
+  const [totalPages, setTotalPages] = useState(0);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
-  const [selectedTagId, setSelectedTagId] = useState<number | "">("");
   const [selectedImage, setSelectedImage] = useState<Image | null>(null);
 
+  useEffect(() => {
+    if (tagIdParam != null && tagIdParam !== "" && tagId === null) {
+      const next = new URLSearchParams(searchParams);
+      next.delete("tagId");
+      setSearchParams(next, { replace: true });
+    }
+  }, [tagIdParam, tagId, searchParams, setSearchParams]);
+
   const fetchData = useCallback(async () => {
+    setLoading(true);
+    setError(null);
     try {
-      const [imagesData, tagsData] = await Promise.all([
-        api.get<Image[]>("/admin/images"),
-        api.get<Tag[]>("/admin/tags"),
+      const q = new URLSearchParams({ page: String(page) });
+      if (tagId != null) {
+        q.set("tagId", String(tagId));
+      }
+      const [imgRes, tagsRes] = await Promise.all([
+        api.get<{ images: Image[]; total: number; limit: number }>(
+          `/admin/images?${q.toString()}`,
+        ),
+        api.get<Tag[]>("/admin/tags/used-on-images"),
       ]);
-      setImages(imagesData);
-      setTags(tagsData);
+      setImages(imgRes.images);
+      setTotalPages(Math.ceil(imgRes.total / imgRes.limit));
+      setTags(tagsRes);
     } catch (err) {
       const message =
         err instanceof Error ? err.message : "Erreur lors du chargement";
@@ -33,7 +63,7 @@ function ImagesAdmin() {
     } finally {
       setLoading(false);
     }
-  }, []);
+  }, [page, tagId]);
 
   useEffect(() => {
     fetchData();
@@ -44,26 +74,30 @@ function ImagesAdmin() {
     try {
       await api.delete(`/admin/images/${image.id}`);
       toast.success("Image supprimée");
-      setImages((prev) => prev.filter((img) => img.id !== image.id));
       setSelectedImage(null);
+      await fetchData();
     } catch (err) {
       console.error(err);
       toast.error("Erreur lors de la suppression");
     }
   }
 
+  const selectedTagId: number | "" = tagId === null ? "" : tagId;
+
+  function handleTagChange(e: ChangeEvent<HTMLSelectElement>) {
+    const next = new URLSearchParams(searchParams);
+    const v = e.target.value;
+    if (v === "") {
+      next.delete("tagId");
+    } else {
+      next.set("tagId", v);
+    }
+    next.set("page", "1");
+    setSearchParams(next);
+  }
+
   if (loading) return <p>Chargement…</p>;
   if (error) return <p>{error}</p>;
-
-  let filteredImages: Image[];
-  if (selectedTagId === "") {
-    filteredImages = images;
-  } else {
-    filteredImages = images.filter((image) => {
-      if (!image.tags) return false;
-      return image.tags.some((tag) => tag.id === selectedTagId);
-    });
-  }
 
   return (
     <main className="gallery-admin">
@@ -74,19 +108,28 @@ function ImagesAdmin() {
       <TagFilter
         tags={tags}
         selectedTagId={selectedTagId}
-        onTagChange={(e) =>
-          setSelectedTagId(e.target.value ? Number(e.target.value) : "")
-        }
+        onTagChange={handleTagChange}
       />
-      <section className="gallery-admin-grid">
-        {filteredImages.map((image) => (
-          <ImageCard
-            key={image.id}
-            image={image}
-            onClick={(img) => setSelectedImage(img)}
-          />
-        ))}
-      </section>
+      {images.length === 0 ? (
+        <p>Aucune image</p>
+      ) : (
+        <section className="gallery-admin-grid">
+          {images.map((image) => (
+            <ImageCard
+              key={image.id}
+              image={image}
+              onClick={(img) => setSelectedImage(img)}
+            />
+          ))}
+        </section>
+      )}
+
+      <NavigationPagination
+        page={page}
+        totalPages={totalPages}
+        basePath="/admin/images"
+        searchParams={searchParams}
+      />
 
       <Modal
         isOpen={selectedImage !== null}
