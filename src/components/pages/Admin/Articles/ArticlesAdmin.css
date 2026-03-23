@@ -20,16 +20,6 @@
     font-size: 1.3rem;
   }
 
-  /* Filtre par tag */
-  .tag-filter-btn {
-    background-color: var(--color-one);
-    font-family: var(--font-one);
-    color: var(--color-five);
-    padding: 1rem 1rem;
-    border: 1px solid var(--color-five);
-    border-radius: 15px;
-  }
-
   /* Grille d'articles */
   .articles-admin-grid {
     display: grid;

@@ -1,5 +1,6 @@
 import { useId } from "react";
 import type { Tag } from "../../types/tags";
+import "./TagFilter.css";
 
 interface TagFilterProps {
   tags: Tag[];

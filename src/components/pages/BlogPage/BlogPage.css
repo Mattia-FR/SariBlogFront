@@ -4,15 +4,6 @@
   width: clamp(320px, 95vw, 1200px);
   padding: 3rem 0;
 
-  .tag-filter-btn {
-    background-color: var(--color-one);
-    font-family: var(--font-one);
-    color: var(--color-five);
-    padding: 1rem 1rem;
-    border: 1px solid var(--color-five);
-    border-radius: 15px;
-  }
-
   .articles-preview-grid {
     display: flex;
     flex-wrap: wrap;

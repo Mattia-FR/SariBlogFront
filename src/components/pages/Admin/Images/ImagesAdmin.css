@@ -19,15 +19,6 @@
     width: fit-content;
   }
 
-  .tag-filter-btn {
-    background-color: var(--color-one);
-    font-family: var(--font-one);
-    color: var(--color-five);
-    padding: 1rem 1rem;
-    border: 1px solid var(--color-five);
-    border-radius: 15px;
-  }
-
   .gallery-admin-grid {
     display: flex;
     flex-wrap: wrap;

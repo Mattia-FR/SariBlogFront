@@ -1,6 +1,6 @@
 import type { ChangeEvent } from "react";
 import { useState } from "react";
-import { useLoaderData, useSearchParams } from "react-router-dom";
+import { Link, useLoaderData, useSearchParams } from "react-router-dom";
 import type { Image } from "../../../types/image";
 import ImageCard from "../../molecules/ImageCard";
 import Modal from "../../molecules/Modal";
@@ -32,7 +32,12 @@ function GalleryPage() {
   return (
     <main className="gallery-grid">
       {category && (
-        <h1 className="gallery-grid-title">Galerie : {category.name}</h1>
+        <Link to="/gallery" className="gallery-grid-title">
+          <h1 className="gallery-grid-title">
+            <span className="gallery-grid-title-first">Galerie :</span>
+            <span className="gallery-grid-title-last"> {category.name}</span>
+          </h1>
+        </Link>
       )}
       <TagFilter
         tags={tags}
