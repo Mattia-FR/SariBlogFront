@@ -112,7 +112,7 @@ function CategoriesAdmin() {
   }
 
   return (
-    <main className="categories">
+    <section className="categories">
       <h2 className="categories-title">Gestion des catégories</h2>
 
       <section className="categories-form">
@@ -219,7 +219,7 @@ function CategoriesAdmin() {
           ))}
         </ul>
       </section>
-    </main>
+    </section>
   );
 }
 

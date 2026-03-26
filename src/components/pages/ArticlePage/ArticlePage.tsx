@@ -13,7 +13,7 @@ function ArticlePage() {
   const { article, articleImages, comments } = data;
 
   return (
-    <main className="article-detail">
+    <section className="article-detail">
       <h1 className="article-detail-title">{article.title}</h1>
 
       {article.published_at && (
@@ -74,7 +74,7 @@ function ArticlePage() {
           </ul>
         )}
       </section>
-    </main>
+    </section>
   );
 }
 

@@ -25,14 +25,14 @@ class ErrorBoundary extends Component<Props, State> {
   render() {
     if (this.state.hasError) {
       return (
-        <main className="redirection-main">
+        <section className="redirection-main">
           <h2>Oups !</h2>
           <p>
             Une erreur est survenue. Rechargez la page ou revenez à la{" "}
             <Link to="/">page d'accueil</Link>.
           </p>
           {import.meta.env.DEV && <pre>{this.state.error?.message}</pre>}
-        </main>
+        </section>
       );
     }
     return this.props.children;

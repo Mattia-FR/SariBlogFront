@@ -7,8 +7,8 @@ type AdminNavLinksProps = {
 const links = [
   { to: "/admin", label: "Tableau de bord" },
   { to: "/admin/articles", label: "Articles" },
-  { to: "/admin/messages", label: "Messages" },
   { to: "/admin/images", label: "Galerie" },
+  { to: "/admin/messages", label: "Messages" },
   { to: "/admin/comments", label: "Commentaires" },
   { to: "/admin/tags", label: "Tags" },
   { to: "/admin/categories", label: "Catégories" },

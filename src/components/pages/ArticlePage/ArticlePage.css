@@ -39,7 +39,7 @@
     padding: 2rem 0;
 
     img {
-      width: clamp(20rem, 90vw, 50rem);
+      width: clamp(20rem, 90vw, 25rem);
       object-fit: contain;
       display: block;
     }

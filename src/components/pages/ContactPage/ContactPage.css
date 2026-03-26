@@ -1,16 +1,30 @@
 .contact-main {
-  width: clamp(320px, 95vw, 1200px);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: clamp(320px, 95vw, 1000px);
   padding: 3rem 0;
 
-  h1 {
+  .contact-text {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
     color: var(--color-five);
-    padding-bottom: 3rem;
+    width: 100%;
+    padding-bottom: 2rem;
+    font-size: 1.1rem;
+
+    .contact-text-emphasis {
+      color: var(--color-three);
+      font-size: 1.2rem;
+    }
   }
 
   .contact-form {
     display: flex;
     flex-direction: column;
     gap: 0.5rem;
+    width: clamp(320px, 95vw, 1000px);
 
     label {
       display: flex;
@@ -25,7 +39,6 @@
       border: 1px solid var(--color-five);
       padding: 0.5rem 1rem;
       width: 100%;
-      max-width: 30rem;
       box-sizing: border-box;
       color: var(--color-two);
     }
@@ -37,7 +50,6 @@
       font-family: var(--font-two);
       color: var(--color-two);
       width: 100%;
-      max-width: 30rem;
       box-sizing: border-box;
     }
 

@@ -1,5 +1,5 @@
 .gallery-hub-page {
-  width: clamp(320px, 95vw, 1200px);
+  width: clamp(320px, 95vw, 1000px);
   padding: 3rem 0;
   display: flex;
   justify-content: center;

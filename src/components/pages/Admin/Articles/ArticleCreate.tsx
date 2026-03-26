@@ -55,7 +55,7 @@ function ArticleCreate() {
   }
 
   return (
-    <main className="article-create">
+    <section className="article-create">
       <h2 className="article-create-title">Nouvel article</h2>
       <form onSubmit={handleSubmit} className="article-create-form">
         <div className="article-create-field">
@@ -103,7 +103,7 @@ function ArticleCreate() {
           </button>
         </div>
       </form>
-    </main>
+    </section>
   );
 }
 

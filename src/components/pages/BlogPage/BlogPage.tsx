@@ -27,19 +27,19 @@ function BlogPage() {
 
   if (articles.length === 0) {
     return (
-      <main className="blog-articles-preview">
+      <section className="blog-articles-preview">
         <TagFilter
           tags={tags}
           selectedTagId={selectedTagId}
           onTagChange={handleTagChange}
         />
         <p>Aucun article</p>
-      </main>
+      </section>
     );
   }
 
   return (
-    <main className="blog-articles-preview">
+    <section className="blog-articles-preview">
       <TagFilter
         tags={tags}
         selectedTagId={selectedTagId}
@@ -56,7 +56,7 @@ function BlogPage() {
         basePath="/blog"
         searchParams={searchParams}
       />
-    </main>
+    </section>
   );
 }
 

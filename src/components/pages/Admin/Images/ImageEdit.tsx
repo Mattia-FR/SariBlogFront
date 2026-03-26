@@ -66,7 +66,7 @@ function ImageEdit() {
   if (error || !image) return <p>{error ?? "Image introuvable"}</p>;
 
   return (
-    <main className="image-admin-edit">
+    <section className="image-admin-edit">
       <h2 className="image-admin-edit-title">Modifier l&apos;image</h2>
       {image.imageUrl && (
         <img
@@ -138,7 +138,7 @@ function ImageEdit() {
           </button>
         </div>
       </form>
-    </main>
+    </section>
   );
 }
 

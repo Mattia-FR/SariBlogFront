@@ -192,8 +192,26 @@ function ContactPage() {
   };
 
   return (
-    <main className="contact-main">
-      <h1>Me contacter :</h1>
+    <section className="contact-main">
+      <h1 className="sr-only">Me contacter :</h1>
+      <div className="contact-text">
+        <p>
+          Vous avez un projet d'
+          <span className="contact-text-emphasis">illustration</span> en tête ou
+          une idée de{"\u00A0"}
+          <span className="contact-text-emphasis">collaboration</span> ?
+        </p>
+        <p>
+          Je serais ravie d'en discuter avec{" "}
+          <span className="contact-text-emphasis">vous</span>.
+        </p>
+        <p>
+          Mes commandes sont actuellement{" "}
+          <span className="contact-text-emphasis">ouvertes</span> — écrivez-moi,
+          je réponds sous{" "}
+          <span className="contact-text-emphasis">quelques jours</span>.
+        </p>
+      </div>
 
       <form onSubmit={handleSubmit} className="contact-form" noValidate>
         {renderField("firstname", "Prénom :")}
@@ -206,7 +224,7 @@ function ContactPage() {
           {isSubmitting ? "Envoi en cours..." : "Envoyer"}
         </button>
       </form>
-    </main>
+    </section>
   );
 }
 

@@ -1,7 +1,7 @@
 .messages-admin {
   display: flex;
   flex-direction: column;
-  width: clamp(320px, 95vw, 1200px);
+  width: clamp(320px, 95vw, 800px);
   gap: 1.5rem;
   padding: 2rem 0;
 
@@ -148,12 +148,23 @@
       color: var(--color-five);
       font-size: 1rem;
       margin: 0;
+      padding-bottom: 0.5rem;
     }
 
     .message-card-text {
-      color: var(--color-three);
+      color: var(--color-two);
       margin: 0;
       white-space: pre-wrap;
+    }
+  }
+
+  .message-card--unread {
+    background-color: var(--color-four);
+
+    .message-card-meta {
+      .message-card-meta-date {
+        color: var(--color-one);
+      }
     }
   }
 }

@@ -112,7 +112,7 @@ function ArticleEdit() {
   // MODE ÉDITION
   if (isEditing) {
     return (
-      <main className="article-edit">
+      <section className="article-edit">
         <h2 className="article-edit-title">Modifier l&apos;article</h2>
         <form onSubmit={handleUpdate} className="article-edit-form">
           <div className="article-edit-field">
@@ -176,13 +176,13 @@ function ArticleEdit() {
             </button>
           </div>
         </form>
-      </main>
+      </section>
     );
   }
 
   // MODE AFFICHAGE
   return (
-    <main className="article-edit">
+    <section className="article-edit">
       <article className="article-edit-detail">
         <h2 className="article-edit-title">{article.title}</h2>
 
@@ -206,7 +206,7 @@ function ArticleEdit() {
           Supprimer
         </button>
       </div>
-    </main>
+    </section>
   );
 }
 

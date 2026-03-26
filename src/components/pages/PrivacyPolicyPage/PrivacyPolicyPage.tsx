@@ -1,6 +1,6 @@
 function PrivacyPolicyPage() {
   return (
-    <main className="legal-page">
+    <section className="legal-page">
       <h1 className="legal-page-title">Politique de confidentialité</h1>
       <p className="legal-page-updated">
         Dernière mise à jour : [À REMPLIR - ex. 18 février 2026]
@@ -145,7 +145,7 @@ function PrivacyPolicyPage() {
           régulièrement.
         </p>
       </section>
-    </main>
+    </section>
   );
 }
 

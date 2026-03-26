@@ -2,7 +2,7 @@ import "./LegalNoticePage.css";
 
 function LegalNoticePage() {
   return (
-    <main className="legal-page">
+    <section className="legal-page">
       <h1 className="legal-page-title">Mentions légales</h1>
       <p className="legal-page-updated">
         Dernière mise à jour : [À REMPLIR - ex. 18 février 2026]
@@ -74,7 +74,7 @@ function LegalNoticePage() {
           / photographies : Sari Eliott.]
         </p>
       </section>
-    </main>
+    </section>
   );
 }
 

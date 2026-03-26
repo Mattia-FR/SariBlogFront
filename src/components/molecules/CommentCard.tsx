@@ -5,8 +5,14 @@ function CommentCard({ comment, showStatus = false }: CommentCardProps) {
     [comment.firstname, comment.lastname].filter(Boolean).join(" ") ||
     comment.username;
 
+  const statusClass =
+    comment.status != null ? `comment-card--${comment.status}` : null;
+
   return (
-    <article className="comment-card">
+    <article
+      className={["comment-card", statusClass].filter(Boolean).join(" ")}
+      data-status={comment.status}
+    >
       <div className="comment-card-meta">
         <ul>
           <li className="comment-card-meta-author">{author}</li>

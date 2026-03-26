@@ -50,22 +50,22 @@ function Dashboard() {
 
   if (isLoading) {
     return (
-      <main>
+      <section>
         <p>Chargement des statistiques...</p>
-      </main>
+      </section>
     );
   }
 
   if (error) {
     return (
-      <main>
+      <section>
         <p style={{ color: "red" }}>{error}</p>
-      </main>
+      </section>
     );
   }
 
   return (
-    <main className="dashboard">
+    <section className="dashboard">
       <section className="dashboard-actions">
         <h2>Actions rapides</h2>
         <div className="dashboard-nav">
@@ -107,7 +107,7 @@ function Dashboard() {
           </div>
         </section>
       )}
-    </main>
+    </section>
   );
 }
 

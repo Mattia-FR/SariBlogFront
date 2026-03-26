@@ -6,7 +6,7 @@ function GalleryHubPage() {
   const { categories } = useLoaderData<GalleryHubLoaderData>();
 
   return (
-    <main className="gallery-hub-page">
+    <section className="gallery-hub-page">
       <h1 className="sr-only">Galerie par catégorie</h1>
       <div className="gallery-hub-categories">
         {categories.map((category) => (
@@ -19,7 +19,7 @@ function GalleryHubPage() {
           </Link>
         ))}
       </div>
-    </main>
+    </section>
   );
 }
 

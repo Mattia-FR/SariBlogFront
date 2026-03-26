@@ -90,7 +90,7 @@ function ArticlesAdmin() {
   if (error) return <p>{error}</p>;
 
   return (
-    <main className="articles-admin">
+    <section className="articles-admin">
       <h2 className="articles-admin-title">Tous les articles</h2>
       <TagFilter
         tags={tags}
@@ -120,7 +120,7 @@ function ArticlesAdmin() {
         basePath="/admin/articles"
         searchParams={searchParams}
       />
-    </main>
+    </section>
   );
 }
 

@@ -30,7 +30,7 @@ function GalleryPage() {
   }
 
   return (
-    <main className="gallery-grid">
+    <section className="gallery-grid">
       {category && (
         <Link to="/gallery" className="gallery-grid-title">
           <h1 className="gallery-grid-title">
@@ -94,7 +94,7 @@ function GalleryPage() {
           </div>
         )}
       </Modal>
-    </main>
+    </section>
   );
 }
 

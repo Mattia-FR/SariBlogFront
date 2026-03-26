@@ -46,7 +46,7 @@ function ImageCreate() {
   }
 
   return (
-    <main className="image-admin-create">
+    <section className="image-admin-create">
       <h2 className="image-admin-create-title">Nouvelle image</h2>
       <form onSubmit={handleSubmit} className="image-admin-create-form">
         <div className="image-admin-create-field">
@@ -115,7 +115,7 @@ function ImageCreate() {
           </button>
         </div>
       </form>
-    </main>
+    </section>
   );
 }
 

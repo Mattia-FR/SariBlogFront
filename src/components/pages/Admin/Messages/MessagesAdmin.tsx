@@ -134,7 +134,7 @@ function MessagesAdmin() {
   };
 
   return (
-    <main className="messages-admin">
+    <section className="messages-admin">
       <h2 className="messages-admin-title">Gestion des messages</h2>
 
       <div className="messages-admin-filters">
@@ -213,7 +213,7 @@ function MessagesAdmin() {
         basePath="/admin/messages"
         searchParams={searchParams}
       />
-    </main>
+    </section>
   );
 }
 

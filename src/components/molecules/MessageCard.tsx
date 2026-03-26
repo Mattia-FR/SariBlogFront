@@ -6,8 +6,13 @@ function MessageCard({ message }: MessageCardProps) {
     message.username ||
     "Anonyme";
 
+  const statusClass = `message-card--${message.status}`;
+
   return (
-    <article className="message-card">
+    <article
+      className={`message-card ${statusClass}`}
+      data-status={message.status}
+    >
       <div className="message-card-meta">
         <ul>
           <li className="message-card-meta-sender">{sender}</li>

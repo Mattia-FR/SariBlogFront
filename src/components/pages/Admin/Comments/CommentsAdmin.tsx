@@ -137,7 +137,7 @@ function CommentsAdmin() {
   };
 
   return (
-    <main className="comments-admin">
+    <section className="comments-admin">
       <h2 className="comments-admin-title">Gestion des commentaires</h2>
 
       <div className="comments-admin-filters">
@@ -229,7 +229,7 @@ function CommentsAdmin() {
         basePath="/admin/comments"
         searchParams={searchParams}
       />
-    </main>
+    </section>
   );
 }
 

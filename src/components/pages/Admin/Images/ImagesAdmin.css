@@ -1,12 +1,13 @@
 .gallery-admin {
   display: flex;
   flex-direction: column;
-  width: clamp(320px, 95vw, 1200px);
+  width: clamp(320px, 95vw, 800px);
   gap: 1.5rem;
   padding: 2rem 0;
 
   h2 {
     color: var(--color-five);
+    font-size: 1.3rem;
   }
 
   .gallery-admin-new {

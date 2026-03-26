@@ -100,7 +100,7 @@ function ImagesAdmin() {
   if (error) return <p>{error}</p>;
 
   return (
-    <main className="gallery-admin">
+    <section className="gallery-admin">
       <h2>Gestion des images</h2>
       <Link to="/admin/images/new" className="gallery-admin-new">
         Ajouter une image
@@ -169,7 +169,7 @@ function ImagesAdmin() {
           </div>
         )}
       </Modal>
-    </main>
+    </section>
   );
 }
 

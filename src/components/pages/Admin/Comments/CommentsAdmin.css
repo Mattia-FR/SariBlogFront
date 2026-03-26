@@ -1,7 +1,7 @@
 .comments-admin {
   display: flex;
   flex-direction: column;
-  width: clamp(320px, 95vw, 1200px);
+  width: clamp(320px, 95vw, 800px);
   gap: 1.5rem;
   padding: 2rem 0;
 
@@ -133,7 +133,7 @@
     .comment-card-text {
       position: relative;
       padding: 1rem 0;
-      color: var(--color-three);
+      color: var(--color-two);
       white-space: pre-wrap;
     }
 
@@ -150,6 +150,16 @@
         var(--color-five),
         transparent
       );
+    }
+  }
+
+  .comment-card--pending {
+    background-color: var(--color-four);
+
+    .comment-card-meta {
+      .comment-card-meta-date {
+        color: var(--color-one);
+      }
     }
   }
 }

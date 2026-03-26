@@ -11,7 +11,7 @@
 
 .modal-content {
   width: min(720px, 100%);
-  max-height: min(95vh, 720px);
+  max-height: 95vh;
   overflow: auto;
   background: var(--color-one);
   color: var(--color-two);

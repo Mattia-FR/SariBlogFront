@@ -89,7 +89,7 @@ function TagsAdmin() {
   }
 
   return (
-    <main className="tags">
+    <section className="tags">
       <h2 className="tags-title">Gestion des tags</h2>
 
       <section className="tags-form">
@@ -168,7 +168,7 @@ function TagsAdmin() {
           ))}
         </ul>
       </section>
-    </main>
+    </section>
   );
 }
 
