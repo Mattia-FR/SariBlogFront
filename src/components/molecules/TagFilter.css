@@ -1,0 +1,12 @@
+.tag-filter-btn {
+  background-color: var(--color-one);
+  font-family: var(--font-one);
+  color: var(--color-five);
+  padding: 1rem 1rem;
+  border: 1px solid var(--color-five);
+  border-radius: 15px;
+
+  @media (min-width: 720px) {
+    width: fit-content;
+  }
+}

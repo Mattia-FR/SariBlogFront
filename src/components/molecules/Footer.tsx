@@ -1,9 +1,7 @@
-import { NavLink } from "react-router-dom";
+import { Link } from "react-router-dom";
 import "./Footer.css";
-import instagramHover from "../../../public/instagram-hover.png";
-import instagramNormal from "../../../public/instagram-normal.png";
-import mailHover from "../../../public/mail-hover.png";
-import mailNormal from "../../../public/mail-normal.png";
+import instagramHover from "../../assets/instagram-hover.png";
+import instagramNormal from "../../assets/instagram-normal.png";
 
 function Footer() {
   return (
@@ -19,15 +17,13 @@ function Footer() {
             />
             <img src={instagramHover} alt="instagram" className="icon-hover" />
           </a>
-          <a href="mailto:votre@email.com" className="icon-link">
-            <img src={mailNormal} alt="mail" className="icon-normal" />
-            <img src={mailHover} alt="mail" className="icon-hover" />
-          </a>
         </div>
       </div>
       <div className="footer-content-right">
-        <NavLink to="/">Mentions légales</NavLink>
-        <NavLink to="/">Politique de confidentialité</NavLink>
+        <Link to="/mentions-legales">Mentions légales</Link>
+        <Link to="/politique-confidentialite">
+          Politique de confidentialité
+        </Link>
       </div>
     </footer>
   );

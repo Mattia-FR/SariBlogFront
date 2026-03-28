@@ -11,10 +11,10 @@
 /* On définit les variables */
 :root {
   --color-one: #f9faf4;
-  --color-two: #39312c; /* #2b2420 */
-  --color-three: #d6924e;
-  --color-four: #eac6a2;
-  --color-five: #6b8494;
+  --color-two: #39312c;
+  --color-three: #c2782e; /* #d6924e; */
+  --color-four: #e1ad7a; /* #eac6a2 */
+  --color-five: #566a76; /* #6b8494 */
   --font-one: "Manrope", sans-serif;
   --font-two: "Merriweather", serif;
 }
@@ -26,7 +26,7 @@ body {
 }
 
 main {
-  max-width: clamp(320px, 90vw, 1200px);
+  max-width: clamp(320px, 95vw, 1000px);
   margin: 0 auto;
 }
 
@@ -34,4 +34,17 @@ h1,
 h2,
 h3 {
   font-family: var(--font-one);
+}
+
+/* Label masqué pour garder l'accessibilité (sans casser le design). */
+.sr-only {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border: 0;
 }

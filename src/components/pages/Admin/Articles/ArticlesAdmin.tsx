@@ -1,78 +1,110 @@
-import { useEffect, useState } from "react";
-import { NavLink } from "react-router-dom";
+import type { ChangeEvent } from "react";
+import { useCallback, useEffect, useState } from "react";
+import { Link, useSearchParams } from "react-router-dom";
+import { toast } from "react-toastify";
 import type { Article } from "../../../../types/article";
 import type { Tag } from "../../../../types/tags";
 import { api } from "../../../../utils/apiClient";
 import ArticleCard from "../../../molecules/ArticleCard";
+import NavigationPagination from "../../../molecules/NavigationPagination";
 import TagFilter from "../../../molecules/TagFilter";
+import "./ArticlesAdmin.css";
+
+type ArticlesListResponse = {
+  articles: Article[];
+  total: number;
+  page: number;
+  limit: number;
+};
 
 function ArticlesAdmin() {
+  const [searchParams, setSearchParams] = useSearchParams();
+  const page = Number(searchParams.get("page")) || 1;
+  const tagIdParam = searchParams.get("tagId");
+  let tagId: number | null = null;
+  if (tagIdParam != null && tagIdParam !== "") {
+    const n = Number(tagIdParam);
+    if (Number.isInteger(n) && n >= 1) {
+      tagId = n;
+    }
+  }
+
   const [articles, setArticles] = useState<Article[]>([]);
   const [tags, setTags] = useState<Tag[]>([]);
+  const [totalPages, setTotalPages] = useState(0);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
-  const [selectedTagId, setSelectedTagId] = useState<number | "">("");
 
   useEffect(() => {
-    const fetchData = async () => {
-      try {
-        // Charger articles et tags en parallèle
-        const [articlesData, tagsData] = await Promise.all([
-          api.get<Article[]>("/admin/articles"),
-          api.get<Tag[]>("/tags"),
-        ]);
+    if (tagIdParam != null && tagIdParam !== "" && tagId === null) {
+      const next = new URLSearchParams(searchParams);
+      next.delete("tagId");
+      setSearchParams(next, { replace: true });
+    }
+  }, [tagIdParam, tagId, searchParams, setSearchParams]);
 
-        setArticles(articlesData);
-        setTags(tagsData);
-      } catch (err) {
-        setError(
-          err instanceof Error ? err.message : "Erreur lors du chargement",
-        );
-      } finally {
-        setLoading(false);
+  const fetchData = useCallback(async () => {
+    setLoading(true);
+    setError(null);
+    try {
+      const q = new URLSearchParams({ page: String(page) });
+      if (tagId != null) {
+        q.set("tagId", String(tagId));
       }
-    };
+      const [listRes, tagsRes] = await Promise.all([
+        api.get<ArticlesListResponse>(`/admin/articles?${q.toString()}`),
+        api.get<Tag[]>("/admin/tags/used-on-articles"),
+      ]);
+      setArticles(listRes.articles);
+      setTotalPages(Math.ceil(listRes.total / listRes.limit));
+      setTags(tagsRes);
+    } catch (err) {
+      const message =
+        err instanceof Error ? err.message : "Erreur lors du chargement";
+      setError(message);
+      toast.error(message);
+    } finally {
+      setLoading(false);
+    }
+  }, [page, tagId]);
 
+  useEffect(() => {
     fetchData();
-  }, []);
+  }, [fetchData]);
+
+  const selectedTagId: number | "" = tagId === null ? "" : tagId;
+
+  function handleTagChange(e: ChangeEvent<HTMLSelectElement>) {
+    const next = new URLSearchParams(searchParams);
+    const v = e.target.value;
+    if (v === "") {
+      next.delete("tagId");
+    } else {
+      next.set("tagId", v);
+    }
+    next.set("page", "1");
+    setSearchParams(next);
+  }
 
   if (loading) return <p>Chargement des articles…</p>;
   if (error) return <p>{error}</p>;
 
-  let filteredArticles: Article[];
-  if (selectedTagId === "") {
-    // Mode "show all" : pas de filtre
-    filteredArticles = articles;
-  } else {
-    // Mode "filter by tag" : on filtre par ID
-    filteredArticles = articles.filter((article) => {
-      // Si l'article n'a pas de tags, il ne passe pas le filtre
-      if (!article.tags) return false;
-
-      // Cherche si au moins un tag correspond
-      const hasMatchingTag = article.tags.some(
-        (tag) => tag.id === selectedTagId,
-      );
-      return hasMatchingTag;
-    });
-  }
-
   return (
-    <main className="articles-preview">
-      <h2 className="articles-preview-title">Tous les articles</h2>
+    <section className="articles-admin">
+      <h2 className="articles-admin-title">Tous les articles</h2>
       <TagFilter
         tags={tags}
         selectedTagId={selectedTagId}
-        onTagChange={(e) =>
-          setSelectedTagId(e.target.value ? Number(e.target.value) : "")
-        }
+        onTagChange={handleTagChange}
       />
-      <NavLink to="/admin/articles/new">Créer un nouvel article.</NavLink>
-      <section className="articles-preview-grid">
-        {filteredArticles.length === 0 ? (
+      <Link to="/admin/articles/new" className="articles-admin-new">
+        Créer un nouvel article.
+      </Link>
+      <section className="articles-admin-grid">
+        {articles.length === 0 ? (
           <p>Aucun article.</p>
         ) : (
-          filteredArticles.map((article) => (
+          articles.map((article) => (
             <ArticleCard
               key={article.id}
               article={article}
@@ -82,7 +114,13 @@ function ArticlesAdmin() {
           ))
         )}
       </section>
-    </main>
+      <NavigationPagination
+        page={page}
+        totalPages={totalPages}
+        basePath="/admin/articles"
+        searchParams={searchParams}
+      />
+    </section>
   );
 }
 

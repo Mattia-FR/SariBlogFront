@@ -1,0 +1,16 @@
+.redirection-main {
+  display: flex;
+  flex-direction: column;
+  width: clamp(320px, 95vw, 1000px);
+  gap: 1.5rem;
+  padding: 2rem 0;
+
+  h2 {
+    color: var(--color-five);
+  }
+
+  a {
+    text-decoration: none;
+    color: var(--color-three);
+  }
+}

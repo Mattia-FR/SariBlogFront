@@ -1,4 +1,4 @@
-import { NavLink } from "react-router-dom";
+import { Link } from "react-router-dom";
 import type { Image } from "../../types/image";
 
 function Hero({ image }: { image: Image | null }) {
@@ -20,9 +20,9 @@ function Hero({ image }: { image: Image | null }) {
             <p className="hero-description">{image.description}</p>
           )}
         </div>
-        <NavLink to="/gallery" className="hero-link">
+        <Link to="/gallery" className="hero-link">
           Voir la galerie
-        </NavLink>
+        </Link>
       </figcaption>
     </figure>
   );

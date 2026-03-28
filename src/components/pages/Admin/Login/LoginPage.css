@@ -1,0 +1,70 @@
+.login-page {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
+  .login-page-card {
+    background: var(--color-one);
+    border-radius: 15px;
+    border: 1px solid var(--color-five);
+    padding: 2rem;
+    width: min(480px, 100%);
+  }
+
+  .login-page-header {
+    margin-bottom: 1.5rem;
+  }
+
+  .login-page-brand {
+    font-family: var(--font-one);
+    color: var(--color-five);
+    margin: 0 0 0.35rem;
+  }
+
+  .login-page-subtitle {
+    font-family: var(--font-two);
+    font-size: 0.9rem;
+    color: var(--color-three);
+    margin: 0;
+  }
+
+  .login-form {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+
+    input {
+      font-family: var(--font-two);
+      border-radius: 15px;
+      border: 1px solid var(--color-five);
+      padding: 0.5rem 1rem;
+      color: var(--color-two);
+      width: 100%;
+    }
+
+    button {
+      color: var(--color-five);
+      font-family: var(--font-one);
+      border: 1px solid var(--color-five);
+      border-radius: 15px;
+      padding: 0.5rem 1rem;
+      width: fit-content;
+      background-color: var(--color-one);
+      transition: all 0.35s ease;
+      cursor: pointer;
+
+      &:hover {
+        background-color: var(--color-five);
+        color: var(--color-one);
+      }
+    }
+
+    p {
+      font-family: var(--font-two);
+      font-size: 0.85rem;
+      color: red;
+      margin: 0;
+    }
+  }
+}

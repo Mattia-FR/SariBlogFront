@@ -11,7 +11,7 @@
 
 .modal-content {
   width: min(720px, 100%);
-  max-height: min(80vh, 720px);
+  max-height: 95vh;
   overflow: auto;
   background: var(--color-one);
   color: var(--color-two);
@@ -28,11 +28,12 @@
   width: 36px;
   height: 36px;
   border-radius: 10px;
-  border: 1px solid rgba(0, 0, 0, 0.12);
-  background: white;
+  border: 1px solid var(--color-five);
+  background: var(--color-one);
   cursor: pointer;
   font-size: 20px;
   line-height: 20px;
+  color: var(--color-five);
 }
 
 .modal-close:hover {

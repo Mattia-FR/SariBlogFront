@@ -1,0 +1,32 @@
+.Toastify__toast {
+  background-color: var(--color-one);
+  color: var(--color-two);
+  font-family: var(--font-one);
+  border-left: 4px solid var(--color-four);
+  border-radius: 8px;
+}
+
+.Toastify__toast--success {
+  border-left-color: var(--color-five);
+}
+.Toastify__toast--error {
+  border-left-color: var(--color-three);
+  background-color: var(--color-two);
+  color: var(--color-one);
+}
+.Toastify__toast--warning {
+  background-color: var(--color-two);
+  color: var(--color-one);
+}
+.Toastify__progress-bar--success {
+  background: var(--color-five);
+}
+.Toastify__progress-bar--error {
+  background: var(--color-three);
+}
+.Toastify__progress-bar--warning {
+  background: var(--color-four);
+}
+.Toastify__progress-bar--info {
+  background: var(--color-four);
+}

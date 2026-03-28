@@ -1,12 +1,36 @@
-import { useEffect, useState } from "react";
-import { useAuth } from "../../../hooks/useAuth";
+import { useState } from "react";
+import { toast } from "react-toastify";
+import { messageVisitorSchema } from "../../../schemas/messageSchemas";
 import { api } from "../../../utils/apiClient";
 import "./ContactPage.css";
 
-function ContactPage() {
-  const { user, isAuthenticated } = useAuth();
+type FormFields = "firstname" | "lastname" | "email" | "subject" | "text";
 
-  const [formData, setFormData] = useState({
+const CHAR_LIMITS: Partial<Record<FormFields, number>> = {
+  firstname: 50,
+  lastname: 50,
+  email: 100,
+  subject: 200,
+  text: 5000,
+};
+
+function getInlineError(field: FormFields, value: string): string {
+  switch (field) {
+    case "firstname":
+    case "lastname":
+      if (value.length > 0 && value.trim().length < 1)
+        return "Ce champ est requis.";
+      break;
+    case "email":
+      if (value.length > 0 && !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(value))
+        return "Adresse email invalide.";
+      break;
+  }
+  return "";
+}
+
+function ContactPage() {
+  const [formData, setFormData] = useState<Record<FormFields, string>>({
     firstname: "",
     lastname: "",
     email: "",
@@ -15,213 +39,192 @@ function ContactPage() {
   });
 
   const [isSubmitting, setIsSubmitting] = useState(false);
-  const [submitStatus, setSubmitStatus] = useState<"success" | "error" | null>(
-    null,
-  );
-
-  // Préremplir les champs si l'utilisateur est connecté
-  useEffect(() => {
-    if (isAuthenticated && user) {
-      setFormData((prev) => ({
-        ...prev,
-        email: user.email,
-        firstname: user.firstname || "",
-        lastname: user.lastname || "",
-      }));
-    }
-  }, [isAuthenticated, user]);
+  const [fieldErrors, setFieldErrors] = useState<Record<string, string>>({});
+  const [touched, setTouched] = useState<Record<string, boolean>>({});
 
   const handleInputChange = (
     event: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement>,
   ) => {
-    // 1. Récupérer l'élément HTML qui a changé
-    const changedElement = event.target;
-    // 2. Récupérer son nom (attribut "name" dans le HTML)
-    const fieldName = changedElement.name;
-    // 3. Récupérer sa nouvelle valeur (ce que l'utilisateur a tapé)
-    const newValue = changedElement.value;
-    // 4. Obtenir la valeur actuelle de formData (avant changement)
-    const previousValues = formData;
-    // 5. Créer un NOUVEL objet qui copie toutes les anciennes valeurs
-    const updatedValues = {
-      firstname: previousValues.firstname,
-      lastname: previousValues.lastname,
-      email: previousValues.email,
-      subject: previousValues.subject,
-      text: previousValues.text,
-    };
-    // 6. Modifier SEULEMENT le champ qui a changé
-    if (fieldName === "firstname") {
-      updatedValues.firstname = newValue;
-    } else if (fieldName === "lastname") {
-      updatedValues.lastname = newValue;
-    } else if (fieldName === "email") {
-      updatedValues.email = newValue;
-    } else if (fieldName === "subject") {
-      updatedValues.subject = newValue;
-    } else if (fieldName === "text") {
-      updatedValues.text = newValue;
+    const { name, value } = event.target;
+    setFormData((prev) => ({ ...prev, [name]: value }));
+
+    // Réinitialise touched pour stopper la réévaluation inline pendant la frappe
+    setTouched((prev) => ({ ...prev, [name]: false }));
+
+    if (fieldErrors[name]) {
+      setFieldErrors((prev) => {
+        const next = { ...prev };
+        delete next[name];
+        return next;
+      });
     }
-    // 7. Mettre à jour l'état avec le nouvel objet
-    setFormData(updatedValues);
+  };
+
+  const handleBlur = (
+    event: React.FocusEvent<HTMLInputElement | HTMLTextAreaElement>,
+  ) => {
+    setTouched((prev) => ({ ...prev, [event.target.name]: true }));
   };
 
   const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
-    // 1. Empêcher le rechargement de la page (comportement par défaut des formulaires)
     event.preventDefault();
-
-    // 2. Indiquer qu'on est en train d'envoyer (pour désactiver le formulaire)
     setIsSubmitting(true);
+    setFieldErrors({});
 
-    // 3. Réinitialiser le message de statut précédent
-    setSubmitStatus(null);
+    // Mark all fields as touched on submit
+    setTouched({
+      firstname: true,
+      lastname: true,
+      email: true,
+      subject: true,
+      text: true,
+    });
 
     try {
-      // 4. Préparer les données à envoyer
-      const dataToSend =
-        isAuthenticated && user
-          ? {
-              // Utilisateur connecté : envoyer username et données utilisateur
-              username: user.username,
-              email: user.email,
-              firstname: user.firstname || null,
-              lastname: user.lastname || null,
-              subject: formData.subject,
-              text: formData.text,
-            }
-          : {
-              // Visiteur non connecté : envoyer toutes les données du formulaire
-              firstname: formData.firstname,
-              lastname: formData.lastname,
-              email: formData.email,
-              subject: formData.subject,
-              text: formData.text,
-            };
+      const result = messageVisitorSchema.safeParse(formData);
 
-      // 5. Envoyer les données au backend via le client API
-      await api.post("/messages", dataToSend);
-
-      // 6. Succès : afficher un message de confirmation
-      setSubmitStatus("success");
-
-      // Réinitialiser le formulaire
-      if (isAuthenticated && user) {
-        // Utilisateur connecté : garder email, firstname, lastname
-        setFormData({
-          firstname: user.firstname || "",
-          lastname: user.lastname || "",
-          email: user.email,
-          subject: "",
-          text: "",
-        });
-      } else {
-        // Visiteur non connecté : tout réinitialiser
-        setFormData({
-          firstname: "",
-          lastname: "",
-          email: "",
-          subject: "",
-          text: "",
-        });
+      if (!result.success) {
+        const errors: Record<string, string> = {};
+        for (const issue of result.error.issues) {
+          const field = issue.path[0] as string;
+          errors[field] = issue.message;
+        }
+        setFieldErrors(errors);
+        return;
       }
+
+      await api.post("/messages", result.data);
+
+      toast.success("Message envoyé avec succès !");
+
+      setFormData({
+        firstname: "",
+        lastname: "",
+        email: "",
+        subject: "",
+        text: "",
+      });
+      setTouched({});
     } catch (error) {
-      // 7. En cas d'erreur réseau ou autre
       console.error("Erreur lors de l'envoi du message :", error);
-      setSubmitStatus("error");
+      toast.error("Erreur lors de l'envoi. Veuillez réessayer.");
     } finally {
-      // 8. Dans tous les cas, réactiver le formulaire
       setIsSubmitting(false);
     }
   };
 
-  return (
-    <main className="contact-main">
-      <h1>Formulaire de contact</h1>
+  /**
+   * Returns the error message to display for a field.
+   * Zod errors (post-submit) take priority over inline errors.
+   */
+  const getDisplayError = (field: FormFields): string => {
+    if (fieldErrors[field]) return fieldErrors[field];
+    if (touched[field]) return getInlineError(field, formData[field]);
+    return "";
+  };
 
-      <form onSubmit={handleSubmit} className="contact-form">
-        {!isAuthenticated && (
-          <>
-            <div className="form-group">
-              <label htmlFor="firstname">Prénom :</label>
-              <input
-                className="firstname"
-                type="text"
-                name="firstname"
-                value={formData.firstname}
-                onChange={handleInputChange}
-                required
-                maxLength={50}
-                disabled={isSubmitting}
-              />
-            </div>
+  const renderField = (
+    field: FormFields,
+    label: string,
+    type: "text" | "email" | "textarea" = "text",
+  ) => {
+    const error = getDisplayError(field);
+    const limit = CHAR_LIMITS[field];
+    const showCounter =
+      (field === "subject" || field === "text") &&
+      limit != null &&
+      formData[field].length > 0;
 
-            <div className="form-group">
-              <label htmlFor="lastname">Nom :</label>
-              <input
-                className="lastname"
-                type="text"
-                name="lastname"
-                value={formData.lastname}
-                onChange={handleInputChange}
-                required
-                maxLength={50}
-                disabled={isSubmitting}
-              />
-            </div>
+    return (
+      <div className="form-group">
+        <label htmlFor={field}>{label}</label>
 
-            <div className="form-group">
-              <label htmlFor="email">Email :</label>
-              <input
-                className="email"
-                type="email"
-                name="email"
-                value={formData.email}
-                onChange={handleInputChange}
-                required
-                maxLength={100}
-                disabled={isSubmitting}
-              />
-            </div>
-          </>
+        {type === "textarea" ? (
+          <textarea
+            rows={4}
+            id={field}
+            className={`text${error ? " field-invalid" : ""}`}
+            name={field}
+            value={formData[field]}
+            onChange={handleInputChange}
+            onBlur={handleBlur}
+            required
+            disabled={isSubmitting}
+            aria-describedby={error ? `${field}-error` : undefined}
+            maxLength={limit}
+            aria-invalid={!!error}
+          />
+        ) : (
+          <input
+            id={field}
+            className={`${field}${error ? " field-invalid" : ""}`}
+            type={type}
+            name={field}
+            value={formData[field]}
+            onChange={handleInputChange}
+            onBlur={handleBlur}
+            required
+            maxLength={limit}
+            disabled={isSubmitting}
+            aria-describedby={error ? `${field}-error` : undefined}
+            aria-invalid={!!error}
+          />
         )}
 
-        <div className="form-group">
-          <label htmlFor="subject">Sujet :</label>
-          <input
-            className="subject"
-            type="text"
-            name="subject"
-            value={formData.subject}
-            onChange={handleInputChange}
-            required
-            maxLength={200}
-            disabled={isSubmitting}
-          />
+        <div className="field-footer">
+          {error ? (
+            <p id={`${field}-error`} className="field-error" role="alert">
+              {error}
+            </p>
+          ) : (
+            <span /> // préserve le layout
+          )}
+          {showCounter && limit && (
+            <span
+              className={`char-count${formData[field].length >= limit * 0.9 ? " char-count--warn" : ""}`}
+            >
+              {formData[field].length}/{limit}
+            </span>
+          )}
         </div>
+      </div>
+    );
+  };
 
-        <div className="form-group">
-          <label htmlFor="text">Message :</label>
-          <textarea
-            className="text"
-            name="text"
-            value={formData.text}
-            onChange={handleInputChange}
-            required
-            disabled={isSubmitting}
-          />
-        </div>
+  return (
+    <section className="contact-main">
+      <h1 className="sr-only">Me contacter :</h1>
+      <div className="contact-text">
+        <p>
+          Vous avez un projet d'
+          <span className="contact-text-emphasis">illustration</span> en tête ou
+          une idée de{"\u00A0"}
+          <span className="contact-text-emphasis">collaboration</span> ?
+        </p>
+        <p>
+          Je serais ravie d'en discuter avec{" "}
+          <span className="contact-text-emphasis">vous</span>.
+        </p>
+        <p>
+          Mes commandes sont actuellement{" "}
+          <span className="contact-text-emphasis">ouvertes</span> — écrivez-moi,
+          je réponds sous{" "}
+          <span className="contact-text-emphasis">quelques jours</span>.
+        </p>
+      </div>
+
+      <form onSubmit={handleSubmit} className="contact-form" noValidate>
+        {renderField("firstname", "Prénom :")}
+        {renderField("lastname", "Nom :")}
+        {renderField("email", "Email :", "email")}
+        {renderField("subject", "Sujet :")}
+        {renderField("text", "Message :", "textarea")}
 
         <button type="submit" disabled={isSubmitting}>
           {isSubmitting ? "Envoi en cours..." : "Envoyer"}
         </button>
       </form>
-
-      {submitStatus === "success" && <p>Message envoyé avec succès !</p>}
-
-      {submitStatus === "error" && (
-        <p>Erreur lors de l'envoi. Veuillez réessayer.</p>
-      )}
-    </main>
+    </section>
   );
 }
 

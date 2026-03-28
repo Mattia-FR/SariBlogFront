@@ -1,6 +1,8 @@
 import { useEffect, useState } from "react";
-import { NavLink } from "react-router-dom";
+import { Link } from "react-router-dom";
+import { toast } from "react-toastify";
 import { api } from "../../../../utils/apiClient";
+import "./Dashboard.css";
 
 interface DashboardStats {
   articles: {
@@ -35,7 +37,9 @@ function Dashboard() {
         setStats(data);
       } catch (err) {
         console.error("Erreur chargement stats:", err);
-        setError("Impossible de charger les statistiques");
+        const message = "Impossible de charger les statistiques";
+        setError(message);
+        toast.error(message);
       } finally {
         setIsLoading(false);
       }
@@ -46,60 +50,64 @@ function Dashboard() {
 
   if (isLoading) {
     return (
-      <main>
+      <section>
         <p>Chargement des statistiques...</p>
-      </main>
+      </section>
     );
   }
 
   if (error) {
     return (
-      <main>
-        <p style={{ color: "red" }}>{error}</p>
-      </main>
+      <section className="dashboard-error">
+        <p>{error}</p>
+      </section>
     );
   }
 
   return (
-    <main>
-      <h1>Tableau de bord</h1>
-
+    <section className="dashboard">
       <section className="dashboard-actions">
         <h2>Actions rapides</h2>
-        <NavLink to="/admin/articles">📰 Gérer les articles</NavLink>
-        <NavLink to="/admin/messages">📧 Voir les messages</NavLink>
-        <NavLink to="/admin/images">🖼️ Gérer la galerie</NavLink>
+        <div className="dashboard-nav">
+          <Link to="/admin/profile">Gérer le profil</Link>
+          <Link to="/admin/articles">Gérer les articles</Link>
+          <Link to="/admin/messages">Gérer les messages</Link>
+          <Link to="/admin/images">Gérer la galerie</Link>
+          <Link to="/admin/comments">Gérer les commentaires</Link>
+          <Link to="/admin/tags">Gérer les tags</Link>
+          <Link to="/admin/categories">Gérer les catégories</Link>
+        </div>
       </section>
 
       {stats && (
         <section className="dashboard-stats">
           <div className="stat-card">
-            <h2>📰 Articles</h2>
+            <h2>Articles</h2>
             <p>Total : {stats.articles.total}</p>
             <p>Publiés : {stats.articles.published}</p>
             <p>Brouillons : {stats.articles.drafts}</p>
           </div>
 
           <div className="stat-card">
-            <h2>🖼️ Images</h2>
+            <h2>Images</h2>
             <p>Total : {stats.images.total}</p>
             <p>En galerie : {stats.images.inGallery}</p>
           </div>
 
           <div className="stat-card">
-            <h2>🏷️ Tags</h2>
+            <h2>Tags</h2>
             <p>Total : {stats.tags.total}</p>
           </div>
 
           <div className="stat-card">
-            <h2>📧 Messages</h2>
+            <h2>Messages</h2>
             <p className="highlight">Non lus : {stats.messages.unread}</p>
             <p>Lus : {stats.messages.read}</p>
             <p>Archivés : {stats.messages.archived}</p>
           </div>
         </section>
       )}
-    </main>
+    </section>
   );
 }
 

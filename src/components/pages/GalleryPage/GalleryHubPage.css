@@ -1,0 +1,28 @@
+.gallery-hub-page {
+  width: clamp(320px, 95vw, 1000px);
+  padding: 3rem 0;
+  display: flex;
+  justify-content: center;
+
+  .gallery-hub-categories {
+    display: flex;
+    flex-direction: column;
+    gap: 2rem;
+
+    .gallery-hub-categorie-title {
+      border: 1px solid var(--color-five);
+      border-radius: 15px;
+      padding: 1rem 2rem;
+      color: var(--color-five);
+      text-decoration: none;
+      font-size: 1.2rem;
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
+      font-family: var(--font-one);
+    }
+
+    .gallery-hub-categorie-title:hover {
+      background-color: var(--color-five);
+      color: var(--color-one);
+    }
+  }
+}

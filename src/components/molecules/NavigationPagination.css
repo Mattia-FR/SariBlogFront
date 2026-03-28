@@ -1,0 +1,21 @@
+.pagination {
+  display: flex;
+  flex-direction: row;
+  gap: 1rem;
+  justify-content: center;
+
+  .pagination-btn {
+    border: 1px solid var(--color-five);
+    border-radius: 5px;
+    padding: 0.5rem;
+    background-color: var(--color-one);
+    font-family: var(--font-one);
+    color: var(--color-five);
+  }
+
+  .pagination-btn--active {
+    border: 1px solid var(--color-four);
+    background-color: var(--color-four);
+    color: var(--color-one);
+  }
+}

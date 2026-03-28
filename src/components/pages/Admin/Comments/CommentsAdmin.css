@@ -1,0 +1,165 @@
+.comments-admin {
+  display: flex;
+  flex-direction: column;
+  width: clamp(320px, 95vw, 800px);
+  gap: 1.5rem;
+  padding: 2rem 0;
+
+  .comments-admin-title {
+    color: var(--color-five);
+    font-size: 1.3rem;
+  }
+
+  /* Boutons filtres */
+
+  .comments-admin-filters {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+
+    button {
+      background-color: var(--color-one);
+      border: 1px solid var(--color-five);
+      border-radius: 15px;
+      color: var(--color-five);
+      padding: 0.25rem 0.75rem;
+      font-family: var(--font-one);
+      font-size: 0.85rem;
+
+      &.active {
+        background-color: var(--color-five);
+        color: var(--color-one);
+      }
+    }
+  }
+
+  /* Filtre actif */
+
+  .comments-admin-filter-active {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    font-size: 0.85rem;
+    color: var(--color-three);
+
+    p {
+      margin: 0;
+    }
+
+    button {
+      background: none;
+      border: none;
+      color: var(--color-three);
+      font-family: var(--font-one);
+      font-size: 0.85rem;
+      cursor: pointer;
+      padding: 0;
+
+      &:hover {
+        color: var(--color-five);
+      }
+    }
+  }
+
+  /* Grid */
+
+  .comments-admin-grid {
+    display: flex;
+    flex-direction: column;
+    gap: 1.5rem;
+  }
+
+  /* Comment + boutons */
+
+  .comments-admin-item {
+    display: flex;
+    flex-direction: column;
+    gap: 0.75rem;
+  }
+
+  .comments-admin-item-buttons {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+
+    button {
+      background-color: var(--color-one);
+      border: 1px solid var(--color-five);
+      border-radius: 15px;
+      color: var(--color-five);
+      padding: 0.25rem 0.5rem;
+      font-family: var(--font-one);
+      font-size: 0.85rem;
+    }
+  }
+
+  /* Scope CommentCard */
+
+  .comment-card {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+    border: 1px solid var(--color-three);
+    border-radius: 5px;
+    padding: 1rem;
+    font-size: 0.9rem;
+
+    .comment-card-meta {
+      padding-bottom: 0.5rem;
+
+      ul {
+        display: flex;
+        flex-direction: column;
+        gap: 0.5rem;
+        list-style: none;
+        color: var(--color-three);
+        font-size: 0.8rem;
+      }
+
+      .comment-card-meta-author {
+        font-size: 0.9rem;
+      }
+
+      .comment-card-meta-date {
+        color: var(--color-four);
+      }
+
+      .comment-card-meta-status {
+        color: var(--color-five);
+        font-style: italic;
+      }
+    }
+
+    .comment-card-text {
+      position: relative;
+      padding: 1rem 0;
+      color: var(--color-two);
+      white-space: pre-wrap;
+    }
+
+    .comment-card-text::before {
+      content: "";
+      position: absolute;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 1px;
+      background: linear-gradient(
+        to right,
+        transparent,
+        var(--color-five),
+        transparent
+      );
+    }
+  }
+
+  .comment-card--pending {
+    background-color: var(--color-four);
+
+    .comment-card-meta {
+      .comment-card-meta-date {
+        color: var(--color-one);
+      }
+    }
+  }
+}

@@ -1,4 +1,6 @@
+import { useId } from "react";
 import type { Tag } from "../../types/tags";
+import "./TagFilter.css";
 
 interface TagFilterProps {
   tags: Tag[];
@@ -7,8 +9,16 @@ interface TagFilterProps {
 }
 
 function TagFilter({ tags, selectedTagId, onTagChange }: TagFilterProps) {
+  const tagFilterId = useId();
+
   return (
-    <select value={selectedTagId} onChange={onTagChange}>
+    <select
+      id={tagFilterId}
+      value={selectedTagId}
+      onChange={onTagChange}
+      className="tag-filter-btn"
+      aria-label="Filtrer par tag"
+    >
       <option value="">Tous les tags</option>
       {tags.map((tag) => (
         <option key={tag.id} value={tag.id}>

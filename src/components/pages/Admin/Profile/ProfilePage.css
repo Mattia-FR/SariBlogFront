@@ -1,0 +1,105 @@
+.profile-page {
+  .profile-container {
+    display: flex;
+    flex-direction: column;
+    width: clamp(320px, 95vw, 1000px);
+    gap: 1.5rem;
+    padding: 2rem 0;
+  }
+
+  .profile-header {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+    align-items: center;
+  }
+
+  .profile-avatar {
+    width: 10rem;
+    border-radius: 15px;
+    aspect-ratio: 1 / 1;
+    object-fit: cover;
+  }
+
+  .profile-info {
+    display: flex;
+    flex-direction: column;
+    gap: 0.25rem;
+    text-align: center;
+  }
+
+  .profile-name,
+  .profile-email,
+  .profile-role {
+    color: var(--color-three);
+    font-size: 0.9rem;
+  }
+
+  .profile-bio,
+  .profile-bio-short,
+  .profile-meta {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+  }
+
+  .profile-bio h3,
+  .profile-bio-short h3 {
+    color: var(--color-five);
+    font-size: 1.1rem;
+  }
+
+  .profile-bio p,
+  .profile-bio-short p,
+  .profile-meta p {
+    color: var(--color-two);
+    font-size: 0.9rem;
+    white-space: pre-wrap;
+  }
+
+  .profile-edit-form {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+  }
+
+  .profile-edit-field {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+
+    label {
+      color: var(--color-three);
+      display: flex;
+      flex-direction: column;
+      gap: 0.35rem;
+    }
+
+    input,
+    textarea {
+      border: 1px solid var(--color-three);
+      border-radius: 5px;
+      padding: 0.25rem 0.5rem;
+      font-family: var(--font-two);
+      font-size: 0.8rem;
+      background-color: var(--color-one);
+      color: var(--color-two);
+    }
+  }
+
+  .profile-actions,
+  .profile-edit-buttons {
+    display: flex;
+    gap: 1rem;
+  }
+
+  .profile-actions button,
+  .profile-edit-buttons button {
+    background-color: var(--color-one);
+    border: 1px solid var(--color-five);
+    border-radius: 15px;
+    color: var(--color-five);
+    padding: 0.25rem 0.75rem;
+    font-family: var(--font-one);
+  }
+}

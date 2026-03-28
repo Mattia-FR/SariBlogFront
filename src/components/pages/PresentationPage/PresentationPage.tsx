@@ -6,7 +6,7 @@ function PresentationPage() {
   const { user } = useLoaderData<PresentationLoaderData>();
 
   return (
-    <main className="presentation-page">
+    <section className="presentation-page">
       <h1 className="sr-only">Présentation de l'artiste</h1>
       <div className="presentation-info">
         <img
@@ -21,7 +21,7 @@ function PresentationPage() {
         </div>
       </div>
       <p className="artist-bio">{user.bio ?? "Biographie à venir"}</p>
-    </main>
+    </section>
   );
 }
 

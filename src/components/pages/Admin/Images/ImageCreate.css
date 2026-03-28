@@ -1,0 +1,109 @@
+.image-admin-create {
+  display: flex;
+  flex-direction: column;
+  width: clamp(320px, 95vw, 800px);
+  gap: 1.5rem;
+  padding: 2rem 0;
+
+  .image-admin-create-title {
+    color: var(--color-five);
+  }
+
+  .image-admin-create-form {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+
+    .image-admin-create-field {
+      display: flex;
+      flex-direction: column;
+      gap: 0.5rem;
+
+      label {
+        color: var(--color-three);
+      }
+
+      input {
+        border: 1px solid var(--color-three);
+        border-radius: 5px;
+        padding: 0.25rem 0 0.25rem 0.5rem;
+        font-family: var(--font-two);
+        font-size: 0.8rem;
+      }
+
+      textarea {
+        border: 1px solid var(--color-three);
+        border-radius: 5px;
+        padding: 0.25rem 0.5rem;
+        font-family: var(--font-two);
+        font-size: 0.8rem;
+      }
+    }
+  }
+
+  .tag-checkboxes {
+    .tag-checkboxes-title {
+      color: var(--color-five);
+      font-size: 1.2rem;
+      padding-bottom: 0.5rem;
+    }
+
+    .tag-checkboxes-list {
+      list-style: none;
+      margin: 0;
+      padding: 0;
+      display: flex;
+      flex-direction: column;
+      gap: 0.5rem;
+    }
+
+    .tag-checkboxes-label {
+      display: flex;
+      gap: 0.5rem;
+      font-size: 0.9rem;
+    }
+  }
+  .category-radios {
+    .category-radios-title {
+      color: var(--color-five);
+      font-size: 1.2rem;
+      padding-bottom: 0.5rem;
+    }
+
+    .category-radios-list {
+      list-style: none;
+      margin: 0;
+      padding: 0;
+      display: flex;
+      flex-direction: column;
+      gap: 0.5rem;
+    }
+
+    .category-radios-label {
+      display: flex;
+      gap: 0.5rem;
+      font-size: 0.9rem;
+    }
+  }
+
+  .image-admin-create-gallery {
+    display: flex;
+    gap: 0.5rem;
+    font-size: 0.9rem;
+    color: var(--color-three);
+  }
+
+  .image-admin-create-buttons {
+    display: flex;
+    gap: 1rem;
+
+    button {
+      border: 1px solid var(--color-five);
+      border-radius: 15px;
+      padding: 1rem;
+      background-color: var(--color-one);
+      color: var(--color-five);
+      font-family: var(--font-two);
+    }
+  }
+}
