@@ -58,8 +58,8 @@ function Dashboard() {
 
   if (error) {
     return (
-      <section>
-        <p style={{ color: "red" }}>{error}</p>
+      <section className="dashboard-error">
+        <p>{error}</p>
       </section>
     );
   }

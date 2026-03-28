@@ -1,9 +1,11 @@
 import { type FormEvent, useEffect, useId, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import { toast } from "react-toastify";
+import type { Category } from "../../../../types/categories";
 import type { Image } from "../../../../types/image";
 import type { Tag } from "../../../../types/tags";
 import { api } from "../../../../utils/apiClient";
+import CategoryRadios from "../../../molecules/CategoryRadios";
 import TagCheckboxes from "../../../molecules/TagCheckboxes";
 import "./ImageEdit.css";
 
@@ -14,6 +16,11 @@ function ImageEdit() {
   const [image, setImage] = useState<Image | null>(null);
   const [tags, setTags] = useState<Tag[]>([]);
   const [selectedTagIds, setSelectedTagIds] = useState<number[]>([]);
+  const [categories, setCategories] = useState<Category[]>([]);
+  const [selectedCategoryId, setSelectedCategoryId] = useState<number | null>(
+    null,
+  );
+  const [isInGallery, setIsInGallery] = useState(false);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
 
@@ -21,12 +28,21 @@ function ImageEdit() {
     async function fetchData() {
       if (!id) return;
       try {
-        const [imageData, tagsData] = await Promise.all([
+        const [imageData, tagsData, categoriesData] = await Promise.all([
           api.get<Image>(`/admin/images/${id}`),
           api.get<Tag[]>("/admin/tags"),
+          api.get<Category[]>("/admin/categories"),
         ]);
         setImage(imageData);
         setTags(tagsData);
+        setCategories(
+          [...categoriesData].sort(
+            (a, b) =>
+              a.display_order - b.display_order || a.name.localeCompare(b.name),
+          ),
+        );
+        setSelectedCategoryId(imageData.category_id ?? null);
+        setIsInGallery(imageData.is_in_gallery);
         const imageTags = await api.get<Tag[]>(`/tags/image/${id}`);
         setSelectedTagIds(imageTags.map((t) => t.id));
       } catch (err) {
@@ -45,11 +61,18 @@ function ImageEdit() {
     if (!id) return;
     const form = event.currentTarget;
     const formData = new FormData(form);
+    if (isInGallery && selectedCategoryId === null) {
+      toast.error(
+        "Choisissez une catégorie pour une image affichée dans la galerie",
+      );
+      return;
+    }
     const data = {
       title: (formData.get("title") as string)?.trim() || null,
       description: (formData.get("description") as string)?.trim() || null,
       alt_descr: (formData.get("alt_descr") as string)?.trim() || null,
-      is_in_gallery: formData.get("is_in_gallery") === "on",
+      is_in_gallery: isInGallery,
+      category_id: selectedCategoryId,
       tag_ids: selectedTagIds,
     };
     try {
@@ -109,14 +132,6 @@ function ImageEdit() {
           />
         </div>
         <div>
-          <TagCheckboxes
-            tags={tags}
-            selectedIds={selectedTagIds}
-            onChange={setSelectedTagIds}
-            idPrefix={`${generatedId}-image-edit-tag`}
-          />
-        </div>
-        <div>
           <label
             htmlFor={`${generatedId}-is_in_gallery`}
             className="image-admin-edit-gallery"
@@ -126,10 +141,34 @@ function ImageEdit() {
               type="checkbox"
               name="is_in_gallery"
               value="on"
-              defaultChecked={image.is_in_gallery}
+              checked={isInGallery}
+              onChange={(e) => {
+                const checked = e.target.checked;
+                setIsInGallery(checked);
+                if (!checked) setSelectedCategoryId(null);
+              }}
             />
             Afficher dans la galerie
           </label>
+        </div>
+        {isInGallery ? (
+          <div>
+            <CategoryRadios
+              categories={categories}
+              selectedId={selectedCategoryId}
+              onChange={setSelectedCategoryId}
+              name={`${generatedId}-image-edit-category`}
+              idPrefix={`${generatedId}-image-edit-category`}
+            />
+          </div>
+        ) : null}
+        <div>
+          <TagCheckboxes
+            tags={tags}
+            selectedIds={selectedTagIds}
+            onChange={setSelectedTagIds}
+            idPrefix={`${generatedId}-image-edit-tag`}
+          />
         </div>
         <div className="image-admin-edit-buttons">
           <button type="submit">Enregistrer</button>

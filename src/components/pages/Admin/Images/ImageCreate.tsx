@@ -1,8 +1,10 @@
 import { type FormEvent, useEffect, useId, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
+import type { Category } from "../../../../types/categories";
 import type { Tag } from "../../../../types/tags";
 import { api } from "../../../../utils/apiClient";
+import CategoryRadios from "../../../molecules/CategoryRadios";
 import TagCheckboxes from "../../../molecules/TagCheckboxes";
 import "./ImageCreate.css";
 
@@ -11,11 +13,26 @@ function ImageCreate() {
   const id = useId();
   const [tags, setTags] = useState<Tag[]>([]);
   const [selectedTagIds, setSelectedTagIds] = useState<number[]>([]);
+  const [categories, setCategories] = useState<Category[]>([]);
+  const [selectedCategoryId, setSelectedCategoryId] = useState<number | null>(
+    null,
+  );
+  const [isInGallery, setIsInGallery] = useState(false);
 
   useEffect(() => {
-    api
-      .get<Tag[]>("/admin/tags")
-      .then(setTags)
+    Promise.all([
+      api.get<Tag[]>("/admin/tags"),
+      api.get<Category[]>("/admin/categories"),
+    ])
+      .then(([tagsData, categoriesData]) => {
+        setTags(tagsData);
+        setCategories(
+          [...categoriesData].sort(
+            (a, b) =>
+              a.display_order - b.display_order || a.name.localeCompare(b.name),
+          ),
+        );
+      })
       .catch(() => {});
   }, []);
 
@@ -31,8 +48,18 @@ function ImageCreate() {
       return;
     }
 
+    if (isInGallery && selectedCategoryId === null) {
+      toast.error(
+        "Choisissez une catégorie pour une image affichée dans la galerie",
+      );
+      return;
+    }
+
     if (selectedTagIds.length > 0) {
       formData.set("tag_ids", JSON.stringify(selectedTagIds));
+    }
+    if (selectedCategoryId !== null) {
+      formData.set("category_id", String(selectedCategoryId));
     }
 
     try {
@@ -87,14 +114,6 @@ function ImageCreate() {
           />
         </div>
         <div>
-          <TagCheckboxes
-            tags={tags}
-            selectedIds={selectedTagIds}
-            onChange={setSelectedTagIds}
-            idPrefix={`${id}-image-tag`}
-          />
-        </div>
-        <div>
           <label
             htmlFor={`${id}-is_in_gallery`}
             className="image-admin-create-gallery"
@@ -104,9 +123,34 @@ function ImageCreate() {
               type="checkbox"
               name="is_in_gallery"
               value="on"
+              checked={isInGallery}
+              onChange={(e) => {
+                const checked = e.target.checked;
+                setIsInGallery(checked);
+                if (!checked) setSelectedCategoryId(null);
+              }}
             />
             Afficher dans la galerie
           </label>
+        </div>
+        {isInGallery ? (
+          <div>
+            <CategoryRadios
+              categories={categories}
+              selectedId={selectedCategoryId}
+              onChange={setSelectedCategoryId}
+              name={`${id}-image-category`}
+              idPrefix={`${id}-image-category`}
+            />
+          </div>
+        ) : null}
+        <div>
+          <TagCheckboxes
+            tags={tags}
+            selectedIds={selectedTagIds}
+            onChange={setSelectedTagIds}
+            idPrefix={`${id}-image-tag`}
+          />
         </div>
         <div className="image-admin-create-buttons">
           <button type="submit">Créer l&apos;image</button>

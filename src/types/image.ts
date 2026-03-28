@@ -8,6 +8,7 @@ export interface Image {
   is_in_gallery: boolean;
   user_id: number;
   article_id: number | null;
+  category_id: number | null;
   created_at: string;
   updated_at: string;
   imageUrl: string;

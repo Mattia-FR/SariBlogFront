@@ -5,7 +5,7 @@
 
 ## Contexte
 
-Frontend du projet Sariblog (voir [backend](https://github.com/Mattia-FR/SariBlogBack)), créé pour gérer le portfolio professionnel de ma sœur. Premier projet où je construis une application React complète avec routing, authentification et gestion d'état.
+Frontend du projet Sariblog (voir [backend](https://github.com/Mattia-FR/SariBlogBack)), créé pour gérer le portfolio professionnel de ma sœur. Premier projet où je construis une application React complète avec routing, authentification et état global léger via React Context (auth).
 
 **Objectifs techniques :**
 - Maîtriser React Router pour une SPA multi-pages
@@ -21,7 +21,7 @@ Frontend du projet Sariblog (voir [backend](https://github.com/Mattia-FR/SariBlo
   avec refresh automatique via cookie HttpOnly
 - **Routes protégées** : Système de rôles (admin/editor) avec
   ProtectedRoute
-- **Architecture** : Organisation en components/organisms/pages
+- **Architecture** : Organisation en `atoms` / `molecules` / `organisms` / `pages`
   inspirée d'Atomic Design
 
 ## Stack technique
@@ -38,7 +38,7 @@ Frontend du projet Sariblog (voir [backend](https://github.com/Mattia-FR/SariBlo
 
 ## Prérequis
 
-- **Node.js** 18+
+- **Node.js** 20.19+ ou 22.12+ (requis par Vite 7)
 - Backend Sariblog démarré (par défaut : `http://localhost:4242`)
 
 ## Installation
@@ -80,6 +80,7 @@ Front/
 ├── public/
 ├── src/
 │   ├── components/
+│   │   ├── atoms/         # Composants très simples (ex. pagination)
 │   │   ├── molecules/     # Cartes, formulaires, navbar, footer, modale…
 │   │   ├── organisms/     # Header, Hero, ErrorBoundary, ProtectedRoute…
 │   │   └── pages/         # Pages et loaders par route
@@ -106,7 +107,7 @@ Front/
 │   ├── contexts/          # AuthContext
 │   ├── hooks/             # useAuth
 │   ├── schemas/           # Schémas de validation Zod
-│   ├── types/             # article, auth, categories, comment, image, messages, modal, tags, users
+│   ├── types/             # article, auth, categories, comment, image, messages, modal, pagination, tags, users
 │   ├── utils/             # apiClient (JWT + refresh)
 │   ├── App.tsx
 │   ├── App.css
@@ -169,7 +170,7 @@ Le token d'accès est stocké **en mémoire** (variable JS), pas dans `localStor
 `AuthContext` expose :
 
 - État : `user`, `isInitializing`, `isLoading`
-- Actions : `login`, `logout`
+- Actions : `login`, `logout`, `setCurrentUser` (mise à jour du user côté client)
 - Vérification de session au chargement via `POST /auth/refresh`
 
 Les routes admin sont enveloppées dans `ProtectedRoute` avec `allowedRoles={["admin", "editor"]}`.

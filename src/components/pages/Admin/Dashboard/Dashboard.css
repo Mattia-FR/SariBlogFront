@@ -1,3 +1,9 @@
+.dashboard-error {
+  p {
+    color: red;
+  }
+}
+
 .dashboard {
   display: flex;
   flex-direction: column;
