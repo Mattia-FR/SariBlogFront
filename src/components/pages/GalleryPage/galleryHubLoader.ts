@@ -1,8 +1,8 @@
 import type { Category } from "../../../types/categories";
-import { api } from "../../../utils/apiClient";
+import { loaderFetch } from "../../../utils/loaderFetch";
 import type { GalleryHubLoaderData } from "./galleryHubTypes";
 
 export async function galleryHubLoader(): Promise<GalleryHubLoaderData> {
-  const categories = await api.get<Category[]>("/categories");
+  const categories = await loaderFetch<Category[]>("/categories");
   return { categories };
 }

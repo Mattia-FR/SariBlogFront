@@ -1,6 +1,6 @@
 import type { Article } from "../../../types/article";
 import type { Tag } from "../../../types/tags";
-import { api } from "../../../utils/apiClient";
+import { loaderFetch } from "../../../utils/loaderFetch";
 import type { BlogLoaderData } from "./blogTypes";
 
 export async function blogLoader({
@@ -26,10 +26,10 @@ export async function blogLoader({
   }
 
   const [{ articles, total, limit }, tags] = await Promise.all([
-    api.get<{ articles: Article[]; total: number; limit: number }>(
+    loaderFetch<{ articles: Article[]; total: number; limit: number }>(
       `/articles/published?${publishedQuery.toString()}`,
     ),
-    api.get<Tag[]>("/tags/published-articles"),
+    loaderFetch<Tag[]>("/tags/published-articles"),
   ]);
 
   const totalPages = Math.ceil(total / limit);
