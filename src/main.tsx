@@ -205,6 +205,8 @@ if (!rootElement) {
   throw new Error('Votre document HTML doit contenir un <div id="root"></div>');
 }
 
+console.log("VITE_API_URL =", import.meta.env.VITE_API_URL);
+
 createRoot(rootElement).render(
   <StrictMode>
     <ErrorBoundary>
