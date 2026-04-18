@@ -25,7 +25,8 @@
       }
 
       input,
-      textarea {
+      textarea,
+      select {
         border: 1px solid var(--color-three);
         border-radius: 5px;
         padding: 0.25rem 0.5rem;
