@@ -94,21 +94,21 @@ Front/
 │   │       │   ├── Messages/      # MessagesAdmin
 │   │       │   ├── Profile/       # ProfilePage
 │   │       │   └── Tags/          # TagsAdmin
-│   │       ├── ArticlePage/
-│   │       ├── BlogPage/
+│   │       ├── ArticlePage/       # ArticlePage + articleLoader
+│   │       ├── BlogPage/          # BlogPage + blogLoader
 │   │       ├── ContactPage/
 │   │       ├── ErrorPage/
-│   │       ├── GalleryPage/
-│   │       ├── HomePage/
+│   │       ├── GalleryPage/       # GalleryHubPage + GalleryPage + galleryHubLoader + galleryCategoryLoader
+│   │       ├── HomePage/          # HomePage + homeLoader
 │   │       ├── LegalNoticePage/
-│   │       ├── PresentationPage/
+│   │       ├── PresentationPage/  # PresentationPage + presentationLoader
 │   │       ├── PrivacyPolicyPage/
-│   │       └── RedirectionPage/  # 404, Unauthorized
+│   │       └── RedirectionPage/   # 404, Unauthorized
 │   ├── contexts/          # AuthContext
 │   ├── hooks/             # useAuth
 │   ├── schemas/           # Schémas de validation Zod
 │   ├── types/             # article, auth, categories, comment, image, messages, modal, pagination, tags, users
-│   ├── utils/             # apiClient (JWT + refresh)
+│   ├── utils/             # apiClient (JWT + refresh), loaderFetch (loaders React Router)
 │   ├── App.tsx
 │   ├── App.css
 │   ├── main.tsx           # Router + providers
@@ -151,6 +151,21 @@ Front/
 | `/unauthorized`                 | Public          | Accès refusé                  |
 | `*`                             | Public          | 404                           |
 
+## Loaders de routes
+
+Plusieurs routes utilisent un [loader React Router](https://reactrouter.com/en/main/route/loader) pour précharger les données avant le rendu :
+
+| Route              | Loader                    | Endpoint appelé                         |
+|--------------------|---------------------------|-----------------------------------------|
+| `/`                | `homeLoader`              | `GET /articles` (récents) + `GET /images` |
+| `/blog`            | `blogLoader`              | `GET /articles`                         |
+| `/blog/:slug`      | `articleLoader`           | `GET /articles/:slug`                   |
+| `/gallery`         | `galleryHubLoader`        | `GET /categories`                       |
+| `/gallery/:slug`   | `galleryCategoryLoader`   | `GET /categories/:slug/images`          |
+| `/presentation`    | `presentationLoader`      | `GET /images` (galerie artiste)         |
+
+Les loaders utilisent `loaderFetch<T>(endpoint)` depuis `src/utils/loaderFetch.ts`, qui appelle `api.get<T>()` et convertit toute erreur en `Response` avec le bon code HTTP (pour que React Router rende `<ErrorPage />`).
+
 ## Client API
 
 Le module `src/utils/apiClient.ts` fournit :
@@ -162,6 +177,10 @@ Le module `src/utils/apiClient.ts` fournit :
 - **`api.patch<T>(endpoint, data?)`** : requête PATCH JSON
 - **`api.delete<T>(endpoint)`** : requête DELETE (gère le statut 204)
 - **Refresh token** : appel automatique à `POST /auth/refresh` avec `credentials: "include"` (cookie httpOnly), puis réessai de la requête avec le nouveau token
+
+Le module `src/utils/loaderFetch.ts` fournit :
+
+- **`loaderFetch<T>(endpoint)`** : appelle `api.get<T>()` et convertit les erreurs en `Response` exploitable par React Router (code HTTP extrait du message d'erreur, fallback 500)
 
 Le token d'accès est stocké **en mémoire** (variable JS), pas dans `localStorage`.
 
