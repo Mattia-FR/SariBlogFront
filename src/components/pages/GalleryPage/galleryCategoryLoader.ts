@@ -2,7 +2,7 @@ import type { LoaderFunctionArgs } from "react-router-dom";
 import type { Category } from "../../../types/categories";
 import type { Image } from "../../../types/image";
 import type { Tag } from "../../../types/tags";
-import { api } from "../../../utils/apiClient";
+import { loaderFetch } from "../../../utils/loaderFetch";
 import type { GalleryLoaderData } from "./galleryTypes";
 
 export async function galleryCategoryLoader({
@@ -25,10 +25,7 @@ export async function galleryCategoryLoader({
     tagId = n;
   }
 
-  const category = await api.get<Category>(`/categories/${slug}`);
-  if (!category) {
-    throw new Response("Catégorie non trouvée", { status: 404 });
-  }
+  const category = await loaderFetch<Category>(`/categories/${slug}`);
 
   const imagesQuery = new URLSearchParams({ page: String(page) });
   if (tagId != null) {
@@ -36,10 +33,10 @@ export async function galleryCategoryLoader({
   }
 
   const [{ images, total, limit }, tags] = await Promise.all([
-    api.get<{ images: Image[]; total: number; limit: number }>(
+    loaderFetch<{ images: Image[]; total: number; limit: number }>(
       `/images/category/${category.id}?${imagesQuery.toString()}`,
     ),
-    api.get<Tag[]>(`/tags/category/${category.id}`),
+    loaderFetch<Tag[]>(`/tags/category/${category.id}`),
   ]);
 
   const totalPages = Math.ceil(total / limit);

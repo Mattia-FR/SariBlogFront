@@ -1,7 +1,7 @@
 import { type FormEvent, useEffect, useId, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
-import type { Article } from "../../../../types/article";
+import type { Article, ArticleStatus } from "../../../../types/article";
 import type { Tag } from "../../../../types/tags";
 import { api } from "../../../../utils/apiClient";
 import TagCheckboxes from "../../../molecules/TagCheckboxes";
@@ -25,10 +25,16 @@ function ArticleCreate() {
 
     const form = event.currentTarget;
     const formData = new FormData(form);
+    const rawStatus = String(formData.get("status") ?? "draft");
+    const status: ArticleStatus =
+      rawStatus === "published" || rawStatus === "archived"
+        ? rawStatus
+        : "draft";
+
     const data = {
       title: String(formData.get("title") ?? "").trim(),
       content: String(formData.get("content") ?? "").trim(),
-      status: "draft" as const,
+      status,
       tag_ids: selectedTagIds,
     };
 
@@ -77,6 +83,14 @@ function ArticleCreate() {
             rows={10}
             required
           />
+        </div>
+        <div className="article-create-field">
+          <label htmlFor={`${id}-status`}>Statut</label>
+          <select id={`${id}-status`} name="status" defaultValue="draft">
+            <option value="draft">Brouillon</option>
+            <option value="published">Publié</option>
+            <option value="archived">Archivé</option>
+          </select>
         </div>
         <div>
           <TagCheckboxes
