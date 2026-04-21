@@ -8,17 +8,13 @@ function PresentationPage() {
   return (
     <section className="presentation-page">
       <h1 className="sr-only">Présentation de l'artiste</h1>
-      <div className="presentation-info">
+      <div className="artist-avatar-wrapper">
         <img
           src={user.avatarUrl ?? "/placeholder.png"}
           alt={user.avatarUrl ? user.username : "Avatar par défaut"}
           className="artist-avatar"
         />
-        <div className="artist-names">
-          <h2 className="artist-name">{user.username}</h2>
-          <h3 className="artist-firstname">{user.firstname ?? ""}</h3>
-          <h3 className="artist-lastname">{user.lastname ?? ""}</h3>
-        </div>
+        <h2 className="artist-name">Sari Eliott</h2>
       </div>
       <p className="artist-bio">{user.bio ?? "Biographie à venir"}</p>
     </section>
