@@ -76,11 +76,11 @@
     @media (min-width: 720px) {
       grid-template-columns: repeat(2, 1fr);
 
-      & > *:nth-child(5n+1) {
+      & > *:nth-child(5n + 1) {
         grid-column: 1 / -1;
       }
 
-      & > *:nth-child(5n+1) .article-card-image {
+      & > *:nth-child(5n + 1) .article-card-image {
         height: 350px;
       }
     }
