@@ -10,11 +10,11 @@
 
 /* On définit les variables */
 :root {
-  --color-one: #f9faf4;
+  --color-one: #fcf5ea; /*#f9faf4;*/
   --color-two: #39312c;
-  --color-three: #c2782e; /* #d6924e; */
-  --color-four: #e1ad7a; /* #eac6a2 */
-  --color-five: #566a76; /* #6b8494 */
+  --color-three: #c2782e;
+  --color-four: #e1ad7a;
+  --color-five: #566a76;
   --font-one: "Manrope", sans-serif;
   --font-two: "Merriweather", serif;
 }
