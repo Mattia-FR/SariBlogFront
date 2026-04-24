@@ -62,7 +62,8 @@
       }
 
       .hero-link {
-        color: var(--color-five);
+        background-color: var(--color-five);
+        color: var(--color-one);
         font-family: var(--font-one);
         border: 1px solid var(--color-five);
         border-radius: 15px;
@@ -72,18 +73,26 @@
       }
 
       .hero-link:hover {
-        background-color: var(--color-five);
-        color: var(--color-one);
+        transform: scale(1.05);
+        box-shadow: 0 8px 24px rgba(0, 0, 0, 0.3);
       }
     }
   }
 
   .articles-preview {
     position: relative;
-    padding: 4rem 0 3rem 0;
+    display: flex;
+    flex-direction: column;
+    gap: 1.5rem;
+    padding: 4rem 0;
+
+    @media (min-width: 720px) {
+      gap: 2.5rem;
+    }
 
     .articles-preview-title {
       color: var(--color-five);
+      font-size: 2rem;
     }
 
     .articles-preview-grid {
@@ -102,7 +111,8 @@
       scroll-padding-left: 1rem;
       gap: 1rem;
       scrollbar-width: none;
-      padding: 2rem 0 2rem 1rem;
+      padding: 1.5rem 0 2.5rem 1rem;
+      align-items: stretch;
 
       @media (min-width: 720px) {
         /* Annuler le trick */
@@ -118,7 +128,6 @@
         flex-wrap: wrap;
         justify-content: center;
         gap: 3rem;
-        padding: 3rem 0;
       }
 
       .article-card {
@@ -129,6 +138,9 @@
         cursor: pointer;
         border-radius: 15px;
         box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+        display: flex;
+        flex-direction: column;
+        height: 100%;
         transition: all 0.35s ease;
 
         @media (min-width: 720px) {
@@ -149,6 +161,7 @@
           flex-wrap: wrap;
           gap: 1rem;
           padding: 1rem 0;
+          flex: 1;
         }
 
         h4 {
@@ -195,6 +208,25 @@
         transform: scale(1.05);
         box-shadow: 0 8px 24px rgba(0, 0, 0, 0.3);
       }
+    }
+
+    .articles-preview-grid > *:last-child {
+      padding-right: 1rem;
+    }
+
+    .articles-preview-link {
+      color: var(--color-five);
+      font-family: var(--font-one);
+      border: 1px solid var(--color-five);
+      border-radius: 15px;
+      padding: 1rem 2rem;
+      width: fit-content;
+      transition: all 0.35s ease;
+    }
+
+    .articles-preview-link:hover {
+      background-color: var(--color-five);
+      color: var(--color-one);
     }
   }
 
@@ -299,6 +331,7 @@
       .artist-preview-name {
         color: var(--color-three);
         letter-spacing: 0.15rem;
+        font-size: 2rem;
       }
 
       .artist-preview-bio {
