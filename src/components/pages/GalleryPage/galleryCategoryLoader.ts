@@ -27,7 +27,7 @@ export async function galleryCategoryLoader({
 
   const category = await loaderFetch<Category>(`/categories/${slug}`);
 
-  const imagesQuery = new URLSearchParams({ page: String(page) });
+  const imagesQuery = new URLSearchParams({ page: String(page), limit: "9" });
   if (tagId != null) {
     imagesQuery.set("tagId", String(tagId));
   }
