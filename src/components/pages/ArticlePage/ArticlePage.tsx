@@ -3,12 +3,14 @@ import { useLoaderData } from "react-router-dom";
 import CommentForm from "../../molecules/CommentForm";
 import Modal from "../../molecules/Modal";
 import type { ArticleLoaderData } from "./articleTypes";
+import type { Image } from "../../../types/image";
 import "./ArticlePage.css";
 import CommentCard from "../../molecules/CommentCard";
 
 function ArticlePage() {
   const data = useLoaderData<ArticleLoaderData>();
   const [isCommentModalOpen, setIsCommentModalOpen] = useState(false);
+  const [selectedImage, setSelectedImage] = useState<Image | null>(null);
 
   const { article, articleImages, comments } = data;
 
@@ -34,13 +36,38 @@ function ArticlePage() {
 
       <div className="article-detail-images">
         {articleImages.map((image) => (
-          <img
+          <button
             key={image.id}
-            src={image.imageUrl}
-            alt={image.alt_descr || image.title || article.title}
-          />
+            type="button"
+            className="article-detail-image-btn"
+            onClick={() => setSelectedImage(image)}
+          >
+            <img
+              src={image.imageUrl}
+              alt={image.alt_descr || image.title || article.title}
+            />
+          </button>
         ))}
       </div>
+
+      <Modal isOpen={selectedImage !== null} onClose={() => setSelectedImage(null)}>
+        {selectedImage && (
+          <div className="image-detail-modal">
+            <img
+              src={selectedImage.imageUrl}
+              alt={selectedImage.alt_descr || selectedImage.title || article.title}
+            />
+            {selectedImage.title && (
+              <h2 className="image-detail-modal-title">{selectedImage.title}</h2>
+            )}
+            {selectedImage.description && (
+              <p className="image-detail-modal-description">
+                {selectedImage.description}
+              </p>
+            )}
+          </div>
+        )}
+      </Modal>
 
       <p className="article-detail-content">{article.content}</p>
 
@@ -67,7 +94,7 @@ function ArticlePage() {
             Aucun commentaire pour le moment.
           </p>
         ) : (
-          <ul>
+          <ul className="article-detail-comments-list">
             {comments.map((c) => (
               <CommentCard key={c.id} comment={c} />
             ))}

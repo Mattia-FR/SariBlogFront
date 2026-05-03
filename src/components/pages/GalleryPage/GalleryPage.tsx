@@ -34,7 +34,6 @@ function GalleryPage() {
       {category && (
         <Link to="/gallery" className="gallery-grid-title">
           <h1 className="gallery-grid-title">
-            <span className="gallery-grid-title-first">Galerie :</span>
             <span className="gallery-grid-title-last"> {category.name}</span>
           </h1>
         </Link>

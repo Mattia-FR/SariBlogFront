@@ -4,10 +4,24 @@
   }
 
   .hero-section {
+    @media (min-width: 860px) {
+      width: min(96vw, 1360px);
+      position: relative;
+      left: 50%;
+      transform: translateX(-50%);
+    }
+
     .hero-media {
       display: flex;
       justify-content: center;
       gap: 2rem;
+
+      @media (min-width: 860px) {
+        width: 100%;
+        align-items: center;
+        justify-content: space-between;
+        gap: clamp(2rem, 4vw, 5rem);
+      }
 
       .hero-quote {
         display: none;
@@ -15,11 +29,14 @@
         @media (min-width: 860px) {
           display: flex;
           flex-direction: column;
-          width: 40vw;
+          flex: 1 1 0;
+          width: auto;
+          max-width: 620px;
           font-family: var(--font-one);
           color: var(--color-five);
           font-size: clamp(2.5rem, 3vw + 1rem, 4rem);
           padding: 4rem 0;
+          line-height: 1.2;
 
           .hero-quote-accent {
             color: var(--color-three);
@@ -35,8 +52,15 @@
         padding: 4rem 0;
         width: clamp(260px, 75vw, 800px);
 
+        @media (min-width: 860px) {
+          flex: 1 1 0;
+          width: auto;
+          max-width: 760px;
+        }
+
         .hero-image {
-          max-width: min(90vw, 800px);
+          width: 100%;
+          max-width: min(100%, 800px);
           max-height: 70vh;
           object-fit: contain;
         }
