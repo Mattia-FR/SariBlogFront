@@ -3,7 +3,6 @@ import type { MessageCardProps } from "../../types/messages";
 function MessageCard({ message }: MessageCardProps) {
   const sender =
     [message.firstname, message.lastname].filter(Boolean).join(" ") ||
-    message.username ||
     "Anonyme";
 
   const statusClass = `message-card--${message.status}`;
