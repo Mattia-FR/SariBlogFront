@@ -6,7 +6,6 @@ import type { Image } from "../../../../types/image";
 import type { Tag } from "../../../../types/tags";
 import { api } from "../../../../utils/apiClient";
 import ImageCard from "../../../molecules/ImageCard";
-import Modal from "../../../molecules/Modal";
 import NavigationPagination from "../../../molecules/NavigationPagination";
 import TagFilter from "../../../molecules/TagFilter";
 import "./ImagesAdmin.css";
@@ -28,8 +27,6 @@ function ImagesAdmin() {
   const [totalPages, setTotalPages] = useState(0);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
-  const [selectedImage, setSelectedImage] = useState<Image | null>(null);
-
   useEffect(() => {
     if (tagIdParam != null && tagIdParam !== "" && tagId === null) {
       const next = new URLSearchParams(searchParams);
@@ -69,19 +66,6 @@ function ImagesAdmin() {
     fetchData();
   }, [fetchData]);
 
-  async function handleDelete(image: Image) {
-    if (!confirm("Êtes-vous sûr de vouloir supprimer cette image ?")) return;
-    try {
-      await api.delete(`/admin/images/${image.id}`);
-      toast.success("Image supprimée");
-      setSelectedImage(null);
-      await fetchData();
-    } catch (err) {
-      console.error(err);
-      toast.error("Erreur lors de la suppression");
-    }
-  }
-
   const selectedTagId: number | "" = tagId === null ? "" : tagId;
 
   function handleTagChange(e: ChangeEvent<HTMLSelectElement>) {
@@ -118,7 +102,7 @@ function ImagesAdmin() {
             <ImageCard
               key={image.id}
               image={image}
-              onClick={(img) => setSelectedImage(img)}
+              linkTo={`/admin/images/edit/${image.id}`}
             />
           ))}
         </section>
@@ -130,45 +114,6 @@ function ImagesAdmin() {
         basePath="/admin/images"
         searchParams={searchParams}
       />
-
-      <Modal
-        isOpen={selectedImage !== null}
-        onClose={() => setSelectedImage(null)}
-      >
-        {selectedImage && (
-          <div className="image-detail-modal">
-            <img
-              src={selectedImage.imageUrl}
-              alt={
-                selectedImage.alt_descr ||
-                selectedImage.title ||
-                "Image de galerie"
-              }
-            />
-            {selectedImage.title && (
-              <h2 className="image-detail-modal-title">
-                {selectedImage.title}
-              </h2>
-            )}
-            {selectedImage.description && (
-              <p className="image-detail-modal-description">
-                {selectedImage.description}
-              </p>
-            )}
-            <div className="image-detail-modal-link">
-              <Link
-                to={`/admin/images/edit/${selectedImage.id}`}
-                onClick={() => setSelectedImage(null)}
-              >
-                Modifier
-              </Link>
-              <button type="button" onClick={() => handleDelete(selectedImage)}>
-                Supprimer
-              </button>
-            </div>
-          </div>
-        )}
-      </Modal>
     </section>
   );
 }

@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useEffect, useId, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import { toast } from "react-toastify";
 import type { Article } from "../../../../types/article";
@@ -10,6 +10,7 @@ import "./ArticleEdit.css";
 
 function ArticleEdit() {
   const { id } = useParams();
+  const formId = useId();
   const navigate = useNavigate();
   const [article, setArticle] = useState<Article | null>(null);
   const [articleImages, setArticleImages] = useState<Image[]>([]);
@@ -116,59 +117,60 @@ function ArticleEdit() {
         <h2 className="article-edit-title">Modifier l&apos;article</h2>
         <form onSubmit={handleUpdate} className="article-edit-form">
           <div className="article-edit-field">
-            <label>
-              Titre
-              <input
-                type="text"
-                name="title"
-                defaultValue={article.title}
-                required
-              />
-            </label>
+            <label htmlFor={`${formId}-title`}>Titre :</label>
+            <input
+              id={`${formId}-title`}
+              type="text"
+              name="title"
+              defaultValue={article.title}
+              required
+            />
           </div>
           <div className="article-edit-field">
-            <label>
-              Contenu
-              <textarea
-                name="content"
-                defaultValue={article.content}
-                rows={10}
-                required
-              />
-            </label>
+            <label htmlFor={`${formId}-content`}>Contenu :</label>
+            <textarea
+              id={`${formId}-content`}
+              name="content"
+              defaultValue={article.content}
+              rows={10}
+              required
+            />
           </div>
           <div className="article-edit-field">
-            <label>
-              Statut
-              <select name="status" defaultValue={article.status}>
-                <option value="draft">Brouillon</option>
-                <option value="published">Publié</option>
-                <option value="archived">Archivé</option>
-              </select>
-            </label>
+            <label htmlFor={`${formId}-status`}>Statut</label>
+            <select
+              id={`${formId}-status`}
+              name="status"
+              defaultValue={article.status}
+            >
+              <option value="draft">Brouillon</option>
+              <option value="published">Publié</option>
+              <option value="archived">Archivé</option>
+            </select>
           </div>
           <div className="article-edit-field">
-            <label>
-              Image à la une
-              <select
-                name="featured_image_id"
-                defaultValue={article.featured_image_id ?? ""}
-              >
-                <option value="">Aucune image à la une</option>
-                {articleImages.map((img) => (
-                  <option key={img.id} value={img.id}>
-                    {img.title || `Image #${img.id}`}
-                  </option>
-                ))}
-              </select>
-            </label>
+            <label htmlFor={`${formId}-featured-image`}>Image à la une</label>
+            <select
+              id={`${formId}-featured-image`}
+              name="featured_image_id"
+              defaultValue={article.featured_image_id ?? ""}
+            >
+              <option value="">Aucune image à la une</option>
+              {articleImages.map((img) => (
+                <option key={img.id} value={img.id}>
+                  {img.title || `Image #${img.id}`}
+                </option>
+              ))}
+            </select>
           </div>
-          <TagCheckboxes
-            tags={tags}
-            selectedIds={selectedTagIds}
-            onChange={setSelectedTagIds}
-            idPrefix="article-edit-tag"
-          />
+          <div>
+            <TagCheckboxes
+              tags={tags}
+              selectedIds={selectedTagIds}
+              onChange={setSelectedTagIds}
+              idPrefix={`${formId}-article-tag`}
+            />
+          </div>
           <div className="article-edit-buttons">
             <button type="submit">Enregistrer</button>
             <button type="button" onClick={() => setIsEditing(false)}>
