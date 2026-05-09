@@ -26,10 +26,15 @@
     justify-content: center;
     gap: 0.5rem;
 
-    button {
+    a.image-card,
+    button.image-card {
       border: none;
       background-color: var(--color-one);
       height: fit-content;
+      text-decoration: none;
+      color: inherit;
+      display: block;
+      cursor: pointer;
     }
 
     .images-card {
@@ -52,28 +57,5 @@
         list-style: none;
       }
     }
-  }
-}
-
-.image-detail-modal-link {
-  display: flex;
-  gap: 1rem;
-  a {
-    text-decoration: none;
-    border: 1px solid var(--color-five);
-    border-radius: 15px;
-    padding: 0.5rem;
-    color: var(--color-five);
-    font-size: 0.9rem;
-  }
-
-  button {
-    background-color: var(--color-three);
-    border: 1px solid var(--color-three);
-    border-radius: 15px;
-    color: var(--color-one);
-    font-family: var(--font-two);
-    padding: 0.5rem;
-    font-size: 0.9rem;
   }
 }

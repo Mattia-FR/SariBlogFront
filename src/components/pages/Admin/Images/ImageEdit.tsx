@@ -85,6 +85,19 @@ function ImageEdit() {
     }
   }
 
+  async function handleDelete() {
+    if (!id) return;
+    if (!confirm("Êtes-vous sûr de vouloir supprimer cette image ?")) return;
+    try {
+      await api.delete(`/admin/images/${id}`);
+      toast.success("Image supprimée");
+      navigate("/admin/images");
+    } catch (err) {
+      console.error(err);
+      toast.error("Erreur lors de la suppression");
+    }
+  }
+
   if (loading) return <p>Chargement…</p>;
   if (error || !image) return <p>{error ?? "Image introuvable"}</p>;
 
@@ -174,6 +187,13 @@ function ImageEdit() {
           <button type="submit">Enregistrer</button>
           <button type="button" onClick={() => navigate("/admin/images")}>
             Annuler
+          </button>
+          <button
+            type="button"
+            className="image-admin-edit-delete"
+            onClick={handleDelete}
+          >
+            Supprimer
           </button>
         </div>
       </form>

@@ -1,9 +1,9 @@
 import { useState } from "react";
 import { useLoaderData } from "react-router-dom";
+import type { Image } from "../../../types/image";
 import CommentForm from "../../molecules/CommentForm";
 import Modal from "../../molecules/Modal";
 import type { ArticleLoaderData } from "./articleTypes";
-import type { Image } from "../../../types/image";
 import "./ArticlePage.css";
 import CommentCard from "../../molecules/CommentCard";
 
@@ -50,15 +50,22 @@ function ArticlePage() {
         ))}
       </div>
 
-      <Modal isOpen={selectedImage !== null} onClose={() => setSelectedImage(null)}>
+      <Modal
+        isOpen={selectedImage !== null}
+        onClose={() => setSelectedImage(null)}
+      >
         {selectedImage && (
           <div className="image-detail-modal">
             <img
               src={selectedImage.imageUrl}
-              alt={selectedImage.alt_descr || selectedImage.title || article.title}
+              alt={
+                selectedImage.alt_descr || selectedImage.title || article.title
+              }
             />
             {selectedImage.title && (
-              <h2 className="image-detail-modal-title">{selectedImage.title}</h2>
+              <h2 className="image-detail-modal-title">
+                {selectedImage.title}
+              </h2>
             )}
             {selectedImage.description && (
               <p className="image-detail-modal-description">

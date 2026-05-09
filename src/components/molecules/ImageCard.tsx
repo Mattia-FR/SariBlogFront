@@ -1,7 +1,7 @@
 import { Link } from "react-router-dom";
 import type { ImageCardProps } from "../../types/image";
 
-function ImageCard({ image, onClick }: ImageCardProps) {
+function ImageCard({ image, linkTo, onClick }: ImageCardProps) {
   const content = (
     <div className="images-card">
       <img
@@ -24,6 +24,14 @@ function ImageCard({ image, onClick }: ImageCardProps) {
       )}
     </div>
   );
+
+  if (linkTo) {
+    return (
+      <Link to={linkTo} className="image-card">
+        {content}
+      </Link>
+    );
+  }
 
   if (onClick) {
     return (

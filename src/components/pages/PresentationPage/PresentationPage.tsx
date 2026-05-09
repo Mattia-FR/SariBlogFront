@@ -8,15 +8,22 @@ function PresentationPage() {
   return (
     <section className="presentation-page">
       <h1 className="sr-only">Présentation de l'artiste</h1>
-      <div className="artist-avatar-wrapper">
-        <img
-          src={user.avatarUrl ?? "/placeholder.png"}
-          alt={user.avatarUrl ? user.username : "Avatar par défaut"}
-          className="artist-avatar"
-        />
-        <h2 className="artist-name">Sari Eliott</h2>
+      <div className="artist-avatar-column">
+        <div className="artist-avatar-frame">
+          <img
+            src={user.avatarUrl ?? "/placeholder.png"}
+            alt={user.avatarUrl ? user.username : "Avatar par défaut"}
+            className="artist-avatar"
+          />
+        </div>
       </div>
-      <p className="artist-bio">{user.bio ?? "Biographie à venir"}</p>
+      <div className="artist-content">
+        <h2 className="artist-name">
+          <span className="artist-name-line">Sari</span>
+          <span className="artist-surname-line">Eliott</span>
+        </h2>
+        <p className="artist-bio">{user.bio ?? "Biographie à venir"}</p>
+      </div>
     </section>
   );
 }

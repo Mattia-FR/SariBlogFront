@@ -17,5 +17,7 @@ export interface Image {
 
 export interface ImageCardProps {
   image: Image;
+  /** Si défini, la carte est un lien (ex. édition admin) au lieu de la fiche galerie. */
+  linkTo?: string;
   onClick?: (image: Image) => void;
 }

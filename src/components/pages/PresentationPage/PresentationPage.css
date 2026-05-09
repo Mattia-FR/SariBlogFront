@@ -4,69 +4,104 @@
   align-items: center;
   width: clamp(320px, 95vw, 1000px);
   padding: 4rem 0;
-  gap: 4rem;
+  gap: 2rem;
 
   @media (min-width: 720px) {
     flex-direction: row;
+    align-items: flex-start;
+    gap: clamp(1.5rem, 4vw, 3rem);
   }
 
-  .artist-avatar-wrapper {
+  .artist-avatar-column {
     display: flex;
     flex-direction: column;
     align-items: center;
-    position: relative;
+    flex-shrink: 0;
 
     @media (min-width: 720px) {
-      width: clamp(15rem, 30vw, 20vw);
-      flex-shrink: 0;
-      align-items: normal;
+      align-items: flex-start;
+    }
+
+    .artist-avatar-frame {
+      display: inline-block;
+      line-height: 0;
+      border-radius: 15px;
+      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+      overflow: hidden;
     }
 
     .artist-avatar {
-      height: min(15rem, 40vw);
-      width: 90vw;
+      width: min(90vw, 20rem);
+      aspect-ratio: 1;
+      height: auto;
       object-fit: cover;
       display: block;
-      border-radius: 15px;
-      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+      border-radius: 0;
 
       @media (min-width: 720px) {
-        width: clamp(15rem, 30vw, 20vw);
-        height: 50vh;
+        aspect-ratio: auto;
+        height: auto;
+        width: auto;
+        max-height: 50vh;
+        max-width: 50vw;
       }
+    }
+  }
+
+  .artist-content {
+    display: flex;
+    flex-direction: column;
+    gap: 1.25rem;
+    width: 100%;
+    max-width: 36rem;
+    text-align: center;
+  
+    @media (min-width: 720px) {
+      text-align: left;
+      flex: 1;
+      min-width: 0;
+      max-width: none;
+      padding-top: 0.25rem;
     }
 
     .artist-name {
-      position: absolute;
-      top: 7.5rem;
-      color: var(--color-five);
-      font-size: clamp(4rem, 5vw + 1rem, 5rem);
-      font-family: var(--font-one);
+      margin: 0;
+      color: var(--color-two);
+      
+      line-height: 1.05;
       text-shadow:
         1px 1px 0 var(--color-one),
         -1px 1px 0 var(--color-one),
         1px -1px 0 var(--color-one),
         -1px -1px 0 var(--color-one);
-
-      @media (min-width: 720px) {
-        top: 0;
-        left: 5rem;
-        white-space: nowrap;
-      }
     }
-  }
+  
+    .artist-name-line {
+      display: block;
+      font-family: var(--font-two);
+      font-size: clamp(3rem, 5vw + 1rem, 4.5rem);
+      font-style: italic;
+    }
 
-  .artist-bio {
-    font-size: 1rem;
-    line-height: 1.5rem;
-  }
-
-  .artist-bio::first-letter {
-    font-size: 3rem;
-    color: var(--color-three);
-    float: left;
-    margin-right: 0.5rem;
-    font-style: italic;
-    text-shadow: 2px 3px 6px var(--color-four);
+    .artist-surname-line {
+      color: var(--color-five);
+      font-size: clamp(4rem, 6vw + 1rem, 5.5rem);
+    }
+  
+    .artist-bio {
+      margin: 0;
+      font-size: 1rem;
+      line-height: 1.5rem;
+      text-align: left;
+    }
+  
+    .artist-bio::first-letter {
+      font-size: 3rem;
+      color: var(--color-three);
+      float: left;
+      margin-right: 0.5rem;
+      font-style: italic;
+      text-shadow: 2px 3px 6px var(--color-four);
+    }
   }
 }

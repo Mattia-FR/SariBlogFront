@@ -100,6 +100,7 @@
 
   .image-admin-edit-buttons {
     display: flex;
+    flex-wrap: wrap;
     gap: 1rem;
 
     button {
@@ -109,6 +110,12 @@
       background-color: var(--color-one);
       color: var(--color-five);
       font-family: var(--font-two);
+    }
+
+    .image-admin-edit-delete {
+      background-color: var(--color-three);
+      border-color: var(--color-three);
+      color: var(--color-one);
     }
   }
 }
