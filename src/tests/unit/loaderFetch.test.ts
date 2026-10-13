@@ -1,5 +1,6 @@
 import { beforeEach, describe, expect, it, vi } from "vitest";
 import { api } from "../../utils/apiClient";
+import { ApiError } from "../../utils/apiError";
 import { loaderFetch } from "../../utils/loaderFetch";
 
 // Je mock le module apiClient pour simuler les appels HTTP sans jamais toucher le réseau.
@@ -39,8 +40,8 @@ describe("loaderFetch", () => {
 
   // Test d'une erreur HTTP 404 : la fonction doit transformer l'erreur en Response avec le bon statut.
   it("maps HTTP error message to Response status", async () => {
-    // Arrange : le mock rejette avec une erreur dont le message contient un code HTTP.
-    mockedApiGet.mockRejectedValueOnce(new Error("Erreur HTTP 404: Not Found"));
+    // Arrange : le mock rejette avec une ApiError portant le statut HTTP.
+    mockedApiGet.mockRejectedValueOnce(new ApiError(404, "Not Found"));
 
     // Act : j'appelle la fonction. Comme elle rejette, j'utilise `await expect(...).rejects`
     // pour tester le contenu de l'erreur.

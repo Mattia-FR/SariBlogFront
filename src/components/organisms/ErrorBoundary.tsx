@@ -1,5 +1,4 @@
 import { Component, type ErrorInfo, type ReactNode } from "react";
-import { Link } from "react-router-dom";
 import "../pages/ErrorPage/ErrorPage.css";
 
 interface Props {
@@ -29,7 +28,7 @@ class ErrorBoundary extends Component<Props, State> {
           <h2>Oups !</h2>
           <p>
             Une erreur est survenue. Rechargez la page ou revenez à la{" "}
-            <Link to="/">page d'accueil</Link>.
+            <a href="/">page d'accueil</a>.
           </p>
           {import.meta.env.DEV && <pre>{this.state.error?.message}</pre>}
         </section>

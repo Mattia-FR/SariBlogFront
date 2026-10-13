@@ -1,3 +1,5 @@
+import { ApiError } from "./apiError";
+
 const API_BASE_URL =
   import.meta.env.VITE_API_URL || "http://localhost:4242/api";
 
@@ -15,6 +17,13 @@ export function setAccessToken(token: string): void {
 
 export function clearAccessToken(): void {
   accessToken = null;
+}
+
+// Callback appelé quand le refresh échoue (session expirée)
+let onAuthFailure: (() => void) | null = null;
+
+export function setOnAuthFailure(handler: (() => void) | null): void {
+  onAuthFailure = handler;
 }
 
 // Rafraîchit le token avec le refresh token (cookie httpOnly)
@@ -107,10 +116,28 @@ export async function apiClient(
         console.log("[apiClient] Refresh échoué");
       }
       clearAccessToken();
+      onAuthFailure?.();
     }
   }
 
   return response;
+}
+
+// Lève une ApiError à partir du corps JSON d'erreur du back ({ error, code?, details? })
+async function throwIfNotOk(response: Response): Promise<void> {
+  if (response.ok) return;
+
+  // Le corps n'est pas toujours du JSON (404 HTML d'Express, corps vide)
+  const body = await response.json().catch(() => null);
+
+  throw new ApiError(
+    response.status,
+    typeof body?.error === "string"
+      ? body.error
+      : `Erreur HTTP ${response.status}: ${response.statusText}`,
+    body?.code,
+    body?.details,
+  );
 }
 
 // Méthodes utilitaires
@@ -118,9 +145,7 @@ export const api = {
   async get<T>(endpoint: string): Promise<T> {
     const response = await apiClient(endpoint, { method: "GET" });
 
-    if (!response.ok) {
-      throw new Error(`Erreur HTTP ${response.status}: ${response.statusText}`);
-    }
+    await throwIfNotOk(response);
 
     return response.json();
   },
@@ -131,9 +156,7 @@ export const api = {
       body: data ? JSON.stringify(data) : undefined,
     });
 
-    if (!response.ok) {
-      throw new Error(`Erreur HTTP ${response.status}: ${response.statusText}`);
-    }
+    await throwIfNotOk(response);
 
     return response.json();
   },
@@ -147,9 +170,7 @@ export const api = {
       body: formData,
     });
 
-    if (!response.ok) {
-      throw new Error(`Erreur HTTP ${response.status}: ${response.statusText}`);
-    }
+    await throwIfNotOk(response);
 
     if (response.status === 204) {
       return undefined as T;
@@ -164,8 +185,10 @@ export const api = {
       body: data ? JSON.stringify(data) : undefined,
     });
 
-    if (!response.ok) {
-      throw new Error(`Erreur HTTP ${response.status}: ${response.statusText}`);
+    await throwIfNotOk(response);
+
+    if (response.status === 204) {
+      return undefined as T;
     }
 
     return response.json();
@@ -174,9 +197,7 @@ export const api = {
   async delete<T>(endpoint: string): Promise<T> {
     const response = await apiClient(endpoint, { method: "DELETE" });
 
-    if (!response.ok) {
-      throw new Error(`Erreur HTTP ${response.status}: ${response.statusText}`);
-    }
+    await throwIfNotOk(response);
 
     if (response.status === 204) {
       return undefined as T;

@@ -46,8 +46,12 @@ function ImageEdit() {
         const imageTags = await api.get<Tag[]>(`/tags/image/${id}`);
         setSelectedTagIds(imageTags.map((t) => t.id));
       } catch (err) {
-        setError("Erreur lors du chargement de l'image");
-        toast.error("Erreur lors du chargement");
+        const message =
+          err instanceof Error
+            ? err.message
+            : "Erreur lors du chargement de l'image";
+        setError(message);
+        toast.error(message);
         console.error(err);
       } finally {
         setLoading(false);
@@ -80,7 +84,9 @@ function ImageEdit() {
       toast.success("Image mise à jour");
       navigate("/admin/images");
     } catch (err) {
-      toast.error("Erreur lors de la mise à jour");
+      toast.error(
+        err instanceof Error ? err.message : "Erreur lors de la mise à jour",
+      );
       console.error(err);
     }
   }
@@ -94,7 +100,9 @@ function ImageEdit() {
       navigate("/admin/images");
     } catch (err) {
       console.error(err);
-      toast.error("Erreur lors de la suppression");
+      toast.error(
+        err instanceof Error ? err.message : "Erreur lors de la suppression",
+      );
     }
   }
 

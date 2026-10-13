@@ -37,7 +37,10 @@ function Dashboard() {
         setStats(data);
       } catch (err) {
         console.error("Erreur chargement stats:", err);
-        const message = "Impossible de charger les statistiques";
+        const message =
+          err instanceof Error
+            ? err.message
+            : "Impossible de charger les statistiques";
         setError(message);
         toast.error(message);
       } finally {

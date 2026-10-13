@@ -6,6 +6,7 @@ import {
   apiClient,
   clearAccessToken,
   setAccessToken,
+  setOnAuthFailure,
 } from "../utils/apiClient";
 
 interface AuthContextValue {
@@ -29,6 +30,15 @@ export function AuthProvider({ children }: AuthProviderProps) {
   const [user, setUser] = useState<User | null>(null);
   const [isInitializing, setIsInitializing] = useState(true);
   const [isLoading, setIsLoading] = useState(false);
+
+  // Propager l'échec du refresh vers le contexte (session expirée)
+  useEffect(() => {
+    setOnAuthFailure(() => {
+      setUser(null);
+      toast.error("Session expirée, veuillez vous reconnecter");
+    });
+    return () => setOnAuthFailure(null);
+  }, []);
 
   // Vérifier si une session existe au chargement
   useEffect(() => {
@@ -57,16 +67,10 @@ export function AuthProvider({ children }: AuthProviderProps) {
     try {
       setIsLoading(true);
 
-      const response = await apiClient("/auth/login", {
-        method: "POST",
-        body: JSON.stringify({ identifier, password }),
-      });
-
-      if (!response.ok) {
-        throw new Error("Email/nom d'utilisateur ou mot de passe incorrect");
-      }
-
-      const data = await response.json();
+      const data = await api.post<{ accessToken: string; user: User }>(
+        "/auth/login",
+        { identifier, password },
+      );
       setAccessToken(data.accessToken);
       setUser(data.user);
     } catch (err) {

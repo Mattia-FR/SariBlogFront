@@ -56,7 +56,11 @@ function ArticleCreate() {
       navigate("/admin/articles");
     } catch (error) {
       console.error(error);
-      toast.error("Erreur lors de la création de l'article");
+      toast.error(
+        error instanceof Error
+          ? error.message
+          : "Erreur lors de la création de l'article",
+      );
     }
   }
 

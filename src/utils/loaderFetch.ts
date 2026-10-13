@@ -1,9 +1,5 @@
 import { api } from "./apiClient";
-
-function extractStatusFromError(error: Error): number {
-  const match = error.message.match(/Erreur HTTP (\d+)/);
-  return match ? Number(match[1]) : 500;
-}
+import { ApiError } from "./apiError";
 
 export async function loaderFetch<T>(endpoint: string): Promise<T> {
   try {
@@ -13,12 +9,7 @@ export async function loaderFetch<T>(endpoint: string): Promise<T> {
       throw error;
     }
 
-    if (error instanceof Error) {
-      throw new Response("Erreur de chargement", {
-        status: extractStatusFromError(error),
-      });
-    }
-
-    throw new Response("Erreur serveur", { status: 500 });
+    const status = error instanceof ApiError ? error.statusCode : 500;
+    throw new Response("Erreur de chargement", { status });
   }
 }

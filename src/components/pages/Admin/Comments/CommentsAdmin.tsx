@@ -99,7 +99,11 @@ function CommentsAdmin() {
       toast.success("Statut mis à jour");
     } catch (err) {
       console.error(err);
-      toast.error("Erreur lors de la mise à jour du statut");
+      toast.error(
+        err instanceof Error
+          ? err.message
+          : "Erreur lors de la mise à jour du statut",
+      );
     }
   }
 
@@ -110,7 +114,9 @@ function CommentsAdmin() {
       toast.success("Commentaire supprimé");
     } catch (err) {
       console.error(err);
-      toast.error("Erreur lors de la suppression");
+      toast.error(
+        err instanceof Error ? err.message : "Erreur lors de la suppression",
+      );
     }
   }
 

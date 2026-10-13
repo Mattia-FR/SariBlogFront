@@ -61,7 +61,11 @@ function CategoriesAdmin() {
       await fetchCategories();
     } catch (err) {
       console.error(err);
-      toast.error("Erreur lors de la création de la catégorie");
+      toast.error(
+        err instanceof Error
+          ? err.message
+          : "Erreur lors de la création de la catégorie",
+      );
     }
   }
 
@@ -96,7 +100,11 @@ function CategoriesAdmin() {
       await fetchCategories();
     } catch (err) {
       console.error(err);
-      toast.error("Erreur lors de la modification de la catégorie");
+      toast.error(
+        err instanceof Error
+          ? err.message
+          : "Erreur lors de la modification de la catégorie",
+      );
     }
   }
 
@@ -107,7 +115,11 @@ function CategoriesAdmin() {
       await fetchCategories();
     } catch (err) {
       console.error(err);
-      toast.error("Erreur lors de la suppression de la catégorie");
+      toast.error(
+        err instanceof Error
+          ? err.message
+          : "Erreur lors de la suppression de la catégorie",
+      );
     }
   }
 

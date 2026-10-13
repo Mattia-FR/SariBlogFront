@@ -82,7 +82,9 @@ function ArticleEdit() {
       setArticle(updatedArticle);
     } catch (err) {
       console.error(err);
-      toast.error("Erreur lors de la modification");
+      toast.error(
+        err instanceof Error ? err.message : "Erreur lors de la modification",
+      );
     }
   }
 
@@ -97,7 +99,9 @@ function ArticleEdit() {
       navigate("/admin/articles");
     } catch (err) {
       console.error(err);
-      toast.error("Erreur lors de la suppression");
+      toast.error(
+        err instanceof Error ? err.message : "Erreur lors de la suppression",
+      );
     }
   }
 

@@ -49,7 +49,11 @@ function TagsAdmin() {
       await fetchTags();
     } catch (err) {
       console.error(err);
-      toast.error("Erreur lors de la création du tag");
+      toast.error(
+        err instanceof Error
+          ? err.message
+          : "Erreur lors de la création du tag",
+      );
     }
   }
 
@@ -73,7 +77,11 @@ function TagsAdmin() {
       await fetchTags();
     } catch (err) {
       console.error(err);
-      toast.error("Erreur lors de la modification du tag");
+      toast.error(
+        err instanceof Error
+          ? err.message
+          : "Erreur lors de la modification du tag",
+      );
     }
   }
 
@@ -84,7 +92,11 @@ function TagsAdmin() {
       await fetchTags();
     } catch (err) {
       console.error(err);
-      toast.error("Erreur lors de la suppression du tag");
+      toast.error(
+        err instanceof Error
+          ? err.message
+          : "Erreur lors de la suppression du tag",
+      );
     }
   }
 

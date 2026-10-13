@@ -1,16 +1,26 @@
 import { useEffect, useState } from "react";
+import { useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
 import { useAuth } from "../../../../hooks/useAuth";
+import { updateMePasswordSchema } from "../../../../schemas/userSchemas";
 import type { User } from "../../../../types/users";
 import { api } from "../../../../utils/apiClient";
+import {
+  ApiError,
+  fieldErrorsFromApiDetails,
+} from "../../../../utils/apiError";
 import "./ProfilePage.css";
 
 function ProfilePage() {
-  const { setCurrentUser } = useAuth();
+  const { setCurrentUser, logout } = useAuth();
+  const navigate = useNavigate();
   const [profile, setProfile] = useState<User | null>(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
   const [isEditing, setIsEditing] = useState(false);
+  const [passwordFieldErrors, setPasswordFieldErrors] = useState<
+    Record<string, string>
+  >({});
 
   useEffect(() => {
     async function fetchProfile() {
@@ -20,7 +30,11 @@ function ProfilePage() {
         setProfile(data);
       } catch (err) {
         console.error(err);
-        setError("Erreur lors du chargement du profil");
+        setError(
+          err instanceof Error
+            ? err.message
+            : "Erreur lors du chargement du profil",
+        );
       } finally {
         setLoading(false);
       }
@@ -60,7 +74,51 @@ function ProfilePage() {
       toast.success("Profil mis à jour");
     } catch (err) {
       console.error(err);
-      toast.error("Erreur lors de la mise à jour du profil");
+      toast.error(
+        err instanceof Error
+          ? err.message
+          : "Erreur lors de la mise à jour du profil",
+      );
+    }
+  }
+
+  async function handlePasswordUpdate(event: React.FormEvent<HTMLFormElement>) {
+    event.preventDefault();
+    setPasswordFieldErrors({});
+
+    const form = event.currentTarget;
+    const formData = new FormData(form);
+    const currentPassword = formData.get("currentPassword") as string;
+    const password = formData.get("password") as string;
+
+    const result = updateMePasswordSchema.safeParse({
+      currentPassword,
+      password,
+    });
+
+    if (!result.success) {
+      const errors = fieldErrorsFromApiDetails(result.error.issues);
+      if (errors) setPasswordFieldErrors(errors);
+      return;
+    }
+
+    try {
+      await api.patch("/admin/users/me/password", result.data);
+      toast.success("Mot de passe mis à jour. Reconnectez-vous.");
+      form.reset();
+      await logout();
+      navigate("/login");
+    } catch (err) {
+      console.error(err);
+      if (err instanceof ApiError) {
+        const fromApi = fieldErrorsFromApiDetails(err.details);
+        if (fromApi) setPasswordFieldErrors(fromApi);
+      }
+      toast.error(
+        err instanceof Error
+          ? err.message
+          : "Erreur lors de la mise à jour du mot de passe",
+      );
     }
   }
 
@@ -117,14 +175,17 @@ function ProfilePage() {
             </div>
             <div className="profile-edit-field">
               <label>
-                Avatar (chemin)
+                Avatar (chemin sous /uploads/)
                 <input
                   type="text"
                   name="avatar"
                   defaultValue={profile.avatar ?? ""}
-                  placeholder="/uploads/images/..."
+                  placeholder="/uploads/images/exemple.jpg"
                 />
               </label>
+              <p className="profile-field-hint">
+                Chemin relatif uniquement (jpg, png, gif, webp).
+              </p>
             </div>
             <div className="profile-edit-field">
               <label>
@@ -208,6 +269,49 @@ function ProfilePage() {
                 Modifier mon profil
               </button>
             </div>
+
+            <form
+              onSubmit={handlePasswordUpdate}
+              className="profile-edit-form profile-password-form"
+            >
+              <h3>Changer le mot de passe</h3>
+              <div className="profile-edit-field">
+                <label>
+                  Mot de passe actuel
+                  <input
+                    type="password"
+                    name="currentPassword"
+                    autoComplete="current-password"
+                    required
+                  />
+                </label>
+                {passwordFieldErrors.currentPassword ? (
+                  <p className="profile-field-error">
+                    {passwordFieldErrors.currentPassword}
+                  </p>
+                ) : null}
+              </div>
+              <div className="profile-edit-field">
+                <label>
+                  Nouveau mot de passe
+                  <input
+                    type="password"
+                    name="password"
+                    autoComplete="new-password"
+                    required
+                    minLength={8}
+                  />
+                </label>
+                {passwordFieldErrors.password ? (
+                  <p className="profile-field-error">
+                    {passwordFieldErrors.password}
+                  </p>
+                ) : null}
+              </div>
+              <div className="profile-edit-buttons">
+                <button type="submit">Mettre à jour le mot de passe</button>
+              </div>
+            </form>
           </>
         )}
       </div>

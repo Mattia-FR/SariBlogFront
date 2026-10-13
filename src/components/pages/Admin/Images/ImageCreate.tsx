@@ -68,7 +68,11 @@ function ImageCreate() {
       navigate("/admin/images");
     } catch (error) {
       console.error(error);
-      toast.error("Erreur lors de la création de l'image");
+      toast.error(
+        error instanceof Error
+          ? error.message
+          : "Erreur lors de la création de l'image",
+      );
     }
   }
 

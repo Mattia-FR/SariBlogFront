@@ -2,6 +2,7 @@ import { useState } from "react";
 import { toast } from "react-toastify";
 import { messageVisitorSchema } from "../../../schemas/messageSchemas";
 import { api } from "../../../utils/apiClient";
+import { ApiError, fieldErrorsFromApiDetails } from "../../../utils/apiError";
 import "./ContactPage.css";
 
 type FormFields = "firstname" | "lastname" | "email" | "subject" | "text";
@@ -84,12 +85,8 @@ function ContactPage() {
       const result = messageVisitorSchema.safeParse(formData);
 
       if (!result.success) {
-        const errors: Record<string, string> = {};
-        for (const issue of result.error.issues) {
-          const field = issue.path[0] as string;
-          errors[field] = issue.message;
-        }
-        setFieldErrors(errors);
+        const errors = fieldErrorsFromApiDetails(result.error.issues);
+        if (errors) setFieldErrors(errors);
         return;
       }
 
@@ -107,7 +104,15 @@ function ContactPage() {
       setTouched({});
     } catch (error) {
       console.error("Erreur lors de l'envoi du message :", error);
-      toast.error("Erreur lors de l'envoi. Veuillez réessayer.");
+      if (error instanceof ApiError) {
+        const fromApi = fieldErrorsFromApiDetails(error.details);
+        if (fromApi) setFieldErrors(fromApi);
+      }
+      toast.error(
+        error instanceof Error
+          ? error.message
+          : "Erreur lors de l'envoi. Veuillez réessayer.",
+      );
     } finally {
       setIsSubmitting(false);
     }

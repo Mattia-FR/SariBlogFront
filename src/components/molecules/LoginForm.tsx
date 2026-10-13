@@ -3,6 +3,7 @@ import { useId, useState } from "react";
 import { toast } from "react-toastify";
 import { useAuth } from "../../hooks/useAuth";
 import { loginSchema } from "../../schemas/authSchemas";
+import { ApiError, fieldErrorsFromApiDetails } from "../../utils/apiError";
 
 interface LoginFormProps {
   onSuccess?: () => void;
@@ -33,12 +34,8 @@ function LoginForm({ onSuccess }: LoginFormProps) {
     const result = loginSchema.safeParse({ identifier, password });
 
     if (!result.success) {
-      const errors: Record<string, string> = {};
-      for (const issue of result.error.issues) {
-        const field = issue.path[0] as string;
-        errors[field] = issue.message;
-      }
-      setFieldErrors(errors);
+      const errors = fieldErrorsFromApiDetails(result.error.issues);
+      if (errors) setFieldErrors(errors);
       return;
     }
 
@@ -47,6 +44,10 @@ function LoginForm({ onSuccess }: LoginFormProps) {
       toast.success("Connexion réussie");
       onSuccess?.();
     } catch (err) {
+      if (err instanceof ApiError) {
+        const fromApi = fieldErrorsFromApiDetails(err.details);
+        if (fromApi) setFieldErrors(fromApi);
+      }
       const message =
         err instanceof Error ? err.message : "Erreur de connexion";
       setFormError(message);

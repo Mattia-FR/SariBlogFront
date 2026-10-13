@@ -102,4 +102,29 @@
     padding: 0.25rem 0.75rem;
     font-family: var(--font-one);
   }
+
+  .profile-password-form {
+    margin-top: 1rem;
+    padding-top: 1.5rem;
+    border-top: 1px solid var(--color-three);
+
+    h3 {
+      color: var(--color-five);
+      font-size: 1.1rem;
+    }
+  }
+
+  .profile-field-hint,
+  .profile-field-error {
+    font-size: 0.8rem;
+    margin: 0;
+  }
+
+  .profile-field-hint {
+    color: var(--color-three);
+  }
+
+  .profile-field-error {
+    color: var(--color-five);
+  }
 }
