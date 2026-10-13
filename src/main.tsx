@@ -42,158 +42,165 @@ import { AuthProvider } from "./contexts/AuthContext";
 const router = createBrowserRouter([
   {
     element: <App />,
+    // Dernier recours si le layout lui-même plante (rendu sans Header/Footer)
     errorElement: <ErrorPage />,
     children: [
       {
-        path: "/",
-        element: <HomePage />,
-        loader: homeLoader,
-      },
-      {
-        path: "/blog",
-        element: <BlogPage />,
-        loader: blogLoader,
-      },
-      {
-        path: "/blog/:slug",
-        element: <ArticlePage />,
-        loader: articleLoader,
-      },
-      {
-        path: "/gallery",
-        element: <GalleryHubPage />,
-        loader: galleryHubLoader,
-      },
-      {
-        path: "/gallery/:slug",
-        element: <GalleryPage />,
-        loader: galleryCategoryLoader,
-      },
-      {
-        path: "/presentation",
-        element: <PresentationPage />,
-        loader: presentationLoader,
-      },
-      {
-        path: "/contact",
-        element: <ContactPage />,
-      },
-      {
-        path: "/mentions-legales",
-        element: <LegalNoticePage />,
-      },
-      {
-        path: "/politique-confidentialite",
-        element: <PrivacyPolicyPage />,
-      },
+        // Route sans path : les erreurs de loader/rendu des pages s'affichent DANS le layout
+        errorElement: <ErrorPage />,
+        children: [
+          {
+            path: "/",
+            element: <HomePage />,
+            loader: homeLoader,
+          },
+          {
+            path: "/blog",
+            element: <BlogPage />,
+            loader: blogLoader,
+          },
+          {
+            path: "/blog/:slug",
+            element: <ArticlePage />,
+            loader: articleLoader,
+          },
+          {
+            path: "/gallery",
+            element: <GalleryHubPage />,
+            loader: galleryHubLoader,
+          },
+          {
+            path: "/gallery/:slug",
+            element: <GalleryPage />,
+            loader: galleryCategoryLoader,
+          },
+          {
+            path: "/presentation",
+            element: <PresentationPage />,
+            loader: presentationLoader,
+          },
+          {
+            path: "/contact",
+            element: <ContactPage />,
+          },
+          {
+            path: "/mentions-legales",
+            element: <LegalNoticePage />,
+          },
+          {
+            path: "/politique-confidentialite",
+            element: <PrivacyPolicyPage />,
+          },
 
-      {
-        path: "/login",
-        element: <LoginPage />,
-      },
-      {
-        path: "/admin",
-        element: (
-          <ProtectedRoute allowedRoles={["admin", "editor"]}>
-            <Dashboard />
-          </ProtectedRoute>
-        ),
-      },
-      {
-        path: "/admin/articles",
-        element: (
-          <ProtectedRoute allowedRoles={["admin", "editor"]}>
-            <ArticlesAdmin />
-          </ProtectedRoute>
-        ),
-      },
-      {
-        path: "/admin/articles/new",
-        element: (
-          <ProtectedRoute allowedRoles={["admin", "editor"]}>
-            <ArticleCreate />
-          </ProtectedRoute>
-        ),
-      },
-      {
-        path: "/admin/articles/edit/:id",
-        element: (
-          <ProtectedRoute allowedRoles={["admin", "editor"]}>
-            <ArticleEdit />
-          </ProtectedRoute>
-        ),
-      },
-      {
-        path: "/admin/messages",
-        element: (
-          <ProtectedRoute allowedRoles={["admin", "editor"]}>
-            <MessagesAdmin />
-          </ProtectedRoute>
-        ),
-      },
-      {
-        path: "/admin/comments",
-        element: (
-          <ProtectedRoute allowedRoles={["admin", "editor"]}>
-            <CommentsAdmin />
-          </ProtectedRoute>
-        ),
-      },
-      {
-        path: "/admin/images",
-        element: (
-          <ProtectedRoute allowedRoles={["admin", "editor"]}>
-            <ImagesAdmin />
-          </ProtectedRoute>
-        ),
-      },
-      {
-        path: "/admin/images/new",
-        element: (
-          <ProtectedRoute allowedRoles={["admin", "editor"]}>
-            <ImageCreate />
-          </ProtectedRoute>
-        ),
-      },
-      {
-        path: "/admin/images/edit/:id",
-        element: (
-          <ProtectedRoute allowedRoles={["admin", "editor"]}>
-            <ImageEdit />
-          </ProtectedRoute>
-        ),
-      },
-      {
-        path: "/admin/tags",
-        element: (
-          <ProtectedRoute allowedRoles={["admin", "editor"]}>
-            <TagsAdmin />
-          </ProtectedRoute>
-        ),
-      },
-      {
-        path: "/admin/categories",
-        element: (
-          <ProtectedRoute allowedRoles={["admin", "editor"]}>
-            <CategoriesAdmin />
-          </ProtectedRoute>
-        ),
-      },
-      {
-        path: "/admin/profile",
-        element: (
-          <ProtectedRoute allowedRoles={["admin", "editor"]}>
-            <ProfilePage />
-          </ProtectedRoute>
-        ),
-      },
-      {
-        path: "/unauthorized",
-        element: <UnauthorizedPage />,
-      },
-      {
-        path: "*",
-        element: <NotFoundPage />,
+          {
+            path: "/login",
+            element: <LoginPage />,
+          },
+          {
+            path: "/admin",
+            element: (
+              <ProtectedRoute allowedRoles={["admin", "editor"]}>
+                <Dashboard />
+              </ProtectedRoute>
+            ),
+          },
+          {
+            path: "/admin/articles",
+            element: (
+              <ProtectedRoute allowedRoles={["admin", "editor"]}>
+                <ArticlesAdmin />
+              </ProtectedRoute>
+            ),
+          },
+          {
+            path: "/admin/articles/new",
+            element: (
+              <ProtectedRoute allowedRoles={["admin", "editor"]}>
+                <ArticleCreate />
+              </ProtectedRoute>
+            ),
+          },
+          {
+            path: "/admin/articles/edit/:id",
+            element: (
+              <ProtectedRoute allowedRoles={["admin", "editor"]}>
+                <ArticleEdit />
+              </ProtectedRoute>
+            ),
+          },
+          {
+            path: "/admin/messages",
+            element: (
+              <ProtectedRoute allowedRoles={["admin", "editor"]}>
+                <MessagesAdmin />
+              </ProtectedRoute>
+            ),
+          },
+          {
+            path: "/admin/comments",
+            element: (
+              <ProtectedRoute allowedRoles={["admin", "editor"]}>
+                <CommentsAdmin />
+              </ProtectedRoute>
+            ),
+          },
+          {
+            path: "/admin/images",
+            element: (
+              <ProtectedRoute allowedRoles={["admin", "editor"]}>
+                <ImagesAdmin />
+              </ProtectedRoute>
+            ),
+          },
+          {
+            path: "/admin/images/new",
+            element: (
+              <ProtectedRoute allowedRoles={["admin", "editor"]}>
+                <ImageCreate />
+              </ProtectedRoute>
+            ),
+          },
+          {
+            path: "/admin/images/edit/:id",
+            element: (
+              <ProtectedRoute allowedRoles={["admin", "editor"]}>
+                <ImageEdit />
+              </ProtectedRoute>
+            ),
+          },
+          {
+            path: "/admin/tags",
+            element: (
+              <ProtectedRoute allowedRoles={["admin", "editor"]}>
+                <TagsAdmin />
+              </ProtectedRoute>
+            ),
+          },
+          {
+            path: "/admin/categories",
+            element: (
+              <ProtectedRoute allowedRoles={["admin", "editor"]}>
+                <CategoriesAdmin />
+              </ProtectedRoute>
+            ),
+          },
+          {
+            path: "/admin/profile",
+            element: (
+              <ProtectedRoute allowedRoles={["admin", "editor"]}>
+                <ProfilePage />
+              </ProtectedRoute>
+            ),
+          },
+          {
+            path: "/unauthorized",
+            element: <UnauthorizedPage />,
+          },
+          {
+            path: "*",
+            element: <NotFoundPage />,
+          },
+        ],
       },
     ],
   },

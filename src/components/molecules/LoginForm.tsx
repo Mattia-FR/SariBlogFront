@@ -3,7 +3,11 @@ import { useId, useState } from "react";
 import { toast } from "react-toastify";
 import { useAuth } from "../../hooks/useAuth";
 import { loginSchema } from "../../schemas/authSchemas";
-import { ApiError, fieldErrorsFromApiDetails } from "../../utils/apiError";
+import {
+  ApiError,
+  fieldErrorsFromApiDetails,
+  getErrorMessage,
+} from "../../utils/apiError";
 
 interface LoginFormProps {
   onSuccess?: () => void;
@@ -48,8 +52,8 @@ function LoginForm({ onSuccess }: LoginFormProps) {
         const fromApi = fieldErrorsFromApiDetails(err.details);
         if (fromApi) setFieldErrors(fromApi);
       }
-      const message =
-        err instanceof Error ? err.message : "Erreur de connexion";
+      // Pas de notifyError ici : un 401 « Identifiants invalides » doit rester visible en toast
+      const message = getErrorMessage(err, "Erreur de connexion");
       setFormError(message);
       toast.error(message);
     }

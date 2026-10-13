@@ -1,10 +1,10 @@
 import type { ChangeEvent } from "react";
 import { useCallback, useEffect, useState } from "react";
 import { Link, useSearchParams } from "react-router-dom";
-import { toast } from "react-toastify";
 import type { Article } from "../../../../types/article";
 import type { Tag } from "../../../../types/tags";
 import { api } from "../../../../utils/apiClient";
+import { notifyError } from "../../../../utils/notifyError";
 import ArticleCard from "../../../molecules/ArticleCard";
 import NavigationPagination from "../../../molecules/NavigationPagination";
 import TagFilter from "../../../molecules/TagFilter";
@@ -59,10 +59,7 @@ function ArticlesAdmin() {
       setTotalPages(Math.ceil(listRes.total / listRes.limit));
       setTags(tagsRes);
     } catch (err) {
-      const message =
-        err instanceof Error ? err.message : "Erreur lors du chargement";
-      setError(message);
-      toast.error(message);
+      setError(notifyError(err, "Erreur lors du chargement"));
     } finally {
       setLoading(false);
     }

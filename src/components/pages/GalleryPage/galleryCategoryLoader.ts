@@ -2,7 +2,7 @@ import type { LoaderFunctionArgs } from "react-router-dom";
 import type { Category } from "../../../types/categories";
 import type { Image } from "../../../types/image";
 import type { Tag } from "../../../types/tags";
-import { loaderFetch } from "../../../utils/loaderFetch";
+import { loaderFetch, loaderFetchOptional } from "../../../utils/loaderFetch";
 import type { GalleryLoaderData } from "./galleryTypes";
 
 export async function galleryCategoryLoader({
@@ -36,7 +36,7 @@ export async function galleryCategoryLoader({
     loaderFetch<{ images: Image[]; total: number; limit: number }>(
       `/images/category/${category.id}?${imagesQuery.toString()}`,
     ),
-    loaderFetch<Tag[]>(`/tags/category/${category.id}`),
+    loaderFetchOptional<Tag[]>(`/tags/category/${category.id}`, []),
   ]);
 
   const totalPages = Math.ceil(total / limit);

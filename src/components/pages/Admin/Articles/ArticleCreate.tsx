@@ -4,6 +4,12 @@ import { toast } from "react-toastify";
 import type { Article, ArticleStatus } from "../../../../types/article";
 import type { Tag } from "../../../../types/tags";
 import { api } from "../../../../utils/apiClient";
+import { getErrorMessage } from "../../../../utils/apiError";
+import {
+  getImageFileError,
+  IMAGE_ACCEPT,
+} from "../../../../utils/imageConstraints";
+import { notifyError } from "../../../../utils/notifyError";
 import TagCheckboxes from "../../../molecules/TagCheckboxes";
 import "./ArticleCreate.css";
 
@@ -17,7 +23,7 @@ function ArticleCreate() {
     api
       .get<Tag[]>("/admin/tags")
       .then(setTags)
-      .catch(() => {});
+      .catch((err) => notifyError(err, "Impossible de charger les tags"));
   }, []);
 
   async function handleSubmit(event: FormEvent<HTMLFormElement>) {
@@ -38,30 +44,50 @@ function ArticleCreate() {
       tag_ids: selectedTagIds,
     };
 
-    try {
-      const newArticle = await api.post<Article>("/admin/articles", data);
-
-      const files = formData.getAll("images") as File[];
-      if (files.length > 0) {
-        for (const file of files) {
-          if (file.size === 0) continue;
-          const imageFormData = new FormData();
-          imageFormData.append("image", file);
-          imageFormData.append("article_id", String(newArticle.id));
-          await api.postFormData("/admin/images", imageFormData);
-        }
+    const files = (formData.getAll("images") as File[]).filter(
+      (file) => file.size > 0,
+    );
+    for (const file of files) {
+      const fileError = getImageFileError(file);
+      if (fileError) {
+        toast.error(`${file.name} : ${fileError}`);
+        return;
       }
+    }
 
-      toast.success("Article créé avec succès !");
-      navigate("/admin/articles");
+    let newArticle: Article;
+    try {
+      newArticle = await api.post<Article>("/admin/articles", data);
     } catch (error) {
-      console.error(error);
-      toast.error(
-        error instanceof Error
-          ? error.message
-          : "Erreur lors de la création de l'article",
+      notifyError(error, "Erreur lors de la création de l'article");
+      return;
+    }
+
+    // L'article existe : un échec d'upload ne doit ni l'annuler ni passer inaperçu.
+    const results = await Promise.allSettled(
+      files.map((file) => {
+        const imageFormData = new FormData();
+        imageFormData.append("image", file);
+        imageFormData.append("article_id", String(newArticle.id));
+        return api.postFormData("/admin/images", imageFormData);
+      }),
+    );
+
+    const failures = results.flatMap((result, index) =>
+      result.status === "rejected"
+        ? [`${files[index].name} : ${getErrorMessage(result.reason, "échec")}`]
+        : [],
+    );
+
+    if (failures.length === 0) {
+      toast.success("Article créé avec succès !");
+    } else {
+      toast.warning(
+        `Article créé, mais ${failures.length}/${files.length} image(s) non envoyée(s) — ${failures.join(" ; ")}`,
+        { autoClose: false },
       );
     }
+    navigate("/admin/articles");
   }
 
   return (
@@ -110,7 +136,7 @@ function ArticleCreate() {
             id={`${id}-images`}
             type="file"
             name="images"
-            accept="image/*"
+            accept={IMAGE_ACCEPT}
             multiple
           />
         </div>

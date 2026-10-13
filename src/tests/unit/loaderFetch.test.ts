@@ -1,7 +1,11 @@
 import { beforeEach, describe, expect, it, vi } from "vitest";
 import { api } from "../../utils/apiClient";
-import { ApiError } from "../../utils/apiError";
-import { loaderFetch } from "../../utils/loaderFetch";
+import { ApiError, NETWORK_ERROR_MESSAGE } from "../../utils/apiError";
+import { loaderFetch, loaderFetchOptional } from "../../utils/loaderFetch";
+
+vi.mock("../../utils/logger", () => ({
+  logger: { debug: vi.fn(), error: vi.fn() },
+}));
 
 // Je mock le module apiClient pour simuler les appels HTTP sans jamais toucher le réseau.
 // Ainsi, je contrôle parfaitement ce que retourne api.get().
@@ -62,5 +66,48 @@ describe("loaderFetch", () => {
 
     // Assert : la promesse doit être rejetée avec une Response de statut 500.
     await expect(call).rejects.toMatchObject({ status: 500 });
+  });
+
+  // Serveur injoignable : une Response ne peut pas avoir le statut 0, on utilise 503.
+  it("maps NETWORK_ERROR to status 503", async () => {
+    mockedApiGet.mockRejectedValueOnce(
+      new ApiError(0, NETWORK_ERROR_MESSAGE, "NETWORK_ERROR"),
+    );
+
+    await expect(loaderFetch("/articles")).rejects.toMatchObject({
+      status: 503,
+    });
+  });
+
+  // Le message du backend doit être conservé dans le corps de la Response (lu par ErrorPage).
+  it("keeps the backend message in the Response body", async () => {
+    mockedApiGet.mockRejectedValueOnce(
+      new ApiError(404, "Article introuvable", "NOT_FOUND"),
+    );
+
+    const error = await loaderFetch("/articles/slug/x").catch((e) => e);
+    expect(error).toBeInstanceOf(Response);
+    await expect((error as Response).text()).resolves.toBe(
+      "Article introuvable",
+    );
+  });
+});
+
+describe("loaderFetchOptional", () => {
+  beforeEach(() => {
+    mockedApiGet.mockReset();
+  });
+
+  it("returns data when request succeeds", async () => {
+    mockedApiGet.mockResolvedValueOnce([{ id: 1 }] as never);
+    await expect(loaderFetchOptional("/tags", [])).resolves.toEqual([
+      { id: 1 },
+    ]);
+  });
+
+  // Donnée secondaire : un échec ne doit pas faire tomber la page, on renvoie le repli.
+  it("returns the fallback instead of throwing", async () => {
+    mockedApiGet.mockRejectedValueOnce(new ApiError(500, "Erreur serveur"));
+    await expect(loaderFetchOptional("/tags", [])).resolves.toEqual([]);
   });
 });

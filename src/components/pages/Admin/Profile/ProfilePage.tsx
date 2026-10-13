@@ -3,12 +3,14 @@ import { useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
 import { useAuth } from "../../../../hooks/useAuth";
 import { updateMePasswordSchema } from "../../../../schemas/userSchemas";
+import type { Image } from "../../../../types/image";
 import type { User } from "../../../../types/users";
 import { api } from "../../../../utils/apiClient";
 import {
   ApiError,
   fieldErrorsFromApiDetails,
 } from "../../../../utils/apiError";
+import { notifyError } from "../../../../utils/notifyError";
 import "./ProfilePage.css";
 
 function ProfilePage() {
@@ -21,6 +23,9 @@ function ProfilePage() {
   const [passwordFieldErrors, setPasswordFieldErrors] = useState<
     Record<string, string>
   >({});
+  const [profileFieldErrors, setProfileFieldErrors] = useState<
+    Record<string, string>
+  >({});
 
   useEffect(() => {
     async function fetchProfile() {
@@ -29,12 +34,7 @@ function ProfilePage() {
         const data = await api.get<User>("/admin/users/me");
         setProfile(data);
       } catch (err) {
-        console.error(err);
-        setError(
-          err instanceof Error
-            ? err.message
-            : "Erreur lors du chargement du profil",
-        );
+        setError(notifyError(err, "Erreur lors du chargement du profil"));
       } finally {
         setLoading(false);
       }
@@ -48,16 +48,22 @@ function ProfilePage() {
     if (!profile) return;
     const formData = new FormData(event.currentTarget);
 
-    const data = {
-      username: (formData.get("username") as string)?.trim(),
+    const username = (formData.get("username") as string)?.trim();
+    const data: {
+      username: string;
+      email: string;
+      firstname: string | null;
+      lastname: string | null;
+      avatar?: string;
+      bio_short: string | null;
+      bio: string | null;
+    } = {
+      username,
       email: (formData.get("email") as string)?.trim(),
       firstname: ((formData.get("firstname") as string)?.trim() || null) as
         | string
         | null,
       lastname: ((formData.get("lastname") as string)?.trim() || null) as
-        | string
-        | null,
-      avatar: ((formData.get("avatar") as string)?.trim() || null) as
         | string
         | null,
       bio_short: ((formData.get("bio_short") as string)?.trim() || null) as
@@ -66,6 +72,24 @@ function ProfilePage() {
       bio: ((formData.get("bio") as string)?.trim() || null) as string | null,
     };
 
+    const avatarFile = formData.get("avatarFile");
+    if (avatarFile instanceof File && avatarFile.size > 0) {
+      const imageFormData = new FormData();
+      imageFormData.append("image", avatarFile);
+      imageFormData.append("alt_descr", `Avatar de ${username}`);
+      try {
+        const uploaded = await api.postFormData<Image>(
+          "/admin/images",
+          imageFormData,
+        );
+        data.avatar = uploaded.path;
+      } catch (err) {
+        notifyError(err, "Erreur lors de l'upload de l'avatar");
+        return;
+      }
+    }
+
+    setProfileFieldErrors({});
     try {
       const updatedUser = await api.patch<User>("/admin/users/me", data);
       setProfile(updatedUser);
@@ -73,12 +97,18 @@ function ProfilePage() {
       setIsEditing(false);
       toast.success("Profil mis à jour");
     } catch (err) {
-      console.error(err);
-      toast.error(
-        err instanceof Error
-          ? err.message
-          : "Erreur lors de la mise à jour du profil",
+      const message = notifyError(
+        err,
+        "Erreur lors de la mise à jour du profil",
       );
+      if (err instanceof ApiError) {
+        if (err.code === "USER_IDENTIFIER_TAKEN") {
+          setProfileFieldErrors({ username: message, email: message });
+        } else {
+          const fromApi = fieldErrorsFromApiDetails(err.details);
+          if (fromApi) setProfileFieldErrors(fromApi);
+        }
+      }
     }
   }
 
@@ -109,16 +139,11 @@ function ProfilePage() {
       await logout();
       navigate("/login");
     } catch (err) {
-      console.error(err);
       if (err instanceof ApiError) {
         const fromApi = fieldErrorsFromApiDetails(err.details);
         if (fromApi) setPasswordFieldErrors(fromApi);
       }
-      toast.error(
-        err instanceof Error
-          ? err.message
-          : "Erreur lors de la mise à jour du mot de passe",
-      );
+      notifyError(err, "Erreur lors de la mise à jour du mot de passe");
     }
   }
 
@@ -139,8 +164,14 @@ function ProfilePage() {
                   name="username"
                   defaultValue={profile.username}
                   required
+                  aria-invalid={profileFieldErrors.username ? true : undefined}
                 />
               </label>
+              {profileFieldErrors.username ? (
+                <p className="profile-field-error">
+                  {profileFieldErrors.username}
+                </p>
+              ) : null}
             </div>
             <div className="profile-edit-field">
               <label>
@@ -150,8 +181,14 @@ function ProfilePage() {
                   name="email"
                   defaultValue={profile.email}
                   required
+                  aria-invalid={profileFieldErrors.email ? true : undefined}
                 />
               </label>
+              {profileFieldErrors.email ? (
+                <p className="profile-field-error">
+                  {profileFieldErrors.email}
+                </p>
+              ) : null}
             </div>
             <div className="profile-edit-field">
               <label>
@@ -174,17 +211,21 @@ function ProfilePage() {
               </label>
             </div>
             <div className="profile-edit-field">
+              <img
+                src={profile.avatarUrl ?? "/placeholder.png"}
+                alt={
+                  profile.avatarUrl
+                    ? `Avatar de ${profile.username}`
+                    : "Avatar par défaut"
+                }
+                className="profile-avatar"
+              />
               <label>
-                Avatar (chemin sous /uploads/)
-                <input
-                  type="text"
-                  name="avatar"
-                  defaultValue={profile.avatar ?? ""}
-                  placeholder="/uploads/images/exemple.jpg"
-                />
+                Nouvel avatar
+                <input type="file" name="avatarFile" accept="image/*" />
               </label>
               <p className="profile-field-hint">
-                Chemin relatif uniquement (jpg, png, gif, webp).
+                Laisser vide pour conserver l&apos;avatar actuel.
               </p>
             </div>
             <div className="profile-edit-field">

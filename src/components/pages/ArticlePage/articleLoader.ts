@@ -3,7 +3,7 @@ import type { Article } from "../../../types/article";
 import type { Comment } from "../../../types/comment";
 import type { Image } from "../../../types/image";
 import type { Tag } from "../../../types/tags";
-import { loaderFetch } from "../../../utils/loaderFetch";
+import { loaderFetch, loaderFetchOptional } from "../../../utils/loaderFetch";
 import type { ArticleLoaderData } from "./articleTypes";
 
 export async function articleLoader({
@@ -16,10 +16,11 @@ export async function articleLoader({
   );
 
   // Une fois article.id disponible, on récupère en parallèle les données liées à l'article.
+  // Elles sont secondaires : un échec affiche l'article sans elles plutôt qu'une page d'erreur.
   const [articleImages, tags, comments] = await Promise.all([
-    loaderFetch<Image[]>(`/images/article/${article.id}`),
-    loaderFetch<Tag[]>(`/tags/article/${article.id}`),
-    loaderFetch<Comment[]>(`/comments/article/${article.id}`),
+    loaderFetchOptional<Image[]>(`/images/article/${article.id}`, []),
+    loaderFetchOptional<Tag[]>(`/tags/article/${article.id}`, []),
+    loaderFetchOptional<Comment[]>(`/comments/article/${article.id}`, []),
   ]);
 
   return {

@@ -3,6 +3,7 @@ import { toast } from "react-toastify";
 import { messageVisitorSchema } from "../../../schemas/messageSchemas";
 import { api } from "../../../utils/apiClient";
 import { ApiError, fieldErrorsFromApiDetails } from "../../../utils/apiError";
+import { notifyError } from "../../../utils/notifyError";
 import "./ContactPage.css";
 
 type FormFields = "firstname" | "lastname" | "email" | "subject" | "text";
@@ -103,16 +104,11 @@ function ContactPage() {
       });
       setTouched({});
     } catch (error) {
-      console.error("Erreur lors de l'envoi du message :", error);
       if (error instanceof ApiError) {
         const fromApi = fieldErrorsFromApiDetails(error.details);
         if (fromApi) setFieldErrors(fromApi);
       }
-      toast.error(
-        error instanceof Error
-          ? error.message
-          : "Erreur lors de l'envoi. Veuillez réessayer.",
-      );
+      notifyError(error, "Erreur lors de l'envoi. Veuillez réessayer.");
     } finally {
       setIsSubmitting(false);
     }

@@ -1,29 +1,34 @@
-import { isRouteErrorResponse, Link, useRouteError } from "react-router-dom";
-import "./ErrorPage.css";
+import { useEffect } from "react";
+import {
+  isRouteErrorResponse,
+  useRevalidator,
+  useRouteError,
+} from "react-router-dom";
+import { logger } from "../../../utils/logger";
+import ErrorView from "../../molecules/ErrorView";
 
+// errorElement React Router : erreurs de loader (Response levée par loaderFetch) et de rendu.
 export function ErrorPage() {
   const error = useRouteError();
+  const revalidator = useRevalidator();
 
-  let title = "Oups !";
-  let message =
-    "Une erreur inattendue est survenue. Rechargez la page ou revenez à la page d'accueil.";
+  useEffect(() => {
+    logger.error("[ErrorPage]", error);
+  }, [error]);
 
+  const status = isRouteErrorResponse(error) ? error.status : null;
+  let detail: string | undefined;
   if (isRouteErrorResponse(error)) {
-    if (error.status === 404) {
-      title = "Page introuvable";
-      message = "Cette page n'existe pas ou n'est plus disponible.";
-    } else {
-      message =
-        "Le serveur a rencontré un problème. Réessayez dans quelques instants.";
-    }
+    detail = typeof error.data === "string" ? error.data : error.statusText;
+  } else if (error instanceof Error) {
+    detail = error.stack ?? error.message;
   }
 
   return (
-    <section className="redirection-main">
-      <h2>{title}</h2>
-      <p>
-        {message} Revenez à la <Link to="/">page d'accueil</Link>.
-      </p>
-    </section>
+    <ErrorView
+      status={status}
+      detail={detail}
+      onRetry={() => revalidator.revalidate()}
+    />
   );
 }

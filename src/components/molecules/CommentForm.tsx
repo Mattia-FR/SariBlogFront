@@ -4,6 +4,7 @@ import { toast } from "react-toastify";
 import { commentCreateSchema } from "../../schemas/commentSchemas";
 import { api } from "../../utils/apiClient";
 import { ApiError, fieldErrorsFromApiDetails } from "../../utils/apiError";
+import { notifyError } from "../../utils/notifyError";
 
 interface CommentFormProps {
   articleId: number;
@@ -55,12 +56,7 @@ function CommentForm({ articleId, onSuccess }: CommentFormProps) {
         const fromApi = fieldErrorsFromApiDetails(err.details);
         if (fromApi) setFieldErrors(fromApi);
       }
-      const message =
-        err instanceof Error
-          ? err.message
-          : "Erreur lors de l'envoi du commentaire.";
-      setFormError(message);
-      toast.error(message);
+      setFormError(notifyError(err, "Erreur lors de l'envoi du commentaire."));
     } finally {
       setIsLoading(false);
     }

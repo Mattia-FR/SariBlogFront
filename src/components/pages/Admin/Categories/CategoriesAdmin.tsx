@@ -5,6 +5,7 @@ import type {
   CategoryUpdateData,
 } from "../../../../types/categories";
 import { api } from "../../../../utils/apiClient";
+import { notifyError } from "../../../../utils/notifyError";
 import "./CategoriesAdmin.css";
 
 function CategoriesAdmin() {
@@ -19,10 +20,7 @@ function CategoriesAdmin() {
       const data = await api.get<Category[]>("/admin/categories");
       setCategories(data);
     } catch (err) {
-      const message =
-        err instanceof Error ? err.message : "Erreur lors du chargement";
-      setError(message);
-      toast.error(message);
+      setError(notifyError(err, "Erreur lors du chargement"));
     } finally {
       setLoading(false);
     }
@@ -37,7 +35,9 @@ function CategoriesAdmin() {
 
   async function handleSubmit(event: FormEvent<HTMLFormElement>) {
     event.preventDefault();
-    const formData = new FormData(event.currentTarget);
+    // `currentTarget` vaut null après un await : on garde une référence au formulaire
+    const form = event.currentTarget;
+    const formData = new FormData(form);
     const name = String(formData.get("name") ?? "").trim();
     const display_orderRaw = formData.get("display_order");
     const display_order =
@@ -57,15 +57,10 @@ function CategoriesAdmin() {
           Number.isInteger(display_order) && { display_order }),
       });
       toast.success("Catégorie créée avec succès");
-      event.currentTarget.reset();
+      form.reset();
       await fetchCategories();
     } catch (err) {
-      console.error(err);
-      toast.error(
-        err instanceof Error
-          ? err.message
-          : "Erreur lors de la création de la catégorie",
-      );
+      notifyError(err, "Erreur lors de la création de la catégorie");
     }
   }
 
@@ -99,12 +94,7 @@ function CategoriesAdmin() {
       setEditingId(null);
       await fetchCategories();
     } catch (err) {
-      console.error(err);
-      toast.error(
-        err instanceof Error
-          ? err.message
-          : "Erreur lors de la modification de la catégorie",
-      );
+      notifyError(err, "Erreur lors de la modification de la catégorie");
     }
   }
 
@@ -114,12 +104,7 @@ function CategoriesAdmin() {
       toast.success("Catégorie supprimée");
       await fetchCategories();
     } catch (err) {
-      console.error(err);
-      toast.error(
-        err instanceof Error
-          ? err.message
-          : "Erreur lors de la suppression de la catégorie",
-      );
+      notifyError(err, "Erreur lors de la suppression de la catégorie");
     }
   }
 

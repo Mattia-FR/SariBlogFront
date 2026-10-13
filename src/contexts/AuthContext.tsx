@@ -5,9 +5,11 @@ import {
   api,
   apiClient,
   clearAccessToken,
+  refreshAccessToken,
   setAccessToken,
   setOnAuthFailure,
 } from "../utils/apiClient";
+import { logger } from "../utils/logger";
 
 interface AuthContextValue {
   user: User | null;
@@ -31,7 +33,8 @@ export function AuthProvider({ children }: AuthProviderProps) {
   const [isInitializing, setIsInitializing] = useState(true);
   const [isLoading, setIsLoading] = useState(false);
 
-  // Propager l'échec du refresh vers le contexte (session expirée)
+  // Propager l'échec du refresh vers le contexte (session expirée).
+  // ProtectedRoute redirige ensuite vers /login?redirect=… dès que `user` vaut null.
   useEffect(() => {
     setOnAuthFailure(() => {
       setUser(null);
@@ -40,21 +43,21 @@ export function AuthProvider({ children }: AuthProviderProps) {
     return () => setOnAuthFailure(null);
   }, []);
 
-  // Vérifier si une session existe au chargement
+  // Vérifier si une session existe au chargement.
+  // `refreshAccessToken` est single-flight : le double effet du StrictMode ne lance qu'un refresh.
   useEffect(() => {
     async function checkSession() {
       try {
-        const response = await apiClient("/auth/refresh", { method: "POST" });
+        const token = await refreshAccessToken();
+        if (!token) return; // Visiteur sans session : cas normal
 
-        if (response.ok) {
-          const data = await response.json();
-          setAccessToken(data.accessToken);
-
-          const currentUser = await api.get<User>("/admin/users/me");
-          setUser(currentUser);
-        }
-      } catch {
-        console.error("Pas de session valide");
+        const currentUser = await api.get<User>("/admin/users/me");
+        setUser(currentUser);
+      } catch (err) {
+        // Session présente mais profil illisible : on repart d'un état déconnecté cohérent
+        logger.error("[AuthContext] Restauration de session impossible :", err);
+        clearAccessToken();
+        setUser(null);
       } finally {
         setIsInitializing(false);
       }
@@ -73,9 +76,6 @@ export function AuthProvider({ children }: AuthProviderProps) {
       );
       setAccessToken(data.accessToken);
       setUser(data.user);
-    } catch (err) {
-      console.error("Erreur de connexion:", err);
-      throw err;
     } finally {
       setIsLoading(false);
     }
@@ -86,7 +86,7 @@ export function AuthProvider({ children }: AuthProviderProps) {
       setIsLoading(true);
       await apiClient("/auth/logout", { method: "POST" });
     } catch (err) {
-      console.error("Erreur déconnexion:", err);
+      logger.error("[AuthContext] Erreur déconnexion :", err);
       toast.error("Erreur lors de la déconnexion");
     } finally {
       clearAccessToken();

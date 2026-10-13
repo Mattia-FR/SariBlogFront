@@ -5,6 +5,7 @@ import type { Category } from "../../../../types/categories";
 import type { Image } from "../../../../types/image";
 import type { Tag } from "../../../../types/tags";
 import { api } from "../../../../utils/apiClient";
+import { notifyError } from "../../../../utils/notifyError";
 import CategoryRadios from "../../../molecules/CategoryRadios";
 import TagCheckboxes from "../../../molecules/TagCheckboxes";
 import "./ImageEdit.css";
@@ -46,13 +47,7 @@ function ImageEdit() {
         const imageTags = await api.get<Tag[]>(`/tags/image/${id}`);
         setSelectedTagIds(imageTags.map((t) => t.id));
       } catch (err) {
-        const message =
-          err instanceof Error
-            ? err.message
-            : "Erreur lors du chargement de l'image";
-        setError(message);
-        toast.error(message);
-        console.error(err);
+        setError(notifyError(err, "Erreur lors du chargement de l'image"));
       } finally {
         setLoading(false);
       }
@@ -84,10 +79,7 @@ function ImageEdit() {
       toast.success("Image mise à jour");
       navigate("/admin/images");
     } catch (err) {
-      toast.error(
-        err instanceof Error ? err.message : "Erreur lors de la mise à jour",
-      );
-      console.error(err);
+      notifyError(err, "Erreur lors de la mise à jour");
     }
   }
 
@@ -99,10 +91,7 @@ function ImageEdit() {
       toast.success("Image supprimée");
       navigate("/admin/images");
     } catch (err) {
-      console.error(err);
-      toast.error(
-        err instanceof Error ? err.message : "Erreur lors de la suppression",
-      );
+      notifyError(err, "Erreur lors de la suppression");
     }
   }
 
