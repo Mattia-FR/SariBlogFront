@@ -13,6 +13,8 @@ export interface Image {
   created_at: string;
   updated_at: string;
   imageUrl: string;
+  /** Miniature dérivée (listes) ; absente sur d'anciennes payloads. */
+  thumbUrl?: string;
   tags?: Tag[];
 }
 

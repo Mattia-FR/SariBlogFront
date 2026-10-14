@@ -1,3 +1,4 @@
+import { Eye, EyeOff } from "lucide-react";
 import { useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
@@ -26,6 +27,10 @@ function ProfilePage() {
   const [profileFieldErrors, setProfileFieldErrors] = useState<
     Record<string, string>
   >({});
+  const [showCurrentPassword, setShowCurrentPassword] = useState(false);
+  const [showPassword, setShowPassword] = useState(false);
+  const [showConfirmPassword, setShowConfirmPassword] = useState(false);
+  const [isSubmitting, setIsSubmitting] = useState(false);
 
   useEffect(() => {
     async function fetchProfile() {
@@ -72,25 +77,26 @@ function ProfilePage() {
       bio: ((formData.get("bio") as string)?.trim() || null) as string | null,
     };
 
-    const avatarFile = formData.get("avatarFile");
-    if (avatarFile instanceof File && avatarFile.size > 0) {
-      const imageFormData = new FormData();
-      imageFormData.append("image", avatarFile);
-      imageFormData.append("alt_descr", `Avatar de ${username}`);
-      try {
-        const uploaded = await api.postFormData<Image>(
-          "/admin/images",
-          imageFormData,
-        );
-        data.avatar = uploaded.path;
-      } catch (err) {
-        notifyError(err, "Erreur lors de l'upload de l'avatar");
-        return;
-      }
-    }
-
+    setIsSubmitting(true);
     setProfileFieldErrors({});
     try {
+      const avatarFile = formData.get("avatarFile");
+      if (avatarFile instanceof File && avatarFile.size > 0) {
+        const imageFormData = new FormData();
+        imageFormData.append("image", avatarFile);
+        imageFormData.append("alt_descr", `Avatar de ${username}`);
+        try {
+          const uploaded = await api.postFormData<Image>(
+            "/admin/images",
+            imageFormData,
+          );
+          data.avatar = uploaded.path;
+        } catch (err) {
+          notifyError(err, "Erreur lors de l'upload de l'avatar");
+          return;
+        }
+      }
+
       const updatedUser = await api.patch<User>("/admin/users/me", data);
       setProfile(updatedUser);
       setCurrentUser(updatedUser);
@@ -109,6 +115,8 @@ function ProfilePage() {
           if (fromApi) setProfileFieldErrors(fromApi);
         }
       }
+    } finally {
+      setIsSubmitting(false);
     }
   }
 
@@ -120,10 +128,12 @@ function ProfilePage() {
     const formData = new FormData(form);
     const currentPassword = formData.get("currentPassword") as string;
     const password = formData.get("password") as string;
+    const confirmPassword = formData.get("confirmPassword") as string;
 
     const result = updateMePasswordSchema.safeParse({
       currentPassword,
       password,
+      confirmPassword,
     });
 
     if (!result.success) {
@@ -132,8 +142,13 @@ function ProfilePage() {
       return;
     }
 
+    const { currentPassword: current, password: nextPassword } = result.data;
+
     try {
-      await api.patch("/admin/users/me/password", result.data);
+      await api.patch("/admin/users/me/password", {
+        currentPassword: current,
+        password: nextPassword,
+      });
       toast.success("Mot de passe mis à jour. Reconnectez-vous.");
       form.reset();
       await logout();
@@ -249,7 +264,9 @@ function ProfilePage() {
               </label>
             </div>
             <div className="profile-edit-buttons">
-              <button type="submit">Enregistrer</button>
+              <button type="submit" disabled={isSubmitting}>
+                {isSubmitting ? "Envoi en cours…" : "Enregistrer"}
+              </button>
               <button type="button" onClick={() => setIsEditing(false)}>
                 Annuler
               </button>
@@ -319,12 +336,32 @@ function ProfilePage() {
               <div className="profile-edit-field">
                 <label>
                   Mot de passe actuel
-                  <input
-                    type="password"
-                    name="currentPassword"
-                    autoComplete="current-password"
-                    required
-                  />
+                  <span className="profile-password-input">
+                    <input
+                      type={showCurrentPassword ? "text" : "password"}
+                      name="currentPassword"
+                      autoComplete="current-password"
+                      required
+                    />
+                    <button
+                      type="button"
+                      className="profile-password-toggle"
+                      onClick={() =>
+                        setShowCurrentPassword((visible) => !visible)
+                      }
+                      aria-label={
+                        showCurrentPassword
+                          ? "Masquer le mot de passe actuel"
+                          : "Afficher le mot de passe actuel"
+                      }
+                    >
+                      {showCurrentPassword ? (
+                        <EyeOff size={16} aria-hidden />
+                      ) : (
+                        <Eye size={16} aria-hidden />
+                      )}
+                    </button>
+                  </span>
                 </label>
                 {passwordFieldErrors.currentPassword ? (
                   <p className="profile-field-error">
@@ -335,17 +372,72 @@ function ProfilePage() {
               <div className="profile-edit-field">
                 <label>
                   Nouveau mot de passe
-                  <input
-                    type="password"
-                    name="password"
-                    autoComplete="new-password"
-                    required
-                    minLength={8}
-                  />
+                  <span className="profile-password-input">
+                    <input
+                      type={showPassword ? "text" : "password"}
+                      name="password"
+                      autoComplete="new-password"
+                      required
+                      minLength={8}
+                    />
+                    <button
+                      type="button"
+                      className="profile-password-toggle"
+                      onClick={() => setShowPassword((visible) => !visible)}
+                      aria-label={
+                        showPassword
+                          ? "Masquer le nouveau mot de passe"
+                          : "Afficher le nouveau mot de passe"
+                      }
+                    >
+                      {showPassword ? (
+                        <EyeOff size={16} aria-hidden />
+                      ) : (
+                        <Eye size={16} aria-hidden />
+                      )}
+                    </button>
+                  </span>
                 </label>
                 {passwordFieldErrors.password ? (
                   <p className="profile-field-error">
                     {passwordFieldErrors.password}
+                  </p>
+                ) : null}
+              </div>
+              <div className="profile-edit-field">
+                <label>
+                  Confirmer le nouveau mot de passe
+                  <span className="profile-password-input">
+                    <input
+                      type={showConfirmPassword ? "text" : "password"}
+                      name="confirmPassword"
+                      autoComplete="new-password"
+                      required
+                      minLength={8}
+                    />
+                    <button
+                      type="button"
+                      className="profile-password-toggle"
+                      onClick={() =>
+                        setShowConfirmPassword((visible) => !visible)
+                      }
+                      aria-label={
+                        showConfirmPassword
+                          ? "Masquer la confirmation du mot de passe"
+                          : "Afficher la confirmation du mot de passe"
+                      }
+                    >
+                      {showConfirmPassword ? (
+                        <EyeOff size={16} aria-hidden />
+                      ) : (
+                        <Eye size={16} aria-hidden />
+                      )}
+                    </button>
+                  </span>
+                </label>
+                {passwordFieldErrors.confirmPassword ? (
+                  <p className="profile-field-error">
+                    {passwordFieldErrors.confirmPassword}
                   </p>
                 ) : null}
               </div>

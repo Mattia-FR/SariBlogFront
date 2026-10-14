@@ -5,10 +5,16 @@ function ImageCard({ image, linkTo, onClick }: ImageCardProps) {
   const content = (
     <div className="images-card">
       <img
-        src={image.imageUrl}
+        src={image.thumbUrl ?? image.imageUrl}
         alt={image.alt_descr || image.title || "Image de galerie"}
         loading="lazy"
         className="image-card-img"
+        onError={(e) => {
+          const img = e.currentTarget;
+          if (img.src !== image.imageUrl) {
+            img.src = image.imageUrl;
+          }
+        }}
       />
 
       {image.tags && image.tags.length > 0 && (

@@ -1,4 +1,10 @@
-import { type FormEvent, useEffect, useId, useState } from "react";
+import {
+  type ChangeEvent,
+  type FormEvent,
+  useEffect,
+  useId,
+  useState,
+} from "react";
 import { useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
 import type { Category } from "../../../../types/categories";
@@ -23,6 +29,8 @@ function ImageCreate() {
     null,
   );
   const [isInGallery, setIsInGallery] = useState(false);
+  const [previewUrl, setPreviewUrl] = useState<string | null>(null);
+  const [isSubmitting, setIsSubmitting] = useState(false);
 
   useEffect(() => {
     Promise.all([
@@ -42,6 +50,30 @@ function ImageCreate() {
         notifyError(err, "Impossible de charger les tags et catégories"),
       );
   }, []);
+
+  useEffect(() => {
+    return () => {
+      if (previewUrl) URL.revokeObjectURL(previewUrl);
+    };
+  }, [previewUrl]);
+
+  function handleImageChange(event: ChangeEvent<HTMLInputElement>) {
+    const file = event.target.files?.[0];
+    if (!file) {
+      setPreviewUrl(null);
+      return;
+    }
+
+    const fileError = getImageFileError(file);
+    if (fileError) {
+      toast.error(fileError);
+      event.target.value = "";
+      setPreviewUrl(null);
+      return;
+    }
+
+    setPreviewUrl(URL.createObjectURL(file));
+  }
 
   async function handleSubmit(event: FormEvent<HTMLFormElement>) {
     event.preventDefault();
@@ -75,12 +107,15 @@ function ImageCreate() {
       formData.set("category_id", String(selectedCategoryId));
     }
 
+    setIsSubmitting(true);
     try {
       await api.postFormData("/admin/images", formData);
       toast.success("Image créée avec succès !");
       navigate("/admin/images");
     } catch (error) {
       notifyError(error, "Erreur lors de la création de l'image");
+    } finally {
+      setIsSubmitting(false);
     }
   }
 
@@ -96,7 +131,15 @@ function ImageCreate() {
             name="image"
             accept={IMAGE_ACCEPT}
             required
+            onChange={handleImageChange}
           />
+          {previewUrl ? (
+            <img
+              src={previewUrl}
+              alt="Aperçu de l'image sélectionnée"
+              className="image-admin-create-preview"
+            />
+          ) : null}
         </div>
         <div className="image-admin-create-field">
           <label htmlFor={`${id}-title`}>Titre :</label>
@@ -165,7 +208,9 @@ function ImageCreate() {
           />
         </div>
         <div className="image-admin-create-buttons">
-          <button type="submit">Créer l&apos;image</button>
+          <button type="submit" disabled={isSubmitting}>
+            {isSubmitting ? "Envoi en cours…" : "Créer l'image"}
+          </button>
           <button type="button" onClick={() => navigate("/admin/images")}>
             Annuler
           </button>
