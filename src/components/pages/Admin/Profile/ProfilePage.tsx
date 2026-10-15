@@ -1,16 +1,36 @@
+import { Eye, EyeOff } from "lucide-react";
 import { useEffect, useState } from "react";
+import { useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
 import { useAuth } from "../../../../hooks/useAuth";
+import { updateMePasswordSchema } from "../../../../schemas/userSchemas";
+import type { Image } from "../../../../types/image";
 import type { User } from "../../../../types/users";
 import { api } from "../../../../utils/apiClient";
+import {
+  ApiError,
+  fieldErrorsFromApiDetails,
+} from "../../../../utils/apiError";
+import { notifyError } from "../../../../utils/notifyError";
 import "./ProfilePage.css";
 
 function ProfilePage() {
-  const { setCurrentUser } = useAuth();
+  const { setCurrentUser, logout } = useAuth();
+  const navigate = useNavigate();
   const [profile, setProfile] = useState<User | null>(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
   const [isEditing, setIsEditing] = useState(false);
+  const [passwordFieldErrors, setPasswordFieldErrors] = useState<
+    Record<string, string>
+  >({});
+  const [profileFieldErrors, setProfileFieldErrors] = useState<
+    Record<string, string>
+  >({});
+  const [showCurrentPassword, setShowCurrentPassword] = useState(false);
+  const [showPassword, setShowPassword] = useState(false);
+  const [showConfirmPassword, setShowConfirmPassword] = useState(false);
+  const [isSubmitting, setIsSubmitting] = useState(false);
 
   useEffect(() => {
     async function fetchProfile() {
@@ -19,8 +39,7 @@ function ProfilePage() {
         const data = await api.get<User>("/admin/users/me");
         setProfile(data);
       } catch (err) {
-        console.error(err);
-        setError("Erreur lors du chargement du profil");
+        setError(notifyError(err, "Erreur lors du chargement du profil"));
       } finally {
         setLoading(false);
       }
@@ -34,16 +53,22 @@ function ProfilePage() {
     if (!profile) return;
     const formData = new FormData(event.currentTarget);
 
-    const data = {
-      username: (formData.get("username") as string)?.trim(),
+    const username = (formData.get("username") as string)?.trim();
+    const data: {
+      username: string;
+      email: string;
+      firstname: string | null;
+      lastname: string | null;
+      avatar?: string;
+      bio_short: string | null;
+      bio: string | null;
+    } = {
+      username,
       email: (formData.get("email") as string)?.trim(),
       firstname: ((formData.get("firstname") as string)?.trim() || null) as
         | string
         | null,
       lastname: ((formData.get("lastname") as string)?.trim() || null) as
-        | string
-        | null,
-      avatar: ((formData.get("avatar") as string)?.trim() || null) as
         | string
         | null,
       bio_short: ((formData.get("bio_short") as string)?.trim() || null) as
@@ -52,15 +77,88 @@ function ProfilePage() {
       bio: ((formData.get("bio") as string)?.trim() || null) as string | null,
     };
 
+    setIsSubmitting(true);
+    setProfileFieldErrors({});
     try {
+      const avatarFile = formData.get("avatarFile");
+      if (avatarFile instanceof File && avatarFile.size > 0) {
+        const imageFormData = new FormData();
+        imageFormData.append("image", avatarFile);
+        imageFormData.append("alt_descr", `Avatar de ${username}`);
+        try {
+          const uploaded = await api.postFormData<Image>(
+            "/admin/images",
+            imageFormData,
+          );
+          data.avatar = uploaded.path;
+        } catch (err) {
+          notifyError(err, "Erreur lors de l'upload de l'avatar");
+          return;
+        }
+      }
+
       const updatedUser = await api.patch<User>("/admin/users/me", data);
       setProfile(updatedUser);
       setCurrentUser(updatedUser);
       setIsEditing(false);
       toast.success("Profil mis à jour");
     } catch (err) {
-      console.error(err);
-      toast.error("Erreur lors de la mise à jour du profil");
+      const message = notifyError(
+        err,
+        "Erreur lors de la mise à jour du profil",
+      );
+      if (err instanceof ApiError) {
+        if (err.code === "USER_IDENTIFIER_TAKEN") {
+          setProfileFieldErrors({ username: message, email: message });
+        } else {
+          const fromApi = fieldErrorsFromApiDetails(err.details);
+          if (fromApi) setProfileFieldErrors(fromApi);
+        }
+      }
+    } finally {
+      setIsSubmitting(false);
+    }
+  }
+
+  async function handlePasswordUpdate(event: React.FormEvent<HTMLFormElement>) {
+    event.preventDefault();
+    setPasswordFieldErrors({});
+
+    const form = event.currentTarget;
+    const formData = new FormData(form);
+    const currentPassword = formData.get("currentPassword") as string;
+    const password = formData.get("password") as string;
+    const confirmPassword = formData.get("confirmPassword") as string;
+
+    const result = updateMePasswordSchema.safeParse({
+      currentPassword,
+      password,
+      confirmPassword,
+    });
+
+    if (!result.success) {
+      const errors = fieldErrorsFromApiDetails(result.error.issues);
+      if (errors) setPasswordFieldErrors(errors);
+      return;
+    }
+
+    const { currentPassword: current, password: nextPassword } = result.data;
+
+    try {
+      await api.patch("/admin/users/me/password", {
+        currentPassword: current,
+        password: nextPassword,
+      });
+      toast.success("Mot de passe mis à jour. Reconnectez-vous.");
+      form.reset();
+      await logout();
+      navigate("/login");
+    } catch (err) {
+      if (err instanceof ApiError) {
+        const fromApi = fieldErrorsFromApiDetails(err.details);
+        if (fromApi) setPasswordFieldErrors(fromApi);
+      }
+      notifyError(err, "Erreur lors de la mise à jour du mot de passe");
     }
   }
 
@@ -81,8 +179,14 @@ function ProfilePage() {
                   name="username"
                   defaultValue={profile.username}
                   required
+                  aria-invalid={profileFieldErrors.username ? true : undefined}
                 />
               </label>
+              {profileFieldErrors.username ? (
+                <p className="profile-field-error">
+                  {profileFieldErrors.username}
+                </p>
+              ) : null}
             </div>
             <div className="profile-edit-field">
               <label>
@@ -92,8 +196,14 @@ function ProfilePage() {
                   name="email"
                   defaultValue={profile.email}
                   required
+                  aria-invalid={profileFieldErrors.email ? true : undefined}
                 />
               </label>
+              {profileFieldErrors.email ? (
+                <p className="profile-field-error">
+                  {profileFieldErrors.email}
+                </p>
+              ) : null}
             </div>
             <div className="profile-edit-field">
               <label>
@@ -116,15 +226,22 @@ function ProfilePage() {
               </label>
             </div>
             <div className="profile-edit-field">
+              <img
+                src={profile.avatarUrl ?? "/placeholder.png"}
+                alt={
+                  profile.avatarUrl
+                    ? `Avatar de ${profile.username}`
+                    : "Avatar par défaut"
+                }
+                className="profile-avatar"
+              />
               <label>
-                Avatar (chemin)
-                <input
-                  type="text"
-                  name="avatar"
-                  defaultValue={profile.avatar ?? ""}
-                  placeholder="/uploads/images/..."
-                />
+                Nouvel avatar
+                <input type="file" name="avatarFile" accept="image/*" />
               </label>
+              <p className="profile-field-hint">
+                Laisser vide pour conserver l&apos;avatar actuel.
+              </p>
             </div>
             <div className="profile-edit-field">
               <label>
@@ -147,7 +264,9 @@ function ProfilePage() {
               </label>
             </div>
             <div className="profile-edit-buttons">
-              <button type="submit">Enregistrer</button>
+              <button type="submit" disabled={isSubmitting}>
+                {isSubmitting ? "Envoi en cours…" : "Enregistrer"}
+              </button>
               <button type="button" onClick={() => setIsEditing(false)}>
                 Annuler
               </button>
@@ -208,6 +327,124 @@ function ProfilePage() {
                 Modifier mon profil
               </button>
             </div>
+
+            <form
+              onSubmit={handlePasswordUpdate}
+              className="profile-edit-form profile-password-form"
+            >
+              <h3>Changer le mot de passe</h3>
+              <div className="profile-edit-field">
+                <label>
+                  Mot de passe actuel
+                  <span className="profile-password-input">
+                    <input
+                      type={showCurrentPassword ? "text" : "password"}
+                      name="currentPassword"
+                      autoComplete="current-password"
+                      required
+                    />
+                    <button
+                      type="button"
+                      className="profile-password-toggle"
+                      onClick={() =>
+                        setShowCurrentPassword((visible) => !visible)
+                      }
+                      aria-label={
+                        showCurrentPassword
+                          ? "Masquer le mot de passe actuel"
+                          : "Afficher le mot de passe actuel"
+                      }
+                    >
+                      {showCurrentPassword ? (
+                        <EyeOff size={16} aria-hidden />
+                      ) : (
+                        <Eye size={16} aria-hidden />
+                      )}
+                    </button>
+                  </span>
+                </label>
+                {passwordFieldErrors.currentPassword ? (
+                  <p className="profile-field-error">
+                    {passwordFieldErrors.currentPassword}
+                  </p>
+                ) : null}
+              </div>
+              <div className="profile-edit-field">
+                <label>
+                  Nouveau mot de passe
+                  <span className="profile-password-input">
+                    <input
+                      type={showPassword ? "text" : "password"}
+                      name="password"
+                      autoComplete="new-password"
+                      required
+                      minLength={8}
+                    />
+                    <button
+                      type="button"
+                      className="profile-password-toggle"
+                      onClick={() => setShowPassword((visible) => !visible)}
+                      aria-label={
+                        showPassword
+                          ? "Masquer le nouveau mot de passe"
+                          : "Afficher le nouveau mot de passe"
+                      }
+                    >
+                      {showPassword ? (
+                        <EyeOff size={16} aria-hidden />
+                      ) : (
+                        <Eye size={16} aria-hidden />
+                      )}
+                    </button>
+                  </span>
+                </label>
+                {passwordFieldErrors.password ? (
+                  <p className="profile-field-error">
+                    {passwordFieldErrors.password}
+                  </p>
+                ) : null}
+              </div>
+              <div className="profile-edit-field">
+                <label>
+                  Confirmer le nouveau mot de passe
+                  <span className="profile-password-input">
+                    <input
+                      type={showConfirmPassword ? "text" : "password"}
+                      name="confirmPassword"
+                      autoComplete="new-password"
+                      required
+                      minLength={8}
+                    />
+                    <button
+                      type="button"
+                      className="profile-password-toggle"
+                      onClick={() =>
+                        setShowConfirmPassword((visible) => !visible)
+                      }
+                      aria-label={
+                        showConfirmPassword
+                          ? "Masquer la confirmation du mot de passe"
+                          : "Afficher la confirmation du mot de passe"
+                      }
+                    >
+                      {showConfirmPassword ? (
+                        <EyeOff size={16} aria-hidden />
+                      ) : (
+                        <Eye size={16} aria-hidden />
+                      )}
+                    </button>
+                  </span>
+                </label>
+                {passwordFieldErrors.confirmPassword ? (
+                  <p className="profile-field-error">
+                    {passwordFieldErrors.confirmPassword}
+                  </p>
+                ) : null}
+              </div>
+              <div className="profile-edit-buttons">
+                <button type="submit">Mettre à jour le mot de passe</button>
+              </div>
+            </form>
           </>
         )}
       </div>

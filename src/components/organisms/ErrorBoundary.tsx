@@ -1,6 +1,6 @@
 import { Component, type ErrorInfo, type ReactNode } from "react";
-import { Link } from "react-router-dom";
-import "../pages/ErrorPage/ErrorPage.css";
+import { logger } from "../../utils/logger";
+import ErrorView from "../molecules/ErrorView";
 
 interface Props {
   children: ReactNode;
@@ -11,6 +11,8 @@ interface State {
   error?: Error;
 }
 
+// Dernier filet, hors Router : couvre AuthProvider et l'initialisation du routeur.
+// Les erreurs de pages sont gérées plus bas par l'errorElement de React Router.
 class ErrorBoundary extends Component<Props, State> {
   state: State = { hasError: false, error: undefined };
 
@@ -19,20 +21,18 @@ class ErrorBoundary extends Component<Props, State> {
   }
 
   componentDidCatch(error: Error, info: ErrorInfo) {
-    console.error("Erreur attrapée :", error, info.componentStack);
+    logger.error("[ErrorBoundary]", error, info.componentStack);
   }
 
   render() {
     if (this.state.hasError) {
       return (
-        <section className="redirection-main">
-          <h2>Oups !</h2>
-          <p>
-            Une erreur est survenue. Rechargez la page ou revenez à la{" "}
-            <Link to="/">page d'accueil</Link>.
-          </p>
-          {import.meta.env.DEV && <pre>{this.state.error?.message}</pre>}
-        </section>
+        <ErrorView
+          status={null}
+          inRouter={false}
+          detail={this.state.error?.stack ?? this.state.error?.message}
+          onRetry={() => window.location.reload()}
+        />
       );
     }
     return this.props.children;

@@ -3,6 +3,7 @@ import { useSearchParams } from "react-router-dom";
 import { toast } from "react-toastify";
 import type { Message, MessageStatus } from "../../../../types/messages";
 import { api } from "../../../../utils/apiClient";
+import { notifyError } from "../../../../utils/notifyError";
 import MessageCard from "../../../molecules/MessageCard";
 import NavigationPagination from "../../../molecules/NavigationPagination";
 import "./MessagesAdmin.css";
@@ -77,10 +78,7 @@ function MessagesAdmin() {
       setTotalPages(Math.ceil(data.total / data.limit));
       setCounts(data.counts);
     } catch (err) {
-      const message =
-        err instanceof Error ? err.message : "Erreur lors du chargement";
-      setError(message);
-      toast.error(message);
+      setError(notifyError(err, "Erreur lors du chargement"));
     } finally {
       setLoading(false);
     }
@@ -96,8 +94,7 @@ function MessagesAdmin() {
       await fetchMessages();
       toast.success("Statut mis à jour");
     } catch (err) {
-      console.error(err);
-      toast.error("Erreur lors de la mise à jour du statut");
+      notifyError(err, "Erreur lors de la mise à jour du statut");
     }
   }
 
@@ -107,8 +104,7 @@ function MessagesAdmin() {
       await fetchMessages();
       toast.success("Message supprimé");
     } catch (err) {
-      console.error(err);
-      toast.error("Erreur lors de la suppression");
+      notifyError(err, "Erreur lors de la suppression");
     }
   }
 

@@ -1,7 +1,8 @@
 import type { ReactNode } from "react";
-import { Navigate } from "react-router-dom";
+import { Navigate, useLocation } from "react-router-dom";
 import { useAuth } from "../../hooks/useAuth";
 import type { UserRole } from "../../types/users";
+import { logger } from "../../utils/logger";
 
 interface ProtectedRouteProps {
   children: ReactNode;
@@ -13,6 +14,7 @@ export function ProtectedRoute({
   allowedRoles,
 }: ProtectedRouteProps) {
   const { user, isInitializing } = useAuth();
+  const location = useLocation();
   const isAuthenticated = !!user;
 
   // Afficher un loader pendant la vérification
@@ -24,12 +26,16 @@ export function ProtectedRoute({
     );
   }
 
-  // Rediriger vers l'accueil si non authentifié (connexion via modale header)
+  // Non authentifié (ou session expirée) : connexion, puis retour à la page demandée
   if (!isAuthenticated) {
-    if (import.meta.env.DEV) {
-      console.log("[ProtectedRoute] Non authentifié, redirection vers /");
-    }
-    return <Navigate to="/" replace />;
+    logger.debug("[ProtectedRoute] Non authentifié, redirection vers /login");
+    const redirect = `${location.pathname}${location.search}`;
+    return (
+      <Navigate
+        to={`/login?redirect=${encodeURIComponent(redirect)}`}
+        replace
+      />
+    );
   }
 
   // Rôle requis mais pas les bons

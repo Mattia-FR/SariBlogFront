@@ -5,6 +5,7 @@ import type { Article } from "../../../../types/article";
 import type { Image } from "../../../../types/image";
 import type { Tag } from "../../../../types/tags";
 import { api } from "../../../../utils/apiClient";
+import { notifyError } from "../../../../utils/notifyError";
 import TagCheckboxes from "../../../molecules/TagCheckboxes";
 import "./ArticleEdit.css";
 
@@ -35,8 +36,7 @@ function ArticleEdit() {
         const images = await api.get<Image[]>(`/images/article/${data.id}`);
         setArticleImages(images);
       } catch (err) {
-        setError("Erreur lors du chargement");
-        console.error(err);
+        setError(notifyError(err, "Erreur lors du chargement de l'article"));
       } finally {
         setLoading(false);
       }
@@ -81,8 +81,7 @@ function ArticleEdit() {
       const updatedArticle = await api.get<Article>(`/admin/articles/${id}`);
       setArticle(updatedArticle);
     } catch (err) {
-      console.error(err);
-      toast.error("Erreur lors de la modification");
+      notifyError(err, "Erreur lors de la modification");
     }
   }
 
@@ -96,8 +95,7 @@ function ArticleEdit() {
       toast.success("Article supprimé !");
       navigate("/admin/articles");
     } catch (err) {
-      console.error(err);
-      toast.error("Erreur lors de la suppression");
+      notifyError(err, "Erreur lors de la suppression");
     }
   }
 

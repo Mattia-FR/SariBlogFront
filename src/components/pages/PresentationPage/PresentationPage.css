@@ -55,7 +55,7 @@
     width: 100%;
     max-width: 36rem;
     text-align: center;
-  
+
     @media (min-width: 720px) {
       text-align: left;
       flex: 1;
@@ -67,7 +67,7 @@
     .artist-name {
       margin: 0;
       color: var(--color-two);
-      
+
       line-height: 1.05;
       text-shadow:
         1px 1px 0 var(--color-one),
@@ -75,7 +75,7 @@
         1px -1px 0 var(--color-one),
         -1px -1px 0 var(--color-one);
     }
-  
+
     .artist-name-line {
       display: block;
       font-family: var(--font-two);
@@ -87,14 +87,14 @@
       color: var(--color-five);
       font-size: clamp(4rem, 6vw + 1rem, 5.5rem);
     }
-  
+
     .artist-bio {
       margin: 0;
       font-size: 1rem;
       line-height: 1.5rem;
       text-align: left;
     }
-  
+
     .artist-bio::first-letter {
       font-size: 3rem;
       color: var(--color-three);

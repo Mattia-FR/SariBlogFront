@@ -4,6 +4,7 @@ export interface Image {
   id: number;
   title: string | null;
   description: string | null;
+  path: string;
   alt_descr: string | null;
   is_in_gallery: boolean;
   user_id: number;
@@ -12,6 +13,8 @@ export interface Image {
   created_at: string;
   updated_at: string;
   imageUrl: string;
+  /** Miniature dérivée (listes) ; absente sur d'anciennes payloads. */
+  thumbUrl?: string;
   tags?: Tag[];
 }
 

@@ -2,6 +2,7 @@ import { type FormEvent, useCallback, useEffect, useId, useState } from "react";
 import { toast } from "react-toastify";
 import type { Tag } from "../../../../types/tags";
 import { api } from "../../../../utils/apiClient";
+import { notifyError } from "../../../../utils/notifyError";
 import "./TagsAdmin.css";
 
 function TagsAdmin() {
@@ -16,10 +17,7 @@ function TagsAdmin() {
       const data = await api.get<Tag[]>("/admin/tags");
       setTags(data);
     } catch (err) {
-      const message =
-        err instanceof Error ? err.message : "Erreur lors du chargement";
-      setError(message);
-      toast.error(message);
+      setError(notifyError(err, "Erreur lors du chargement"));
     } finally {
       setLoading(false);
     }
@@ -34,7 +32,9 @@ function TagsAdmin() {
 
   async function handleSubmit(event: FormEvent<HTMLFormElement>) {
     event.preventDefault();
-    const formData = new FormData(event.currentTarget);
+    // `currentTarget` vaut null après un await : on garde une référence au formulaire
+    const form = event.currentTarget;
+    const formData = new FormData(form);
     const name = String(formData.get("name") ?? "").trim();
 
     if (!name) {
@@ -45,11 +45,10 @@ function TagsAdmin() {
     try {
       await api.post<Tag>("/admin/tags", { name });
       toast.success("Tag créé avec succès");
-      event.currentTarget.reset();
+      form.reset();
       await fetchTags();
     } catch (err) {
-      console.error(err);
-      toast.error("Erreur lors de la création du tag");
+      notifyError(err, "Erreur lors de la création du tag");
     }
   }
 
@@ -72,8 +71,7 @@ function TagsAdmin() {
       setEditingId(null);
       await fetchTags();
     } catch (err) {
-      console.error(err);
-      toast.error("Erreur lors de la modification du tag");
+      notifyError(err, "Erreur lors de la modification du tag");
     }
   }
 
@@ -83,8 +81,7 @@ function TagsAdmin() {
       toast.success("Tag supprimé");
       await fetchTags();
     } catch (err) {
-      console.error(err);
-      toast.error("Erreur lors de la suppression du tag");
+      notifyError(err, "Erreur lors de la suppression du tag");
     }
   }
 

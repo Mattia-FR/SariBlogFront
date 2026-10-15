@@ -1,9 +1,20 @@
-import { type FormEvent, useEffect, useId, useState } from "react";
+import {
+  type ChangeEvent,
+  type FormEvent,
+  useEffect,
+  useId,
+  useState,
+} from "react";
 import { useNavigate } from "react-router-dom";
 import { toast } from "react-toastify";
 import type { Category } from "../../../../types/categories";
 import type { Tag } from "../../../../types/tags";
 import { api } from "../../../../utils/apiClient";
+import {
+  getImageFileError,
+  IMAGE_ACCEPT,
+} from "../../../../utils/imageConstraints";
+import { notifyError } from "../../../../utils/notifyError";
 import CategoryRadios from "../../../molecules/CategoryRadios";
 import TagCheckboxes from "../../../molecules/TagCheckboxes";
 import "./ImageCreate.css";
@@ -18,6 +29,8 @@ function ImageCreate() {
     null,
   );
   const [isInGallery, setIsInGallery] = useState(false);
+  const [previewUrl, setPreviewUrl] = useState<string | null>(null);
+  const [isSubmitting, setIsSubmitting] = useState(false);
 
   useEffect(() => {
     Promise.all([
@@ -33,8 +46,34 @@ function ImageCreate() {
           ),
         );
       })
-      .catch(() => {});
+      .catch((err) =>
+        notifyError(err, "Impossible de charger les tags et catégories"),
+      );
   }, []);
+
+  useEffect(() => {
+    return () => {
+      if (previewUrl) URL.revokeObjectURL(previewUrl);
+    };
+  }, [previewUrl]);
+
+  function handleImageChange(event: ChangeEvent<HTMLInputElement>) {
+    const file = event.target.files?.[0];
+    if (!file) {
+      setPreviewUrl(null);
+      return;
+    }
+
+    const fileError = getImageFileError(file);
+    if (fileError) {
+      toast.error(fileError);
+      event.target.value = "";
+      setPreviewUrl(null);
+      return;
+    }
+
+    setPreviewUrl(URL.createObjectURL(file));
+  }
 
   async function handleSubmit(event: FormEvent<HTMLFormElement>) {
     event.preventDefault();
@@ -43,8 +82,14 @@ function ImageCreate() {
     const formData = new FormData(form);
     const file = formData.get("image") as File | null;
 
-    if (!file || file.size === 0) {
+    if (!file) {
       toast.error("Veuillez sélectionner un fichier à télécharger");
+      return;
+    }
+
+    const fileError = getImageFileError(file);
+    if (fileError) {
+      toast.error(fileError);
       return;
     }
 
@@ -62,13 +107,15 @@ function ImageCreate() {
       formData.set("category_id", String(selectedCategoryId));
     }
 
+    setIsSubmitting(true);
     try {
       await api.postFormData("/admin/images", formData);
       toast.success("Image créée avec succès !");
       navigate("/admin/images");
     } catch (error) {
-      console.error(error);
-      toast.error("Erreur lors de la création de l'image");
+      notifyError(error, "Erreur lors de la création de l'image");
+    } finally {
+      setIsSubmitting(false);
     }
   }
 
@@ -82,9 +129,17 @@ function ImageCreate() {
             id={`${id}-image`}
             type="file"
             name="image"
-            accept="image/*"
+            accept={IMAGE_ACCEPT}
             required
+            onChange={handleImageChange}
           />
+          {previewUrl ? (
+            <img
+              src={previewUrl}
+              alt="Aperçu de l'image sélectionnée"
+              className="image-admin-create-preview"
+            />
+          ) : null}
         </div>
         <div className="image-admin-create-field">
           <label htmlFor={`${id}-title`}>Titre :</label>
@@ -153,7 +208,9 @@ function ImageCreate() {
           />
         </div>
         <div className="image-admin-create-buttons">
-          <button type="submit">Créer l&apos;image</button>
+          <button type="submit" disabled={isSubmitting}>
+            {isSubmitting ? "Envoi en cours…" : "Créer l'image"}
+          </button>
           <button type="button" onClick={() => navigate("/admin/images")}>
             Annuler
           </button>

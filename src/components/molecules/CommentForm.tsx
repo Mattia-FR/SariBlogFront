@@ -3,6 +3,8 @@ import { useState } from "react";
 import { toast } from "react-toastify";
 import { commentCreateSchema } from "../../schemas/commentSchemas";
 import { api } from "../../utils/apiClient";
+import { ApiError, fieldErrorsFromApiDetails } from "../../utils/apiError";
+import { notifyError } from "../../utils/notifyError";
 
 interface CommentFormProps {
   articleId: number;
@@ -38,12 +40,8 @@ function CommentForm({ articleId, onSuccess }: CommentFormProps) {
     });
 
     if (!result.success) {
-      const errors: Record<string, string> = {};
-      for (const issue of result.error.issues) {
-        const field = issue.path[0] as string;
-        errors[field] = issue.message;
-      }
-      setFieldErrors(errors);
+      const errors = fieldErrorsFromApiDetails(result.error.issues);
+      if (errors) setFieldErrors(errors);
       return;
     }
 
@@ -54,12 +52,11 @@ function CommentForm({ articleId, onSuccess }: CommentFormProps) {
       toast.success("Commentaire envoyé");
       onSuccess?.();
     } catch (err) {
-      const message =
-        err instanceof Error
-          ? err.message
-          : "Erreur lors de l'envoi du commentaire.";
-      setFormError(message);
-      toast.error(message);
+      if (err instanceof ApiError) {
+        const fromApi = fieldErrorsFromApiDetails(err.details);
+        if (fromApi) setFieldErrors(fromApi);
+      }
+      setFormError(notifyError(err, "Erreur lors de l'envoi du commentaire."));
     } finally {
       setIsLoading(false);
     }

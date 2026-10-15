@@ -3,6 +3,7 @@ import { useSearchParams } from "react-router-dom";
 import { toast } from "react-toastify";
 import type { Comment, CommentStatus } from "../../../../types/comment";
 import { api } from "../../../../utils/apiClient";
+import { notifyError } from "../../../../utils/notifyError";
 import CommentCard from "../../../molecules/CommentCard";
 import NavigationPagination from "../../../molecules/NavigationPagination";
 import "./CommentsAdmin.css";
@@ -79,10 +80,7 @@ function CommentsAdmin() {
       setTotalPages(Math.ceil(data.total / data.limit));
       setCounts(data.counts);
     } catch (err) {
-      const message =
-        err instanceof Error ? err.message : "Erreur lors du chargement";
-      setError(message);
-      toast.error(message);
+      setError(notifyError(err, "Erreur lors du chargement"));
     } finally {
       setLoading(false);
     }
@@ -98,8 +96,7 @@ function CommentsAdmin() {
       await fetchComments();
       toast.success("Statut mis à jour");
     } catch (err) {
-      console.error(err);
-      toast.error("Erreur lors de la mise à jour du statut");
+      notifyError(err, "Erreur lors de la mise à jour du statut");
     }
   }
 
@@ -109,8 +106,7 @@ function CommentsAdmin() {
       await fetchComments();
       toast.success("Commentaire supprimé");
     } catch (err) {
-      console.error(err);
-      toast.error("Erreur lors de la suppression");
+      notifyError(err, "Erreur lors de la suppression");
     }
   }
 
