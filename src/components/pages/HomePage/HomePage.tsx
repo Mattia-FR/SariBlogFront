@@ -1,5 +1,6 @@
 import { useLoaderData } from "react-router-dom";
 import ContactCTA from "../../molecules/ContactPreview";
+import Quote from "../../molecules/Quote";
 import ArticlesPreview from "../../organisms/ArticlesPreview";
 import ArtistPreview from "../../organisms/ArtistPreview";
 import Hero from "../../organisms/Hero";
@@ -12,6 +13,7 @@ function HomePage() {
   return (
     <section className="home-page">
       <Hero image={imageOfTheDay} />
+      <Quote />
       <ArticlesPreview articles={articles} />
       <ContactCTA />
       <ArtistPreview user={user} />

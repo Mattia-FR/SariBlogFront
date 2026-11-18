@@ -17,7 +17,7 @@
 
   h2 {
     color: var(--color-five);
-    font-size: 1.2rem;
+    font-size: var(--fs-md);
   }
 
   .dashboard-actions {
@@ -42,7 +42,6 @@
         text-decoration: none;
         color: var(--color-five);
         border: 1px solid var(--color-five);
-        border-radius: 15px;
         padding: 0.5rem 1rem;
         width: fit-content;
       }
@@ -62,11 +61,10 @@
       display: flex;
       flex-direction: column;
       border: 1px solid var(--color-three);
-      border-radius: 15px;
       padding: 1rem;
       width: clamp(10rem, 15vw, 25rem);
       color: var(--color-three);
-      font-size: 0.9rem;
+      font-size: var(--fs-xs);
 
       h2 {
         color: var(--color-five);

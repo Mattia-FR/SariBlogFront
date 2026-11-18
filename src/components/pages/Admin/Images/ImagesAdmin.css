@@ -7,13 +7,12 @@
 
   h2 {
     color: var(--color-five);
-    font-size: 1.3rem;
+    font-size: var(--fs-md);
   }
 
   .gallery-admin-new {
     border: 1px solid var(--color-five);
     background-color: var(--color-five);
-    border-radius: 15px;
     padding: 1rem 2rem;
     color: var(--color-one);
     text-decoration: none;
@@ -49,7 +48,7 @@
     }
 
     .image-card-tags-container {
-      font-size: 0.8rem;
+      font-size: var(--fs-xs);
       padding: 0.5rem;
       color: var(--color-three);
 

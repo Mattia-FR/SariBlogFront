@@ -34,6 +34,8 @@ Frontend du projet Sariblog (voir [backend](https://github.com/Mattia-FR/SariBlo
 | **Routing**       | React Router 7     |
 | **Validation**    | Zod 4              |
 | **Notifications** | react-toastify 11  |
+| **Icônes**        | lucide-react       |
+| **Tests**         | Vitest 4           |
 | **Lint / Format** | Biome 2            |
 
 ## Prérequis
@@ -56,22 +58,28 @@ Variables d'environnement (optionnelles) :
 |----------------|-------------------------------|-----------------------------|
 | `VITE_API_URL` | URL de base de l'API backend  | `http://localhost:4242/api` |
 
-Créer un fichier `.env` à la racine de `Front` si besoin :
+Un fichier `.env.example` est fourni à la racine de `Front`. Copier en `.env` si besoin :
 
 ```env
 VITE_API_URL=http://localhost:4242/api
 ```
 
+### API et CORS (pas de proxy Vite)
+
+Le client appelle l'API directement (`fetch` vers `VITE_API_URL`). Il n'y a **pas** de `server.proxy` dans `vite.config.ts`. Le backend doit autoriser l'origine du serveur de développement (souvent `http://localhost:5173`) et les cookies (`credentials: "include"` sur toutes les requêtes).
+
 ## Scripts
 
-| Commande          | Description                                         |
-|-------------------|-----------------------------------------------------|
-| `npm run dev`     | Serveur de développement (Vite)                     |
-| `npm run build`   | Compilation TypeScript + build prod                 |
-| `npm run preview` | Prévisualisation du build                           |
-| `npm run check`   | Vérification du code (Biome, lecture seule)         |
-| `npm run format`  | Formatage automatique (Biome)                       |
-| `npm run lint`    | Lint + format + corrections (Biome)                 |
+| Commande             | Description                                         |
+|----------------------|-----------------------------------------------------|
+| `npm run dev`        | Serveur de développement (Vite)                     |
+| `npm run build`      | Compilation TypeScript + build prod                 |
+| `npm run preview`    | Prévisualisation du build                           |
+| `npm test`           | Tests unitaires (Vitest, une fois)                  |
+| `npm run test:watch` | Tests unitaires en mode watch                       |
+| `npm run check`      | Vérification du code (Biome, lecture seule)         |
+| `npm run format`     | Formatage automatique (Biome)                       |
+| `npm run lint`       | Lint + format + corrections (Biome)                 |
 
 ## Structure du projet
 
@@ -103,19 +111,21 @@ Front/
 │   │       ├── LegalNoticePage/
 │   │       ├── PresentationPage/  # PresentationPage + presentationLoader
 │   │       ├── PrivacyPolicyPage/
-│   │       └── RedirectionPage/   # 404, Unauthorized
+│   │       └── RedirectionPage/   # NotFoundPage, UnauthorizedPage
 │   ├── contexts/          # AuthContext
 │   ├── hooks/             # useAuth
 │   ├── schemas/           # Schémas de validation Zod
+│   ├── tests/unit/        # Tests apiClient, apiError, loaderFetch, errorContent
 │   ├── types/             # article, auth, categories, comment, image, messages, modal, pagination, tags, users
-│   ├── utils/             # apiClient (JWT + refresh), loaderFetch (loaders React Router)
+│   ├── utils/             # apiClient, loaderFetch, apiError, logger, notifyError, imageConstraints
 │   ├── App.tsx
 │   ├── App.css
-│   ├── main.tsx           # Router + providers
+│   ├── main.tsx           # createBrowserRouter, AuthProvider, ErrorBoundary
 │   ├── index.css
 │   └── toast.css
 ├── index.html
 ├── vite.config.ts
+├── vitest.config.ts
 ├── tsconfig.json
 ├── tsconfig.app.json
 ├── tsconfig.node.json
@@ -155,32 +165,34 @@ Front/
 
 Plusieurs routes utilisent un [loader React Router](https://reactrouter.com/en/main/route/loader) pour précharger les données avant le rendu :
 
-| Route              | Loader                    | Endpoint appelé                         |
-|--------------------|---------------------------|-----------------------------------------|
-| `/`                | `homeLoader`              | `GET /articles` (récents) + `GET /images` |
-| `/blog`            | `blogLoader`              | `GET /articles`                         |
-| `/blog/:slug`      | `articleLoader`           | `GET /articles/:slug`                   |
-| `/gallery`         | `galleryHubLoader`        | `GET /categories`                       |
-| `/gallery/:slug`   | `galleryCategoryLoader`   | `GET /categories/:slug/images`          |
-| `/presentation`    | `presentationLoader`      | `GET /images` (galerie artiste)         |
+| Route              | Loader                    | Endpoints (relatifs à `VITE_API_URL`) |
+|--------------------|---------------------------|----------------------------------------|
+| `/`                | `homeLoader`              | `GET /articles/homepage-preview` ; `GET /images/image-of-the-day` (optionnel) ; `GET /users/artist` |
+| `/blog`            | `blogLoader`              | `GET /articles/published?page&tagId` ; `GET /tags/published-articles` (optionnel) |
+| `/blog/:slug`      | `articleLoader`           | `GET /articles/published/slug/:slug` ; puis optionnels `GET /images/article/:id`, `GET /tags/article/:id`, `GET /comments/article/:id` |
+| `/gallery`         | `galleryHubLoader`        | `GET /categories` |
+| `/gallery/:slug`   | `galleryCategoryLoader`   | `GET /categories/:slug` ; `GET /images/category/:id?page&limit&tagId` ; `GET /tags/category/:id` (optionnel) |
+| `/presentation`    | `presentationLoader`      | `GET /users/artist` |
 
-Les loaders utilisent `loaderFetch<T>(endpoint)` depuis `src/utils/loaderFetch.ts`, qui appelle `api.get<T>()` et convertit toute erreur en `Response` avec le bon code HTTP (pour que React Router rende `<ErrorPage />`).
+Les loaders utilisent `loaderFetch<T>()` pour les données critiques (erreur → `ErrorPage`) et `loaderFetchOptional<T>()` pour les données secondaires (repli sans faire échouer la route), depuis `src/utils/loaderFetch.ts`.
 
 ## Client API
 
 Le module `src/utils/apiClient.ts` fournit :
 
-- **`apiClient(url, options)`** : `fetch` avec injection du token Bearer et retry sur 401 après refresh
+- **`apiClient(url, options)`** : `fetch` avec injection du token Bearer, `credentials: "include"` sur toutes les requêtes, et retry sur 401 après refresh
 - **`api.get<T>(endpoint)`** : requête GET, retourne le JSON
 - **`api.post<T>(endpoint, data?)`** : requête POST JSON
 - **`api.postFormData<T>(endpoint, formData)`** : requête POST multipart (upload d'image, sans `Content-Type` manuel)
 - **`api.patch<T>(endpoint, data?)`** : requête PATCH JSON
 - **`api.delete<T>(endpoint)`** : requête DELETE (gère le statut 204)
-- **Refresh token** : appel automatique à `POST /auth/refresh` avec `credentials: "include"` (cookie httpOnly), puis réessai de la requête avec le nouveau token
+- **Refresh token** : appel automatique à `POST /auth/refresh` avec cookie httpOnly, puis réessai de la requête avec le nouveau token
+- **Erreurs** : normalisées en `ApiError` ; les loaders les convertissent en `Response` via `toRouteErrorResponse`
 
 Le module `src/utils/loaderFetch.ts` fournit :
 
-- **`loaderFetch<T>(endpoint)`** : appelle `api.get<T>()` et convertit les erreurs en `Response` exploitable par React Router (code HTTP extrait du message d'erreur, fallback 500)
+- **`loaderFetch<T>(endpoint)`** : appelle `api.get<T>()` et convertit les erreurs en `Response` exploitable par React Router
+- **`loaderFetchOptional<T>(endpoint, fallback)`** : même appel, mais renvoie le fallback en cas d'erreur (données secondaires)
 
 Le token d'accès est stocké **en mémoire** (variable JS), pas dans `localStorage`.
 
@@ -190,7 +202,7 @@ Le token d'accès est stocké **en mémoire** (variable JS), pas dans `localStor
 
 - État : `user`, `isInitializing`, `isLoading`
 - Actions : `login`, `logout`, `setCurrentUser` (mise à jour du user côté client)
-- Vérification de session au chargement via `POST /auth/refresh`
+- Au chargement : `POST /auth/refresh` (cookie) via `refreshAccessToken()`, puis si succès `GET /admin/users/me` pour hydrater `user`
 
 Les routes admin sont enveloppées dans `ProtectedRoute` avec `allowedRoles={["admin", "editor"]}`.
 
@@ -198,11 +210,12 @@ Les routes admin sont enveloppées dans `ProtectedRoute` avec `allowedRoles={["a
 
 Les schémas se trouvent dans `src/schemas/` :
 
-| Fichier               | Export                  | Usage                                     |
-|-----------------------|-------------------------|-------------------------------------------|
-| `authSchemas.ts`      | `loginSchema`           | Formulaire de connexion (`identifier`, `password`) |
-| `commentSchemas.ts`   | `commentCreateSchema`   | Formulaire de commentaire public          |
-| `messageSchemas.ts`   | `messageVisitorSchema`  | Formulaire de contact                     |
+| Fichier               | Export                     | Usage                                     |
+|-----------------------|----------------------------|-------------------------------------------|
+| `authSchemas.ts`      | `loginSchema`              | Formulaire de connexion (`identifier`, `password`) |
+| `commentSchemas.ts`   | `commentCreateSchema`      | Formulaire de commentaire public          |
+| `messageSchemas.ts`   | `messageVisitorSchema`     | Formulaire de contact                     |
+| `userSchemas.ts`      | `updateMePasswordSchema`   | Changement de mot de passe (profil admin) |
 
 ## Configuration Biome
 

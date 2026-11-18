@@ -8,7 +8,6 @@
   .articles-admin-new {
     border: 1px solid var(--color-five);
     background-color: var(--color-five);
-    border-radius: 15px;
     padding: 1rem 2rem;
     color: var(--color-one);
     text-decoration: none;
@@ -17,7 +16,7 @@
 
   .articles-admin-title {
     color: var(--color-five);
-    font-size: 1.3rem;
+    font-size: var(--fs-md);
   }
 
   /* Grille d'articles */
@@ -36,7 +35,6 @@
       flex-direction: column;
       gap: 0.75rem;
       border: 1px solid var(--color-three);
-      border-radius: 5px;
       overflow: hidden;
 
       img {
@@ -55,13 +53,13 @@
 
       .article-card-excerpt {
         color: var(--color-two);
-        font-size: 0.9rem;
+        font-size: var(--fs-xs);
         padding: 0 1rem 1rem 1rem;
       }
 
       .article-card-date,
       .article-card-tags {
-        font-size: 0.75rem;
+        font-size: var(--fs-xs);
         color: var(--color-four);
       }
 
@@ -80,7 +78,6 @@
 
       .article-card-tag {
         border: 1px solid var(--color-four);
-        border-radius: 8px;
         padding: 0.5rem;
       }
     }

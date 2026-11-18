@@ -16,7 +16,6 @@
 
   .profile-avatar {
     width: 10rem;
-    border-radius: 15px;
     aspect-ratio: 1 / 1;
     object-fit: cover;
   }
@@ -32,7 +31,7 @@
   .profile-email,
   .profile-role {
     color: var(--color-three);
-    font-size: 0.9rem;
+    font-size: var(--fs-xs);
   }
 
   .profile-bio,
@@ -47,14 +46,14 @@
   .profile-bio-short h3,
   .profile-password-form h3 {
     color: var(--color-five);
-    font-size: 1.1rem;
+    font-size: var(--fs-sm);
   }
 
   .profile-bio p,
   .profile-bio-short p,
   .profile-meta p {
     color: var(--color-two);
-    font-size: 0.9rem;
+    font-size: var(--fs-xs);
     white-space: pre-wrap;
   }
 
@@ -79,10 +78,9 @@
     input,
     textarea {
       border: 1px solid var(--color-three);
-      border-radius: 5px;
       padding: 0.25rem 0.5rem;
       font-family: var(--font-two);
-      font-size: 0.8rem;
+      font-size: var(--fs-xs);
       background-color: var(--color-one);
       color: var(--color-two);
     }
@@ -109,7 +107,6 @@
     justify-content: center;
     padding: 0.15rem;
     border: none;
-    border-radius: 5px;
     background: transparent;
     color: var(--color-three);
     cursor: pointer;
@@ -130,7 +127,6 @@
   .profile-edit-buttons button {
     background-color: var(--color-one);
     border: 1px solid var(--color-five);
-    border-radius: 15px;
     color: var(--color-five);
     padding: 0.25rem 0.75rem;
     font-family: var(--font-one);
@@ -144,7 +140,7 @@
 
   .profile-field-hint,
   .profile-field-error {
-    font-size: 0.8rem;
+    font-size: var(--fs-xs);
     margin: 0;
   }
 

@@ -7,7 +7,7 @@
 
   .comments-admin-title {
     color: var(--color-five);
-    font-size: 1.3rem;
+    font-size: var(--fs-md);
   }
 
   /* Boutons filtres */
@@ -20,11 +20,10 @@
     button {
       background-color: var(--color-one);
       border: 1px solid var(--color-five);
-      border-radius: 15px;
       color: var(--color-five);
       padding: 0.25rem 0.75rem;
       font-family: var(--font-one);
-      font-size: 0.85rem;
+      font-size: var(--fs-xs);
 
       &.active {
         background-color: var(--color-five);
@@ -39,7 +38,7 @@
     display: flex;
     align-items: center;
     gap: 1rem;
-    font-size: 0.85rem;
+    font-size: var(--fs-xs);
     color: var(--color-three);
 
     p {
@@ -51,7 +50,7 @@
       border: none;
       color: var(--color-three);
       font-family: var(--font-one);
-      font-size: 0.85rem;
+      font-size: var(--fs-xs);
       cursor: pointer;
       padding: 0;
 
@@ -85,11 +84,10 @@
     button {
       background-color: var(--color-one);
       border: 1px solid var(--color-five);
-      border-radius: 15px;
       color: var(--color-five);
       padding: 0.25rem 0.5rem;
       font-family: var(--font-one);
-      font-size: 0.85rem;
+      font-size: var(--fs-xs);
     }
   }
 
@@ -100,9 +98,8 @@
     flex-direction: column;
     gap: 0.5rem;
     border: 1px solid var(--color-three);
-    border-radius: 5px;
     padding: 1rem;
-    font-size: 0.9rem;
+    font-size: var(--fs-xs);
 
     .comment-card-meta {
       padding-bottom: 0.5rem;
@@ -113,11 +110,11 @@
         gap: 0.5rem;
         list-style: none;
         color: var(--color-three);
-        font-size: 0.8rem;
+        font-size: var(--fs-xs);
       }
 
       .comment-card-meta-author {
-        font-size: 0.9rem;
+        font-size: var(--fs-xs);
       }
 
       .comment-card-meta-date {

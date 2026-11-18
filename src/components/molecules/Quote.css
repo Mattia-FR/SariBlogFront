@@ -1,0 +1,35 @@
+.quote {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 1.75rem;
+  padding: 5rem 0;
+  width: 100vw;
+  margin-left: calc(50% - 50vw);
+  margin-right: calc(50% - 50vw);
+  border-block: 1px solid var(--color-five);
+
+  .quote-text,
+  .quote-author {
+    width: clamp(320px, 95vw, 1000px);
+  }
+
+  .quote-text {
+    p {
+      font-family: var(--font-two);
+      font-size: clamp(2.5rem, 5vw + 1rem, 4.5rem);
+      color: var(--color-five);
+    }
+
+    .quote-emphasis {
+      color: var(--color-three);
+    }
+  }
+
+  .quote-author {
+    font-family: var(--font-one);
+    font-style: italic;
+    font-size: clamp(2rem, 5vw + 1rem, 3rem);
+    color: var(--color-five);
+  }
+}

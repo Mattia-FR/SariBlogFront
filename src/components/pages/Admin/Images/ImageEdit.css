@@ -30,18 +30,16 @@
 
       input {
         border: 1px solid var(--color-three);
-        border-radius: 5px;
         padding: 0.25rem 0 0.25rem 0.5rem;
         font-family: var(--font-two);
-        font-size: 0.8rem;
+        font-size: var(--fs-xs);
       }
 
       textarea {
         border: 1px solid var(--color-three);
-        border-radius: 5px;
         padding: 0.25rem 0.5rem;
         font-family: var(--font-two);
-        font-size: 0.8rem;
+        font-size: var(--fs-xs);
       }
     }
   }
@@ -49,7 +47,7 @@
   .tag-checkboxes {
     .tag-checkboxes-title {
       color: var(--color-five);
-      font-size: 1.2rem;
+      font-size: var(--fs-md);
       padding-bottom: 0.5rem;
     }
 
@@ -65,13 +63,13 @@
     .tag-checkboxes-label {
       display: flex;
       gap: 0.5rem;
-      font-size: 0.9rem;
+      font-size: var(--fs-xs);
     }
   }
   .category-radios {
     .category-radios-title {
       color: var(--color-five);
-      font-size: 1.2rem;
+      font-size: var(--fs-md);
       padding-bottom: 0.5rem;
     }
 
@@ -87,14 +85,14 @@
     .category-radios-label {
       display: flex;
       gap: 0.5rem;
-      font-size: 0.9rem;
+      font-size: var(--fs-xs);
     }
   }
 
   .image-admin-edit-gallery {
     display: flex;
     gap: 0.5rem;
-    font-size: 0.9rem;
+    font-size: var(--fs-xs);
     color: var(--color-three);
   }
 
@@ -105,7 +103,6 @@
 
     button {
       border: 1px solid var(--color-five);
-      border-radius: 15px;
       padding: 1rem;
       background-color: var(--color-one);
       color: var(--color-five);

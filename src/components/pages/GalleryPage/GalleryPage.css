@@ -8,7 +8,7 @@
   .gallery-grid-title {
     color: var(--color-five);
     font-family: var(--font-two);
-    font-size: 1.5rem;
+    font-size: var(--fs-lg);
     text-decoration: none;
 
     .gallery-grid-title-last {
@@ -91,9 +91,8 @@
           width: fit-content;
           list-style: none;
           border: 1px solid var(--color-four);
-          border-radius: 8px;
           padding: 0.5rem;
-          font-size: 0.75rem;
+          font-size: var(--fs-xs);
           color: var(--color-four);
           background: var(--color-one);
         }
@@ -128,13 +127,13 @@
   .image-detail-modal-title {
     color: var(--color-three);
     font-family: var(--font-two);
-    font-size: 1rem;
+    font-size: var(--fs-sm);
   }
 
   .image-detail-modal-description {
     color: var(--color-three);
     font-family: var(--font-two);
-    font-size: 0.9rem;
+    font-size: var(--fs-xs);
     font-style: italic;
   }
 }

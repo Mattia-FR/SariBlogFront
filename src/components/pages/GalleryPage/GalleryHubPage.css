@@ -15,11 +15,10 @@
 
     .gallery-hub-categorie-title {
       border: 1px solid var(--color-five);
-      border-radius: 15px;
       padding: 1rem 2rem;
       color: var(--color-five);
       text-decoration: none;
-      font-size: 1.2rem;
+      font-size: var(--fs-md);
       box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
       font-family: var(--font-one);
     }

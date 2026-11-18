@@ -25,7 +25,6 @@
     .artist-avatar-frame {
       display: inline-block;
       line-height: 0;
-      border-radius: 15px;
       box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
       overflow: hidden;
     }
@@ -36,7 +35,6 @@
       height: auto;
       object-fit: cover;
       display: block;
-      border-radius: 0;
 
       @media (min-width: 720px) {
         aspect-ratio: auto;
@@ -90,13 +88,13 @@
 
     .artist-bio {
       margin: 0;
-      font-size: 1rem;
+      font-size: var(--fs-sm);
       line-height: 1.5rem;
       text-align: left;
     }
 
     .artist-bio::first-letter {
-      font-size: 3rem;
+      font-size: var(--fs-2xl);
       color: var(--color-three);
       float: left;
       margin-right: 0.5rem;

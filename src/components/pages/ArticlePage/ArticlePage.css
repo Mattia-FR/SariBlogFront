@@ -12,7 +12,7 @@
 
   .article-detail-date {
     color: var(--color-four);
-    font-size: 0.75rem;
+    font-size: var(--fs-xs);
   }
 
   .article-detail-tags {
@@ -24,10 +24,9 @@
 
     .article-detail-tag {
       border: 1px solid var(--color-four);
-      border-radius: 8px;
       padding: 0.5rem;
       width: fit-content;
-      font-size: 0.75rem;
+      font-size: var(--fs-xs);
     }
   }
 
@@ -67,13 +66,13 @@
     .image-detail-modal-title {
       color: var(--color-three);
       font-family: var(--font-two);
-      font-size: 1rem;
+      font-size: var(--fs-sm);
     }
 
     .image-detail-modal-description {
       color: var(--color-three);
       font-family: var(--font-two);
-      font-size: 0.9rem;
+      font-size: var(--fs-xs);
       font-style: italic;
     }
   }
@@ -106,13 +105,12 @@
 
     .article-detail-comments-title {
       color: var(--color-three);
-      font-size: 1.25rem;
+      font-size: var(--fs-md);
     }
 
     .article-detail-comments-btn {
       background-color: var(--color-four);
       border: 1px solid var(--color-four);
-      border-radius: 15px;
       padding: 1rem;
       color: var(--color-one);
       font-family: var(--font-two);
@@ -120,7 +118,7 @@
     }
 
     .article-detail-comments-no {
-      font-size: 0.9rem;
+      font-size: var(--fs-xs);
       font-style: italic;
     }
 
@@ -140,7 +138,7 @@
 
         .comment-card-meta-date {
           font-style: italic;
-          font-size: 0.8rem;
+          font-size: var(--fs-xs);
         }
       }
 
@@ -150,11 +148,11 @@
 
       .comment-card-date {
         font-style: italic;
-        font-size: 0.9rem;
+        font-size: var(--fs-xs);
       }
 
       .comment-card-text {
-        font-size: 0.9rem;
+        font-size: var(--fs-xs);
       }
     }
   }

@@ -5,7 +5,8 @@ header {
   align-items: center;
   padding: 2rem 0;
   position: relative;
-  box-shadow: 0 1.5rem 1.5rem rgba(0, 0, 0, 0.03);
+  z-index: 10;
+  /* box-shadow: 0 1.5rem 1.5rem rgba(0, 0, 0, 0.03); */
 
   .header-logo {
     height: 5rem;
@@ -28,7 +29,7 @@ header {
       color: var(--color-five);
       letter-spacing: 0.2rem;
       font-weight: 700;
-      font-size: 1.1rem;
+      font-size: var(--fs-sm);
       position: relative;
 
       &::after {
@@ -61,12 +62,11 @@ header {
     color: var(--color-five);
     letter-spacing: 0.2rem;
     font-weight: 700;
-    font-size: 0.9rem;
+    font-size: var(--fs-xs);
 
     p {
       margin: 0;
       border: 1px solid var(--color-five);
-      border-radius: 15px;
       padding: 0.5rem 1rem;
     }
 
@@ -184,6 +184,6 @@ header {
     color: var(--color-five);
     font-weight: 700;
     letter-spacing: 0.2rem;
-    font-size: 1.1rem;
+    font-size: var(--fs-sm);
   }
 }

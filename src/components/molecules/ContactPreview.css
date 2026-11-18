@@ -1,0 +1,77 @@
+.contact-cta {
+  /* Passer en 100vw */
+  width: 100vw;
+  position: relative;
+  left: 50%;
+  right: 50%;
+  margin-left: -50vw;
+  margin-right: -50vw;
+  /* Fin du "trick" */
+  display: flex;
+  justify-content: center;
+  background-color: var(--color-three);
+  padding: 4rem 0;
+
+  .contact-cta-inner {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-between;
+    gap: 3rem;
+    width: clamp(320px, 95vw, 1000px);
+  }
+
+  .contact-cta-left {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    flex: 1;
+    max-width: 32rem;
+    color: var(--color-one);
+  }
+
+  .contact-cta-title {
+    color: var(--color-one);
+    margin: 0 0 0.75rem;
+    font-size: var(--fs-xl);
+  }
+
+  .contact-cta-subtitle {
+    margin: 0;
+  }
+
+  .contact-cta-right {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+  }
+
+  .contact-cta-button {
+    color: var(--color-one);
+    font-family: var(--font-one);
+    border: 1px solid var(--color-one);
+    padding: 1rem 2rem;
+    width: fit-content;
+    background-color: var(--color-three);
+    box-shadow: none;
+    transition: all 0.35s ease;
+  }
+
+  .contact-cta-button:hover {
+    background-color: var(--color-one);
+    color: var(--color-five);
+    box-shadow: 0 10px 24px rgb(from var(--color-two) r g b / 0.2);
+  }
+
+  @media (max-width: 640px) {
+    .contact-cta-inner {
+      flex-direction: column;
+      align-items: flex-start;
+    }
+
+    .contact-cta-right {
+      align-self: flex-start;
+    }
+  }
+}

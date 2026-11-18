@@ -23,6 +23,6 @@
 
   pre {
     white-space: pre-wrap;
-    font-size: 0.85rem;
+    font-size: var(--fs-xs);
   }
 }
