@@ -59,13 +59,13 @@
     border: 1px solid var(--color-five);
     padding: 1rem 2rem;
     width: fit-content;
-    transition: all 0.35s ease;
+    transition: background-color 0.35s ease, color 0.35s ease, box-shadow 0.35s ease;
   }
 
   .artist-preview-cta:hover {
     background-color: var(--color-five);
     color: var(--color-one);
-    box-shadow: 0 10px 24px rgb(from var(--color-two) r g b / 0.2);
+    box-shadow: var(--box-shadow);
   }
 
   @media (max-width: 640px) {

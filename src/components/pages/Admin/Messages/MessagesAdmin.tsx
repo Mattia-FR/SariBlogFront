@@ -119,15 +119,30 @@ function MessagesAdmin() {
     setSearchParams(next);
   }
 
-  if (loading) return <p>Chargement des messages…</p>;
-  if (error) return <p>{error}</p>;
-
   const c = counts ?? {
     total: 0,
     unread: 0,
     read: 0,
     archived: 0,
   };
+
+  if (loading) {
+    return (
+      <section className="messages-admin">
+        <h2 className="messages-admin-title">Gestion des messages</h2>
+        <p className="messages-admin-status">Chargement des messages…</p>
+      </section>
+    );
+  }
+
+  if (error) {
+    return (
+      <section className="messages-admin">
+        <h2 className="messages-admin-title">Gestion des messages</h2>
+        <p className="messages-admin-status">{error}</p>
+      </section>
+    );
+  }
 
   return (
     <section className="messages-admin">
@@ -163,7 +178,7 @@ function MessagesAdmin() {
       )}
 
       {messages.length === 0 ? (
-        <p>Aucun message</p>
+        <p className="messages-admin-empty">Aucun message</p>
       ) : (
         <section className="messages-admin-grid">
           {messages.map((message) => (

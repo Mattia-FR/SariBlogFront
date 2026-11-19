@@ -162,11 +162,29 @@ function ProfilePage() {
     }
   }
 
-  if (loading) return <p>Chargement...</p>;
-  if (error || !profile) return <p>{error ?? "Profil introuvable"}</p>;
+  if (loading) {
+    return (
+      <section className="profile-page">
+        <p className="profile-status">Chargement…</p>
+      </section>
+    );
+  }
+  if (error || !profile) {
+    return (
+      <section className="profile-page">
+        <p className="profile-status profile-status--error">
+          {error ?? "Profil introuvable"}
+        </p>
+      </section>
+    );
+  }
 
   return (
     <section className="profile-page">
+      <header className="profile-page-heading">
+        <p className="profile-kicker">Compte</p>
+        <h1 className="profile-title">Profil</h1>
+      </header>
       <div className="profile-container">
         {isEditing ? (
           <form onSubmit={handleUpdate} className="profile-edit-form">
@@ -267,7 +285,11 @@ function ProfilePage() {
               <button type="submit" disabled={isSubmitting}>
                 {isSubmitting ? "Envoi en cours…" : "Enregistrer"}
               </button>
-              <button type="button" onClick={() => setIsEditing(false)}>
+              <button
+                type="button"
+                className="profile-button-secondary"
+                onClick={() => setIsEditing(false)}
+              >
                 Annuler
               </button>
             </div>

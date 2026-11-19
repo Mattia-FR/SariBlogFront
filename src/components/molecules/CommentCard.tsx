@@ -1,4 +1,11 @@
-import type { CommentCardProps } from "../../types/comment";
+import type { CommentCardProps, CommentStatus } from "../../types/comment";
+
+const STATUS_LABELS: Record<CommentStatus, string> = {
+  pending: "En attente",
+  approved: "Approuvé",
+  rejected: "Refusé",
+  spam: "Spam",
+};
 
 function CommentCard({ comment, showStatus = false }: CommentCardProps) {
   const author =
@@ -23,7 +30,7 @@ function CommentCard({ comment, showStatus = false }: CommentCardProps) {
           </li>
           {showStatus && comment.status != null ? (
             <li className="comment-card-meta-status">
-              Statut : {comment.status}
+              Statut : {STATUS_LABELS[comment.status]}
             </li>
           ) : null}
         </ul>

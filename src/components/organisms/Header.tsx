@@ -5,7 +5,7 @@ import logo from "../../assets/logo.png";
 
 function Header() {
   return (
-    <header>
+    <header className="site-header">
       <NavLink to="/" end aria-label="Aller à l'accueil">
         <img src={logo} alt="logo" className="header-logo" />
       </NavLink>

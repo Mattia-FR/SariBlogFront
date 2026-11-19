@@ -16,6 +16,8 @@ export interface Image {
   /** Miniature dérivée (listes) ; absente sur d'anciennes payloads. */
   thumbUrl?: string;
   tags?: Tag[];
+  /** Slug catégorie (homepage-preview) pour lier vers /gallery/:slug. */
+  categorySlug?: string | null;
 }
 
 export interface ImageCardProps {
@@ -23,4 +25,8 @@ export interface ImageCardProps {
   /** Si défini, la carte est un lien (ex. édition admin) au lieu de la fiche galerie. */
   linkTo?: string;
   onClick?: (image: Image) => void;
+}
+
+export interface GalleryPreviewProps {
+  images: Image[];
 }

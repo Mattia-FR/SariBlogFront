@@ -1,4 +1,10 @@
-import type { MessageCardProps } from "../../types/messages";
+import type { MessageCardProps, MessageStatus } from "../../types/messages";
+
+const STATUS_LABELS: Record<MessageStatus, string> = {
+  unread: "Non lu",
+  read: "Lu",
+  archived: "Archivé",
+};
 
 function MessageCard({ message }: MessageCardProps) {
   const sender =
@@ -21,7 +27,9 @@ function MessageCard({ message }: MessageCardProps) {
               {new Date(message.created_at).toLocaleDateString("fr-FR")}
             </time>
           </li>
-          <li className="message-card-meta-status">{message.status}</li>
+          <li className="message-card-meta-status">
+            {STATUS_LABELS[message.status]}
+          </li>
         </ul>
       </div>
       <div className="message-card-message">

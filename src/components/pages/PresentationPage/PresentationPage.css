@@ -1,105 +1,129 @@
 .presentation-page {
   display: flex;
   flex-direction: column;
-  align-items: center;
-  width: clamp(320px, 95vw, 1000px);
-  padding: 4rem 0;
-  gap: 2rem;
+  align-items: stretch;
+  width: 100%;
+}
 
-  @media (min-width: 720px) {
-    flex-direction: row;
-    align-items: flex-start;
-    gap: clamp(1.5rem, 4vw, 3rem);
+.presentation-hero {
+  --presentation-pad: clamp(1.5rem, 3vw, 2.8rem);
+  --presentation-gutter: clamp(2.5rem, 5vw, 5.5rem);
+
+  padding: 0;
+  width: 100vw;
+  margin-left: calc(50% - 50vw);
+  margin-right: calc(50% - 50vw);
+  overflow-x: clip;
+
+  display: grid;
+  grid-template-columns: minmax(0, 1fr);
+  grid-template-areas:
+    "image"
+    "content";
+
+  @media (min-width: 860px) {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    grid-template-rows: 1fr;
+    grid-template-areas: "image content";
+    min-height: calc(100dvh - var(--header-height));
   }
 
-  .artist-avatar-column {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    flex-shrink: 0;
+  .presentation-visual {
+    grid-area: image;
+    position: relative;
+    aspect-ratio: 4 / 3;
+    border-block: 1px solid var(--color-five);
+    background-color: var(--color-five);
 
-    @media (min-width: 720px) {
-      align-items: flex-start;
-    }
-
-    .artist-avatar-frame {
-      display: inline-block;
-      line-height: 0;
-      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
-      overflow: hidden;
-    }
-
-    .artist-avatar {
-      width: min(90vw, 20rem);
-      aspect-ratio: 1;
-      height: auto;
-      object-fit: cover;
-      display: block;
-
-      @media (min-width: 720px) {
-        aspect-ratio: auto;
-        height: auto;
-        width: auto;
-        max-height: 50vh;
-        max-width: 50vw;
-      }
+    @media (min-width: 860px) {
+      aspect-ratio: auto;
+      border-bottom: none;
+      border-right: 1px solid var(--color-five);
+      min-height: 0;
     }
   }
 
-  .artist-content {
-    display: flex;
-    flex-direction: column;
-    gap: 1.25rem;
+  .presentation-image {
+    position: absolute;
+    inset: 0;
     width: 100%;
-    max-width: 36rem;
-    text-align: center;
+    height: 100%;
+    object-fit: cover;
+    object-position: center;
+    display: block;
+  }
 
-    @media (min-width: 720px) {
-      text-align: left;
-      flex: 1;
-      min-width: 0;
-      max-width: none;
-      padding-top: 0.25rem;
+  .presentation-content {
+    grid-area: content;
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 2rem;
+    padding: var(--presentation-pad);
+    padding-bottom: clamp(5rem, 6vw, 7.5rem);
+    text-align: left;
+
+    @media (min-width: 860px) {
+      align-self: center;
+      gap: 1.5rem;
+      padding: var(--presentation-pad);
+      padding-left: calc(var(--presentation-pad) + var(--presentation-gutter));
     }
+  }
 
-    .artist-name {
-      margin: 0;
-      color: var(--color-two);
+  .presentation-copy {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 1.1rem;
+    text-align: left;
+  }
 
-      line-height: 1.05;
-      text-shadow:
-        1px 1px 0 var(--color-one),
-        -1px 1px 0 var(--color-one),
-        1px -1px 0 var(--color-one),
-        -1px -1px 0 var(--color-one);
-    }
+  .presentation-overline {
+    margin: 0;
+    font-family: var(--font-one);
+    letter-spacing: 0.4em;
+    font-size: var(--fs-xs);
+    font-weight: 700;
+    color: var(--color-three);
+  }
 
-    .artist-name-line {
-      display: block;
-      font-family: var(--font-two);
-      font-size: clamp(3rem, 5vw + 1rem, 4.5rem);
-      font-style: italic;
-    }
+  .presentation-name {
+    margin: 0;
+    font-family: var(--font-one);
+    font-weight: 300;
+    font-size: clamp(5.2rem, min(13vw, 18vh), 9rem);
+    line-height: 0.86;
+    letter-spacing: -0.02em;
+    color: var(--color-two);
+    display: flex;
+    flex-direction: column;
+    max-width: 7ch;
+  }
 
-    .artist-surname-line {
-      color: var(--color-five);
-      font-size: clamp(4rem, 6vw + 1rem, 5.5rem);
-    }
+  .presentation-surname {
+    color: var(--color-five);
+    font-style: italic;
+    font-family: var(--font-one);
+    font-weight: 500;
+  }
 
-    .artist-bio {
-      margin: 0;
-      font-size: var(--fs-sm);
-      line-height: 1.5rem;
-      text-align: left;
-    }
+  .presentation-tagline {
+    margin: 0;
+    font-family: var(--font-two);
+    font-style: normal;
+    font-size: clamp(1.05rem, 0.9vw + 0.85rem, 1.4rem);
+    color: var(--color-three);
+    max-width: 25ch;
+    line-height: 1.5;
+  }
 
-    .artist-bio::first-letter {
-      font-size: var(--fs-2xl);
-      color: var(--color-three);
-      float: left;
-      margin-right: 0.5rem;
-      font-style: italic;
-      text-shadow: 2px 3px 6px var(--color-four);
-    }
+  .presentation-bio {
+    margin: 0;
+    color: var(--color-two);
+    font-family: var(--font-two);
+    font-size: var(--fs-sm);
+    line-height: 1.7;
+    max-width: 40ch;
   }
 }

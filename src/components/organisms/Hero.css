@@ -184,14 +184,14 @@
     border: 1px solid var(--color-five);
     border-radius: 0;
     padding: 0.75rem 1.3rem;
-    transition: all 0.35s ease;
+    transition: box-shadow 0.35s ease, color 0.35s ease;
     width: fit-content;
     letter-spacing: 0.15em;
     font-size: var(--fs-sm);
   }
 
   .hero-link:hover {
-    box-shadow: 0 10px 24px rgb(from var(--color-two) r g b / 0.2);
+    box-shadow: var(--box-shadow);
   }
 
   .hero-link-secondary {

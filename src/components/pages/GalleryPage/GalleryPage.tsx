@@ -1,4 +1,3 @@
-import type { ChangeEvent } from "react";
 import { useState } from "react";
 import { Link, useLoaderData, useSearchParams } from "react-router-dom";
 import type { Image } from "../../../types/image";
@@ -17,26 +16,29 @@ function GalleryPage() {
 
   const selectedTagId: number | "" = tagId === null ? "" : tagId;
 
-  function handleTagChange(e: ChangeEvent<HTMLSelectElement>) {
+  function handleTagChange(nextTagId: number | "") {
     const next = new URLSearchParams(searchParams);
-    const v = e.target.value;
-    if (v === "") {
+    if (nextTagId === "") {
       next.delete("tagId");
     } else {
-      next.set("tagId", v);
+      next.set("tagId", String(nextTagId));
     }
     next.set("page", "1");
     setSearchParams(next);
   }
 
   return (
-    <section className="gallery-grid">
+    <section className="gallery-page">
       {category && (
-        <Link to="/gallery" className="gallery-grid-title">
-          <h1 className="gallery-grid-title">
-            <span className="gallery-grid-title-last"> {category.name}</span>
-          </h1>
-        </Link>
+        <header className="gallery-page-header">
+          <div className="gallery-page-heading">
+            <p className="gallery-page-kicker">Galerie</p>
+            <h1 className="gallery-page-title">{category.name}</h1>
+          </div>
+          <Link to="/gallery" className="gallery-page-back">
+            Retour aux catégories →
+          </Link>
+        </header>
       )}
       <TagFilter
         tags={tags}
@@ -44,9 +46,9 @@ function GalleryPage() {
         onTagChange={handleTagChange}
       />
       {images.length === 0 ? (
-        <p>Aucune image</p>
+        <p className="gallery-page-empty">Aucune image</p>
       ) : (
-        <div className="gallery-grid-content">
+        <div className="gallery-page-content">
           {images.map((image) => (
             <ImageCard
               key={image.id}

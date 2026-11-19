@@ -17,6 +17,7 @@ import {
 } from "../../../../utils/imageConstraints";
 import { notifyError } from "../../../../utils/notifyError";
 import TagCheckboxes from "../../../molecules/TagCheckboxes";
+import "./ArticleForm.css";
 import "./ArticleCreate.css";
 
 function ArticleCreate() {
@@ -133,10 +134,15 @@ function ArticleCreate() {
 
   return (
     <section className="article-create">
-      <h2 className="article-create-title">Nouvel article</h2>
+      <header className="article-create-header">
+        <div className="article-create-heading">
+          <p className="article-create-kicker">Administration</p>
+          <h2 className="article-create-title">Nouvel article</h2>
+        </div>
+      </header>
       <form onSubmit={handleSubmit} className="article-create-form">
         <div className="article-create-field">
-          <label htmlFor={`${id}-title`}>Titre :</label>
+          <label htmlFor={`${id}-title`}>Titre</label>
           <input
             id={`${id}-title`}
             type="text"
@@ -146,7 +152,7 @@ function ArticleCreate() {
           />
         </div>
         <div className="article-create-field">
-          <label htmlFor={`${id}-content`}>Contenu :</label>
+          <label htmlFor={`${id}-content`}>Contenu</label>
           <textarea
             id={`${id}-content`}
             name="content"
@@ -163,16 +169,14 @@ function ArticleCreate() {
             <option value="archived">Archivé</option>
           </select>
         </div>
-        <div>
-          <TagCheckboxes
-            tags={tags}
-            selectedIds={selectedTagIds}
-            onChange={setSelectedTagIds}
-            idPrefix={`${id}-article-tag`}
-          />
-        </div>
+        <TagCheckboxes
+          tags={tags}
+          selectedIds={selectedTagIds}
+          onChange={setSelectedTagIds}
+          idPrefix={`${id}-article-tag`}
+        />
         <div className="article-create-field">
-          <label htmlFor={`${id}-images`}>Images (optionnel) :</label>
+          <label htmlFor={`${id}-images`}>Images (optionnel)</label>
           <input
             id={`${id}-images`}
             type="file"

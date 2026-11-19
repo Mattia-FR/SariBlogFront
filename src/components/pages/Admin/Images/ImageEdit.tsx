@@ -8,7 +8,7 @@ import { api } from "../../../../utils/apiClient";
 import { notifyError } from "../../../../utils/notifyError";
 import CategoryRadios from "../../../molecules/CategoryRadios";
 import TagCheckboxes from "../../../molecules/TagCheckboxes";
-import "./ImageEdit.css";
+import "./ImageAdminForm.css";
 
 function ImageEdit() {
   const { id } = useParams<{ id: string }>();
@@ -95,22 +95,39 @@ function ImageEdit() {
     }
   }
 
-  if (loading) return <p>Chargement…</p>;
-  if (error || !image) return <p>{error ?? "Image introuvable"}</p>;
+  if (loading) {
+    return (
+      <section className="image-admin">
+        <p className="image-admin-status">Chargement…</p>
+      </section>
+    );
+  }
+  if (error || !image) {
+    return (
+      <section className="image-admin">
+        <p className="image-admin-status image-admin-status--error">
+          {error ?? "Image introuvable"}
+        </p>
+      </section>
+    );
+  }
 
   return (
-    <section className="image-admin-edit">
-      <h2 className="image-admin-edit-title">Modifier l&apos;image</h2>
+    <section className="image-admin">
+      <header className="image-admin-header">
+        <p className="image-admin-kicker">Galerie</p>
+        <h2 className="image-admin-title">Modifier l&apos;image</h2>
+      </header>
       {image.imageUrl && (
         <img
           src={image.imageUrl}
           alt={image.alt_descr || image.title || "Image"}
-          className="image-admin-edit-image"
+          className="image-admin-current"
         />
       )}
-      <form onSubmit={handleSubmit} className="image-admin-edit-form">
-        <div className="image-admin-edit-field">
-          <label htmlFor={`${generatedId}-title`}>Titre :</label>
+      <form onSubmit={handleSubmit} className="image-admin-form">
+        <div className="image-admin-field">
+          <label htmlFor={`${generatedId}-title`}>Titre</label>
           <input
             id={`${generatedId}-title`}
             type="text"
@@ -119,8 +136,8 @@ function ImageEdit() {
             placeholder="Titre de l'image"
           />
         </div>
-        <div className="image-admin-edit-field">
-          <label htmlFor={`${generatedId}-description`}>Description :</label>
+        <div className="image-admin-field">
+          <label htmlFor={`${generatedId}-description`}>Description</label>
           <textarea
             id={`${generatedId}-description`}
             name="description"
@@ -129,9 +146,9 @@ function ImageEdit() {
             rows={4}
           />
         </div>
-        <div className="image-admin-edit-field">
+        <div className="image-admin-field">
           <label htmlFor={`${generatedId}-alt_descr`}>
-            Texte alternatif (alt) :
+            Texte alternatif (alt)
           </label>
           <input
             id={`${generatedId}-alt_descr`}
@@ -144,7 +161,7 @@ function ImageEdit() {
         <div>
           <label
             htmlFor={`${generatedId}-is_in_gallery`}
-            className="image-admin-edit-gallery"
+            className="image-admin-gallery"
           >
             <input
               id={`${generatedId}-is_in_gallery`}
@@ -162,32 +179,28 @@ function ImageEdit() {
           </label>
         </div>
         {isInGallery ? (
-          <div>
-            <CategoryRadios
-              categories={categories}
-              selectedId={selectedCategoryId}
-              onChange={setSelectedCategoryId}
-              name={`${generatedId}-image-edit-category`}
-              idPrefix={`${generatedId}-image-edit-category`}
-            />
-          </div>
-        ) : null}
-        <div>
-          <TagCheckboxes
-            tags={tags}
-            selectedIds={selectedTagIds}
-            onChange={setSelectedTagIds}
-            idPrefix={`${generatedId}-image-edit-tag`}
+          <CategoryRadios
+            categories={categories}
+            selectedId={selectedCategoryId}
+            onChange={setSelectedCategoryId}
+            name={`${generatedId}-image-edit-category`}
+            idPrefix={`${generatedId}-image-edit-category`}
           />
-        </div>
-        <div className="image-admin-edit-buttons">
+        ) : null}
+        <TagCheckboxes
+          tags={tags}
+          selectedIds={selectedTagIds}
+          onChange={setSelectedTagIds}
+          idPrefix={`${generatedId}-image-edit-tag`}
+        />
+        <div className="image-admin-buttons">
           <button type="submit">Enregistrer</button>
           <button type="button" onClick={() => navigate("/admin/images")}>
             Annuler
           </button>
           <button
             type="button"
-            className="image-admin-edit-delete"
+            className="image-admin-delete"
             onClick={handleDelete}
           >
             Supprimer

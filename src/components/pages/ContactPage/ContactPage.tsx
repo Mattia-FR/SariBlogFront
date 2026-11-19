@@ -142,7 +142,7 @@ function ContactPage() {
 
         {type === "textarea" ? (
           <textarea
-            rows={4}
+            rows={6}
             id={field}
             className={`text${error ? " field-invalid" : ""}`}
             name={field}
@@ -193,38 +193,54 @@ function ContactPage() {
   };
 
   return (
-    <section className="contact-main">
-      <h1 className="sr-only">Me contacter :</h1>
-      <div className="contact-text">
-        <p>
-          Vous avez un projet d'
-          <span className="contact-text-emphasis">illustration</span> en tête ou
-          une idée de{"\u00A0"}
-          <span className="contact-text-emphasis">collaboration</span> ?
-        </p>
-        <p>
-          Je serais ravie d'en discuter avec{" "}
-          <span className="contact-text-emphasis">vous</span>.
-        </p>
-        <p>
-          Mes commandes sont actuellement{" "}
-          <span className="contact-text-emphasis">ouvertes</span> — écrivez-moi,
-          je réponds sous{" "}
-          <span className="contact-text-emphasis">quelques jours</span>.
-        </p>
+    <section className="contact-page">
+      <div className="contact-page-layout">
+        <aside className="contact-page-info">
+          <header className="contact-page-header">
+            <div className="contact-page-heading">
+              <p className="contact-page-kicker">CONTACT</p>
+              <h1 className="contact-page-title">Parlons de votre projet.</h1>
+            </div>
+          </header>
+          <p className="contact-page-intro">
+            Une idée d&apos;illustration, une collaboration, ou simplement
+            l&apos;envie d&apos;échanger — écrivez-moi, je serais ravie d&apos;en
+            discuter.
+          </p>
+          <p className="contact-page-status">
+            <span className="contact-page-status-dot" aria-hidden="true" />
+            <span>
+              <strong>Commandes ouvertes</strong> — réponse sous quelques jours
+            </span>
+          </p>
+        </aside>
+
+        <div className="contact-page-divider" aria-hidden="true" />
+
+        <form onSubmit={handleSubmit} className="contact-form" noValidate>
+          <div className="contact-form-heading">
+            <h2 className="contact-form-title">Envoyez-moi un message</h2>
+            <p className="contact-form-hint">Tous les champs sont obligatoires</p>
+          </div>
+
+          <div className="form-row">
+            {renderField("firstname", "Prénom")}
+            {renderField("lastname", "Nom")}
+          </div>
+          {renderField("email", "Email", "email")}
+          {renderField("subject", "Nature du projet")}
+          {renderField("text", "Message", "textarea")}
+
+          <div className="contact-form-footer">
+            <p className="contact-form-privacy">
+              Vos données ne sont utilisées que pour répondre à votre message.
+            </p>
+            <button type="submit" disabled={isSubmitting}>
+              {isSubmitting ? "Envoi en cours..." : "Envoyer"}
+            </button>
+          </div>
+        </form>
       </div>
-
-      <form onSubmit={handleSubmit} className="contact-form" noValidate>
-        {renderField("firstname", "Prénom :")}
-        {renderField("lastname", "Nom :")}
-        {renderField("email", "Email :", "email")}
-        {renderField("subject", "Sujet :")}
-        {renderField("text", "Message :", "textarea")}
-
-        <button type="submit" disabled={isSubmitting}>
-          {isSubmitting ? "Envoi en cours..." : "Envoyer"}
-        </button>
-      </form>
     </section>
   );
 }

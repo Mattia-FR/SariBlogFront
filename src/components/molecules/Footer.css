@@ -4,7 +4,7 @@
   align-items: center;
   justify-content: space-between;
   padding: 3rem clamp(0.5rem, 2cqi, 3rem);
-  box-shadow: 0 -1.5rem 1.5rem rgba(0, 0, 0, 0.03);
+  border-top: 1px solid var(--color-five);
 
   .footer-content-left {
     display: flex;
@@ -21,32 +21,46 @@
 
       .icon-link {
         text-decoration: none;
-        display: inline-block;
-        position: relative;
-        width: 2rem;
-        height: 2rem;
+        display: inline-flex;
+        align-items: center;
+        gap: 0.5rem;
+        color: var(--color-four);
+        font-size: var(--fs-xs);
+        transition: color 0.3s ease;
 
-        img {
-          position: absolute;
-          top: 0;
-          left: 0;
-          width: 100%;
-          height: 100%;
-          object-fit: contain;
-          transition: opacity 0.3s ease;
+        .icon-images {
+          position: relative;
+          display: inline-block;
+          width: 2rem;
+          height: 2rem;
+          flex-shrink: 0;
+
+          img {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            object-fit: contain;
+            transition: opacity 0.3s ease;
+          }
         }
-      }
 
-      .icon-hover {
-        opacity: 0;
-      }
+        .icon-hover {
+          opacity: 0;
+        }
 
-      .icon-link:hover .icon-normal {
-        opacity: 0;
-      }
+        &:hover {
+          color: var(--color-three);
 
-      .icon-link:hover .icon-hover {
-        opacity: 1;
+          .icon-normal {
+            opacity: 0;
+          }
+
+          .icon-hover {
+            opacity: 1;
+          }
+        }
       }
     }
   }

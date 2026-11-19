@@ -4,6 +4,7 @@ import type { User } from "../../../types/users";
 
 export interface HomeLoaderData {
   articles: Article[];
+  galleryPreview: Image[];
   imageOfTheDay: Image | null;
   user: User;
 }

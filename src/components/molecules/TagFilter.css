@@ -1,11 +1,42 @@
-.tag-filter-btn {
-  background-color: var(--color-five);
-  font-family: var(--font-one);
-  color: var(--color-one);
-  padding: 1rem 1rem;
-  border: 1px solid var(--color-five);
+.tag-filter {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.5rem;
+}
 
-  @media (min-width: 720px) {
-    width: fit-content;
-  }
+.tag-filter-chip,
+.tag-filter-more {
+  font-family: var(--font-one);
+  font-size: var(--fs-xs);
+  color: var(--color-five);
+  background-color: var(--color-one);
+  border: 1px solid var(--color-four);
+  padding: 0.5rem 0.85rem;
+  cursor: pointer;
+  transition:
+    background-color 0.35s ease,
+    border-color 0.35s ease,
+    color 0.35s ease;
+}
+
+.tag-filter-chip:hover,
+.tag-filter-chip:focus-visible,
+.tag-filter-more:hover,
+.tag-filter-more:focus-visible {
+  background-color: var(--color-three);
+  border-color: var(--color-three);
+  color: var(--color-one);
+  outline: none;
+}
+
+.tag-filter-chip--active {
+  background-color: var(--color-five);
+  border-color: var(--color-five);
+  color: var(--color-one);
+}
+
+.tag-filter-more {
+  font-weight: 700;
+  min-width: 2.5rem;
 }

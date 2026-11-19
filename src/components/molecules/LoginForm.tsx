@@ -1,5 +1,6 @@
 import type { FormEvent } from "react";
 import { useId, useState } from "react";
+import { Eye, EyeOff } from "lucide-react";
 import { toast } from "react-toastify";
 import { useAuth } from "../../hooks/useAuth";
 import { loginSchema } from "../../schemas/authSchemas";
@@ -21,6 +22,7 @@ function LoginForm({ onSuccess }: LoginFormProps) {
   const passwordErrorId = `${passwordId}-error`;
   const [formError, setFormError] = useState<string | null>(null);
   const [fieldErrors, setFieldErrors] = useState<Record<string, string>>({});
+  const [showPassword, setShowPassword] = useState(false);
 
   async function handleSubmit(
     event: FormEvent<HTMLFormElement>,
@@ -90,17 +92,35 @@ function LoginForm({ onSuccess }: LoginFormProps) {
       <label className="sr-only" htmlFor={passwordId}>
         Mot de passe
       </label>
-      <input
-        type="password"
-        id={passwordId}
-        name="password"
-        placeholder="Mot de passe"
-        required
-        disabled={isLoading}
-        aria-invalid={fieldErrors.password ? true : undefined}
-        aria-describedby={fieldErrors.password ? passwordErrorId : undefined}
-        className="login-input-password"
-      />
+      <span className="login-password-input">
+        <input
+          type={showPassword ? "text" : "password"}
+          id={passwordId}
+          name="password"
+          placeholder="Mot de passe"
+          autoComplete="current-password"
+          required
+          disabled={isLoading}
+          aria-invalid={fieldErrors.password ? true : undefined}
+          aria-describedby={fieldErrors.password ? passwordErrorId : undefined}
+          className="login-input-password"
+        />
+        <button
+          type="button"
+          className="login-password-toggle"
+          onClick={() => setShowPassword((visible) => !visible)}
+          aria-label={
+            showPassword ? "Masquer le mot de passe" : "Afficher le mot de passe"
+          }
+          disabled={isLoading}
+        >
+          {showPassword ? (
+            <EyeOff size={16} aria-hidden />
+          ) : (
+            <Eye size={16} aria-hidden />
+          )}
+        </button>
+      </span>
 
       <button type="submit" disabled={isLoading}>
         {isLoading ? "Connexion..." : "Se connecter"}

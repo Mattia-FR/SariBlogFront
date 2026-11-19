@@ -1,90 +1,37 @@
-.article-edit {
+.article-edit-detail {
   display: flex;
   flex-direction: column;
-  width: clamp(320px, 95vw, 800px);
   gap: 1.5rem;
-  padding: 2rem 0;
+}
 
-  .article-edit-title {
-    color: var(--color-five);
-    font-size: var(--fs-md);
-  }
+.article-edit-detail-heading {
+  display: flex;
+  flex-direction: column;
+  gap: 0.4rem;
+}
 
-  .article-edit-form {
-    display: flex;
-    flex-direction: column;
-    gap: 1rem;
+.article-edit-detail-images {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(12rem, 1fr));
+  gap: 1rem;
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
 
-    .article-edit-field {
-      display: flex;
-      flex-direction: column;
-      gap: 0.5rem;
+.article-edit-detail-image {
+  width: 100%;
+  aspect-ratio: 1 / 1;
+  object-fit: cover;
+  display: block;
+  border: 1px solid var(--color-four);
+}
 
-      label {
-        color: var(--color-three);
-      }
-
-      input,
-      textarea,
-      select {
-        border: 1px solid var(--color-three);
-        padding: 0.25rem 0.5rem;
-        font-family: var(--font-two);
-        font-size: var(--fs-xs);
-      }
-    }
-  }
-
-  .tag-checkboxes {
-    .tag-checkboxes-title {
-      color: var(--color-five);
-      font-size: var(--fs-md);
-      padding-bottom: 0.5rem;
-    }
-
-    .tag-checkboxes-list {
-      list-style: none;
-      margin: 0;
-      padding: 0;
-      display: flex;
-      flex-direction: column;
-      gap: 0.5rem;
-    }
-
-    .tag-checkboxes-label {
-      display: flex;
-      gap: 0.5rem;
-      font-size: var(--fs-xs);
-    }
-  }
-
-  .article-edit-buttons {
-    display: flex;
-    gap: 1rem;
-
-    button {
-      background-color: var(--color-one);
-      border: 1px solid var(--color-five);
-      color: var(--color-five);
-      padding: 0.25rem 0.75rem;
-      font-family: var(--font-one);
-    }
-  }
-
-  .article-edit-detail {
-    display: flex;
-    flex-direction: column;
-    gap: 1rem;
-
-    .article-edit-detail-image {
-      width: 10rem;
-      margin: 0 auto;
-    }
-
-    .article-edit-detail-content {
-      font-size: var(--fs-xs);
-      color: var(--color-three);
-      white-space: pre-wrap;
-    }
-  }
+.article-edit-detail-content {
+  margin: 0;
+  font-family: var(--font-two);
+  font-size: var(--fs-sm);
+  color: var(--color-two);
+  line-height: 1.7;
+  white-space: pre-wrap;
 }

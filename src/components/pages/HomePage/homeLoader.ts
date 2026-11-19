@@ -5,12 +5,13 @@ import { loaderFetch, loaderFetchOptional } from "../../../utils/loaderFetch";
 import type { HomeLoaderData } from "./homeTypes";
 
 export async function homeLoader(): Promise<HomeLoaderData> {
-  // L'image du jour est secondaire (404 si la galerie est vide) : null plutôt qu'une page d'erreur.
-  const [articles, imageOfTheDay, user] = await Promise.all([
+  // Image du jour et preview galerie sont secondaires : fallback plutôt qu'une page d'erreur.
+  const [articles, galleryPreview, imageOfTheDay, user] = await Promise.all([
     loaderFetch<Article[]>("/articles/homepage-preview"),
+    loaderFetchOptional<Image[]>("/images/homepage-preview", []),
     loaderFetchOptional<Image | null>("/images/image-of-the-day", null),
     loaderFetch<User>("/users/artist"),
   ]);
 
-  return { articles, imageOfTheDay, user };
+  return { articles, galleryPreview, imageOfTheDay, user };
 }

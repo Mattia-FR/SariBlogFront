@@ -167,7 +167,7 @@ Plusieurs routes utilisent un [loader React Router](https://reactrouter.com/en/m
 
 | Route              | Loader                    | Endpoints (relatifs à `VITE_API_URL`) |
 |--------------------|---------------------------|----------------------------------------|
-| `/`                | `homeLoader`              | `GET /articles/homepage-preview` ; `GET /images/image-of-the-day` (optionnel) ; `GET /users/artist` |
+| `/`                | `homeLoader`              | `GET /articles/homepage-preview` ; `GET /images/homepage-preview` (optionnel) ; `GET /images/image-of-the-day` (optionnel) ; `GET /users/artist` |
 | `/blog`            | `blogLoader`              | `GET /articles/published?page&tagId` ; `GET /tags/published-articles` (optionnel) |
 | `/blog/:slug`      | `articleLoader`           | `GET /articles/published/slug/:slug` ; puis optionnels `GET /images/article/:id`, `GET /tags/article/:id`, `GET /comments/article/:id` |
 | `/gallery`         | `galleryHubLoader`        | `GET /categories` |

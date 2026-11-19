@@ -1,5 +1,5 @@
 import { useState } from "react";
-import { useLoaderData } from "react-router-dom";
+import { Link, useLoaderData } from "react-router-dom";
 import type { Image } from "../../../types/image";
 import CommentForm from "../../molecules/CommentForm";
 import Modal from "../../molecules/Modal";
@@ -16,22 +16,35 @@ function ArticlePage() {
 
   return (
     <section className="article-detail">
-      <h1 className="article-detail-title">{article.title}</h1>
+      <header className="article-detail-header">
+        <div className="article-detail-heading">
+          <p className="article-detail-kicker">Le blog</p>
+          <h1 className="article-detail-title">{article.title}</h1>
+        </div>
+        <Link to="/blog" className="article-detail-back">
+          Retour aux articles →
+        </Link>
+      </header>
 
-      {article.published_at && (
-        <p className="article-detail-date">
-          {new Date(article.published_at).toLocaleDateString("fr-FR")}
-        </p>
-      )}
+      {(article.published_at ||
+        (article.tags && article.tags.length > 0)) && (
+        <div className="article-detail-meta">
+          {article.published_at && (
+            <p className="article-detail-date">
+              {new Date(article.published_at).toLocaleDateString("fr-FR")}
+            </p>
+          )}
 
-      {article.tags && article.tags.length > 0 && (
-        <ul className="article-detail-tags">
-          {article.tags.map((tag) => (
-            <li key={tag.id} className="article-detail-tag">
-              {tag.name}
-            </li>
-          ))}
-        </ul>
+          {article.tags && article.tags.length > 0 && (
+            <ul className="article-detail-tags">
+              {article.tags.map((tag) => (
+                <li key={tag.id} className="article-detail-tag">
+                  {tag.name}
+                </li>
+              ))}
+            </ul>
+          )}
+        </div>
       )}
 
       <div className="article-detail-images">
@@ -79,7 +92,11 @@ function ArticlePage() {
       <p className="article-detail-content">{article.content}</p>
 
       <section aria-label="Commentaires" className="article-detail-comments">
-        <h2 className="article-detail-comments-title">Commentaires</h2>
+        <h2 className="article-detail-comments-title">
+          {comments.length === 0
+            ? "Aucun commentaire pour le moment."
+            : `${comments.length} commentaire${comments.length > 1 ? "s" : ""}`}
+        </h2>
         <button
           className="article-detail-comments-btn"
           type="button"
@@ -96,11 +113,7 @@ function ArticlePage() {
             onSuccess={() => setIsCommentModalOpen(false)}
           />
         </Modal>
-        {comments.length === 0 ? (
-          <p className="article-detail-comments-no">
-            Aucun commentaire pour le moment.
-          </p>
-        ) : (
+        {comments.length > 0 && (
           <ul className="article-detail-comments-list">
             {comments.map((c) => (
               <CommentCard key={c.id} comment={c} />

@@ -10,12 +10,15 @@ function Footer() {
         <p>© 2026 Sari Eliott</p>
         <div className="footer-content-left-icons">
           <a href="https://www.instagram.com/sarieliott/" className="icon-link">
-            <img
-              src={instagramNormal}
-              alt="instagram"
-              className="icon-normal"
-            />
-            <img src={instagramHover} alt="instagram" className="icon-hover" />
+            <span className="icon-images" aria-hidden="true">
+              <img
+                src={instagramNormal}
+                alt=""
+                className="icon-normal"
+              />
+              <img src={instagramHover} alt="" className="icon-hover" />
+            </span>
+            <span className="icon-label">Instagram</span>
           </a>
         </div>
       </div>

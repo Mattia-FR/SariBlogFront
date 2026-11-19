@@ -26,6 +26,8 @@
   --fs-2xl: 3rem;
 
   --header-height: 148px;
+
+  --box-shadow: 0 10px 24px rgb(from var(--color-two) r g b / 0.2);
 }
 
 body {

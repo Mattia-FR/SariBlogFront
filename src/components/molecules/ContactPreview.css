@@ -55,13 +55,13 @@
     width: fit-content;
     background-color: var(--color-three);
     box-shadow: none;
-    transition: all 0.35s ease;
+    transition: background-color 0.35s ease, color 0.35s ease, box-shadow 0.35s ease;
   }
 
   .contact-cta-button:hover {
     background-color: var(--color-one);
     color: var(--color-five);
-    box-shadow: 0 10px 24px rgb(from var(--color-two) r g b / 0.2);
+    box-shadow: var(--box-shadow);
   }
 
   @media (max-width: 640px) {

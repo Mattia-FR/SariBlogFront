@@ -30,8 +30,23 @@ function CategoriesAdmin() {
     fetchCategories();
   }, [fetchCategories]);
 
-  if (loading) return <p>Chargement des catégories…</p>;
-  if (error) return <p>{error}</p>;
+  if (loading) {
+    return (
+      <section className="categories-admin">
+        <p className="categories-admin-status">Chargement des catégories…</p>
+      </section>
+    );
+  }
+
+  if (error) {
+    return (
+      <section className="categories-admin">
+        <p className="categories-admin-status categories-admin-status--error">
+          {error}
+        </p>
+      </section>
+    );
+  }
 
   async function handleSubmit(event: FormEvent<HTMLFormElement>) {
     event.preventDefault();
@@ -109,14 +124,17 @@ function CategoriesAdmin() {
   }
 
   return (
-    <section className="categories">
-      <h2 className="categories-title">Gestion des catégories</h2>
+    <section className="categories-admin">
+      <header className="categories-admin-header">
+        <p className="categories-admin-kicker">Administration</p>
+        <h2 className="categories-admin-title">Gestion des catégories</h2>
+      </header>
 
-      <section className="categories-form">
-        <h3>Nouvelle catégorie</h3>
+      <section className="categories-admin-form">
+        <h3 className="categories-admin-form-title">Nouvelle catégorie</h3>
         <form onSubmit={handleSubmit}>
-          <div className="categories-form-field">
-            <label htmlFor={`${id}-name`}>Nom :</label>
+          <div className="categories-admin-field">
+            <label htmlFor={`${id}-name`}>Nom</label>
             <input
               id={`${id}-name`}
               type="text"
@@ -125,10 +143,8 @@ function CategoriesAdmin() {
               required
             />
           </div>
-          <div className="categories-form-field">
-            <label htmlFor={`${id}-display_order`}>
-              Ordre d&apos;affichage :
-            </label>
+          <div className="categories-admin-field">
+            <label htmlFor={`${id}-display_order`}>Ordre d&apos;affichage</label>
             <input
               id={`${id}-display_order`}
               type="number"
@@ -138,24 +154,27 @@ function CategoriesAdmin() {
               placeholder="Dernière position par défaut"
             />
           </div>
-          <button type="submit" className="categories-form-button">
+          <button
+            type="submit"
+            className="categories-admin-btn categories-admin-btn--primary"
+          >
             Créer la catégorie
           </button>
         </form>
       </section>
 
-      <section className="categories-list">
+      <section className="categories-admin-list">
         <ul>
           {categories.map((category) => (
-            <li key={category.id}>
+            <li key={category.id} className="categories-admin-item">
               {editingId === category.id ? (
                 <form
                   onSubmit={(e) => handleUpdate(category.id, e)}
-                  className="category-edit-form"
+                  className="categories-admin-edit"
                 >
-                  <div className="categories-form-field">
+                  <div className="categories-admin-field">
                     <label htmlFor={`${id}-edit-${category.id}-name`}>
-                      Nom :
+                      Nom
                     </label>
                     <input
                       id={`${id}-edit-${category.id}-name`}
@@ -165,9 +184,9 @@ function CategoriesAdmin() {
                       required
                     />
                   </div>
-                  <div className="categories-form-field">
+                  <div className="categories-admin-field">
                     <label htmlFor={`${id}-edit-${category.id}-order`}>
-                      Ordre d&apos;affichage :
+                      Ordre d&apos;affichage
                     </label>
                     <input
                       id={`${id}-edit-${category.id}-order`}
@@ -178,10 +197,16 @@ function CategoriesAdmin() {
                       step={1}
                     />
                   </div>
-                  <div className="categories-list-buttons">
-                    <button type="submit">Enregistrer</button>
+                  <div className="categories-admin-item-actions">
+                    <button
+                      type="submit"
+                      className="categories-admin-btn categories-admin-btn--primary"
+                    >
+                      Enregistrer
+                    </button>
                     <button
                       type="button"
+                      className="categories-admin-btn"
                       onClick={() => setEditingId(null)}
                       aria-label="Annuler la modification"
                     >
@@ -190,13 +215,22 @@ function CategoriesAdmin() {
                   </div>
                 </form>
               ) : (
-                <div className="categories-list-list">
-                  <div>
-                    {category.name} — position {category.display_order}
+                <>
+                  <div className="categories-admin-item-meta">
+                    <span className="categories-admin-item-name">
+                      {category.name}
+                    </span>
+                    <span className="categories-admin-item-slug">
+                      {category.slug}
+                    </span>
+                    <span className="categories-admin-item-order">
+                      Position {category.display_order}
+                    </span>
                   </div>
-                  <div className="categories-list-buttons">
+                  <div className="categories-admin-item-actions">
                     <button
                       type="button"
+                      className="categories-admin-btn"
                       onClick={() => setEditingId(category.id)}
                       aria-label={`Modifier la catégorie ${category.name}`}
                     >
@@ -204,13 +238,14 @@ function CategoriesAdmin() {
                     </button>
                     <button
                       type="button"
+                      className="categories-admin-btn"
                       onClick={() => handleDelete(category.id)}
                       aria-label={`Supprimer la catégorie ${category.name}`}
                     >
                       Supprimer
                     </button>
                   </div>
-                </div>
+                </>
               )}
             </li>
           ))}

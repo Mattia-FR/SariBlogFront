@@ -7,6 +7,7 @@ import type { Tag } from "../../../../types/tags";
 import { api } from "../../../../utils/apiClient";
 import { notifyError } from "../../../../utils/notifyError";
 import TagCheckboxes from "../../../molecules/TagCheckboxes";
+import "./ArticleForm.css";
 import "./ArticleEdit.css";
 
 function ArticleEdit() {
@@ -99,23 +100,42 @@ function ArticleEdit() {
     }
   }
 
-  // Affichage pendant le chargement
-  if (loading) return <p>Chargement...</p>;
+  if (loading) {
+    return (
+      <section className="article-edit">
+        <p className="article-edit-status">Chargement…</p>
+      </section>
+    );
+  }
 
-  // Affichage si erreur
-  if (error) return <p>{error}</p>;
+  if (error) {
+    return (
+      <section className="article-edit">
+        <p className="article-edit-status">{error}</p>
+      </section>
+    );
+  }
 
-  // Affichage si pas d'article
-  if (!article) return <p>Article introuvable</p>;
+  if (!article) {
+    return (
+      <section className="article-edit">
+        <p className="article-edit-status">Article introuvable</p>
+      </section>
+    );
+  }
 
-  // MODE ÉDITION
   if (isEditing) {
     return (
       <section className="article-edit">
-        <h2 className="article-edit-title">Modifier l&apos;article</h2>
+        <header className="article-edit-header">
+          <div className="article-edit-heading">
+            <p className="article-edit-kicker">Administration</p>
+            <h2 className="article-edit-title">Modifier l&apos;article</h2>
+          </div>
+        </header>
         <form onSubmit={handleUpdate} className="article-edit-form">
           <div className="article-edit-field">
-            <label htmlFor={`${formId}-title`}>Titre :</label>
+            <label htmlFor={`${formId}-title`}>Titre</label>
             <input
               id={`${formId}-title`}
               type="text"
@@ -125,7 +145,7 @@ function ArticleEdit() {
             />
           </div>
           <div className="article-edit-field">
-            <label htmlFor={`${formId}-content`}>Contenu :</label>
+            <label htmlFor={`${formId}-content`}>Contenu</label>
             <textarea
               id={`${formId}-content`}
               name="content"
@@ -161,14 +181,12 @@ function ArticleEdit() {
               ))}
             </select>
           </div>
-          <div>
-            <TagCheckboxes
-              tags={tags}
-              selectedIds={selectedTagIds}
-              onChange={setSelectedTagIds}
-              idPrefix={`${formId}-article-tag`}
-            />
-          </div>
+          <TagCheckboxes
+            tags={tags}
+            selectedIds={selectedTagIds}
+            onChange={setSelectedTagIds}
+            idPrefix={`${formId}-article-tag`}
+          />
           <div className="article-edit-buttons">
             <button type="submit">Enregistrer</button>
             <button type="button" onClick={() => setIsEditing(false)}>
@@ -180,20 +198,29 @@ function ArticleEdit() {
     );
   }
 
-  // MODE AFFICHAGE
   return (
     <section className="article-edit">
       <article className="article-edit-detail">
-        <h2 className="article-edit-title">{article.title}</h2>
+        <header className="article-edit-header">
+          <div className="article-edit-detail-heading">
+            <p className="article-edit-kicker">Administration</p>
+            <h2 className="article-edit-title">{article.title}</h2>
+          </div>
+        </header>
 
-        {articleImages.map((image) => (
-          <img
-            key={image.id}
-            src={image.imageUrl}
-            alt={image.alt_descr || image.title || article.title}
-            className="article-edit-detail-image"
-          />
-        ))}
+        {articleImages.length > 0 ? (
+          <ul className="article-edit-detail-images">
+            {articleImages.map((image) => (
+              <li key={image.id}>
+                <img
+                  src={image.imageUrl}
+                  alt={image.alt_descr || image.title || article.title}
+                  className="article-edit-detail-image"
+                />
+              </li>
+            ))}
+          </ul>
+        ) : null}
 
         <p className="article-edit-detail-content">{article.content}</p>
       </article>

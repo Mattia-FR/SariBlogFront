@@ -1,60 +1,185 @@
 .gallery-admin {
   display: flex;
   flex-direction: column;
-  width: clamp(320px, 95vw, 800px);
+  width: clamp(320px, 95vw, 1000px);
   gap: 1.5rem;
-  padding: 2rem 0;
+  padding: 2.5rem 0;
 
-  h2 {
-    color: var(--color-five);
-    font-size: var(--fs-md);
+  @media (min-width: 720px) {
+    gap: 2rem;
   }
+}
 
-  .gallery-admin-new {
-    border: 1px solid var(--color-five);
-    background-color: var(--color-five);
-    padding: 1rem 2rem;
-    color: var(--color-one);
+.gallery-admin-header {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 1rem;
+
+  @media (min-width: 720px) {
+    flex-direction: row;
+    align-items: flex-end;
+    justify-content: space-between;
+    gap: 1.5rem;
+  }
+}
+
+.gallery-admin-heading {
+  display: flex;
+  flex-direction: column;
+  gap: 0.4rem;
+}
+
+.gallery-admin-kicker {
+  font-family: var(--font-one);
+  letter-spacing: 0.4em;
+  font-size: var(--fs-xs);
+  font-weight: 700;
+  color: var(--color-three);
+}
+
+.gallery-admin-title {
+  margin: 0;
+  font-family: var(--font-one);
+  color: var(--color-five);
+  font-size: clamp(1.8rem, 2vw + 1rem, 2.5rem);
+  line-height: 1.2;
+}
+
+.gallery-admin-new {
+  border: 1px solid var(--color-five);
+  background-color: var(--color-five);
+  padding: 1rem 2rem;
+  color: var(--color-one);
+  font-family: var(--font-one);
+  font-size: var(--fs-sm);
+  text-decoration: none;
+  width: fit-content;
+  transition:
+    background-color 0.35s ease,
+    color 0.35s ease,
+    box-shadow 0.35s ease,
+    border-color 0.35s ease;
+}
+
+.gallery-admin-new:hover,
+.gallery-admin-new:focus-visible {
+  background-color: var(--color-two);
+  border-color: var(--color-two);
+  color: var(--color-one);
+  box-shadow: var(--box-shadow);
+  outline: none;
+}
+
+.gallery-admin-status {
+  margin: 0;
+  font-family: var(--font-two);
+  font-size: var(--fs-sm);
+  color: var(--color-two);
+  line-height: 1.5;
+}
+
+.gallery-admin-status--error {
+  color: var(--color-three);
+}
+
+.gallery-admin-empty {
+  margin: 0;
+  font-family: var(--font-two);
+  font-size: var(--fs-sm);
+  color: var(--color-two);
+}
+
+.gallery-admin-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(160px, 1fr));
+  gap: 1rem;
+
+  a.image-card,
+  button.image-card {
+    border: none;
+    background-color: transparent;
+    height: fit-content;
+    padding: 0;
     text-decoration: none;
-    width: fit-content;
+    color: inherit;
+    display: block;
+    cursor: pointer;
   }
 
-  .gallery-admin-grid {
+  .images-card {
+    position: relative;
     display: flex;
-    flex-wrap: wrap;
+    flex-direction: column;
+    width: 100%;
+    overflow: hidden;
+    border: 1px solid var(--color-five);
+    transition:
+      transform 0.35s ease,
+      box-shadow 0.35s ease;
+  }
+
+  .image-card-img {
+    width: 100%;
+    aspect-ratio: 1;
+    object-fit: cover;
+    display: block;
+    transition: filter 0.3s ease;
+  }
+
+  .image-card-tags-container {
+    position: absolute;
+    inset: 0;
+    display: flex;
+    align-items: center;
     justify-content: center;
+    padding: 1rem;
+    opacity: 0;
+    background: rgba(0, 0, 0, 0);
+    transition:
+      opacity 0.3s ease,
+      background-color 0.3s ease;
+    pointer-events: none;
+  }
+
+  .image-card-tags {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
     gap: 0.5rem;
+    list-style: none;
+    margin: 0;
+    padding: 0;
+  }
 
-    a.image-card,
-    button.image-card {
-      border: none;
-      background-color: var(--color-one);
-      height: fit-content;
-      text-decoration: none;
-      color: inherit;
-      display: block;
-      cursor: pointer;
-    }
+  .image-card-tag {
+    width: fit-content;
+    border: 1px solid var(--color-four);
+    padding: 0.4rem 0.6rem;
+    font-family: var(--font-one);
+    font-size: var(--fs-xs);
+    color: var(--color-two);
+    background: var(--color-one);
+  }
 
-    .images-card {
-      border: 0.1rem solid var(--color-five);
+  .image-card:hover .images-card,
+  .image-card:focus-visible .images-card {
+    transform: scale(1.03);
+    box-shadow: var(--box-shadow);
+  }
 
-      .image-card-img {
-        width: 10rem;
-        height: 10rem;
-        object-fit: cover;
-        display: block;
-      }
-    }
+  .image-card:hover .image-card-img,
+  .image-card:focus-visible .image-card-img {
+    filter: brightness(0.85);
+  }
 
-    .image-card-tags-container {
-      font-size: var(--fs-xs);
-      padding: 0.5rem;
-      color: var(--color-three);
+  .image-card:hover .image-card-tags-container,
+  .image-card:focus-visible .image-card-tags-container {
+    opacity: 1;
+    background: rgba(0, 0, 0, 0.3);
+  }
 
-      ul {
-        list-style: none;
-      }
-    }
+  .image-card:focus-visible {
+    outline: none;
   }
 }

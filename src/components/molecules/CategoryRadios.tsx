@@ -1,4 +1,5 @@
 import type { Category } from "../../types/categories";
+import "./CategoryRadios.css";
 
 interface CategoryRadiosProps {
   categories: Category[];

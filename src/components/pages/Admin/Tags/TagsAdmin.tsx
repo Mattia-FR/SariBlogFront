@@ -27,8 +27,21 @@ function TagsAdmin() {
     fetchTags();
   }, [fetchTags]);
 
-  if (loading) return <p>Chargement des tags…</p>;
-  if (error) return <p>{error}</p>;
+  if (loading) {
+    return (
+      <section className="tags">
+        <p className="tags-status">Chargement des tags…</p>
+      </section>
+    );
+  }
+
+  if (error) {
+    return (
+      <section className="tags">
+        <p className="tags-status tags-status--error">{error}</p>
+      </section>
+    );
+  }
 
   async function handleSubmit(event: FormEvent<HTMLFormElement>) {
     event.preventDefault();
@@ -93,7 +106,7 @@ function TagsAdmin() {
         <h3>Nouveau tag</h3>
         <form onSubmit={handleSubmit}>
           <div className="tags-form-field">
-            <label htmlFor={`${id}-name`}>Nom :</label>
+            <label htmlFor={`${id}-name`}>Nom</label>
             <input
               id={`${id}-name`}
               type="text"
@@ -102,7 +115,7 @@ function TagsAdmin() {
               required
             />
           </div>
-          <button type="submit" className="tags-form-button">
+          <button type="submit" className="tags-btn tags-btn--primary">
             Créer le tag
           </button>
         </form>
@@ -118,7 +131,7 @@ function TagsAdmin() {
                   className="tag-edit-form"
                 >
                   <div className="tags-form-field">
-                    <label htmlFor={`${id}-edit-${tag.id}-name`}>Nom :</label>
+                    <label htmlFor={`${id}-edit-${tag.id}-name`}>Nom</label>
                     <input
                       id={`${id}-edit-${tag.id}-name`}
                       type="text"
@@ -128,9 +141,12 @@ function TagsAdmin() {
                     />
                   </div>
                   <div className="tags-list-buttons">
-                    <button type="submit">Enregistrer</button>
+                    <button type="submit" className="tags-btn tags-btn--primary">
+                      Enregistrer
+                    </button>
                     <button
                       type="button"
+                      className="tags-btn tags-btn--ghost"
                       onClick={() => setEditingId(null)}
                       aria-label="Annuler la modification"
                     >
@@ -139,13 +155,15 @@ function TagsAdmin() {
                   </div>
                 </form>
               ) : (
-                <div className="tags-list-list">
-                  <span>
-                    {tag.name} ({tag.slug})
-                  </span>
+                <div className="tags-list-item">
+                  <div className="tags-list-meta">
+                    <span className="tags-list-name">{tag.name}</span>
+                    <span className="tags-list-slug">{tag.slug}</span>
+                  </div>
                   <div className="tags-list-buttons">
                     <button
                       type="button"
+                      className="tags-btn tags-btn--ghost"
                       onClick={() => setEditingId(tag.id)}
                       aria-label={`Modifier le tag ${tag.name}`}
                     >
@@ -153,6 +171,7 @@ function TagsAdmin() {
                     </button>
                     <button
                       type="button"
+                      className="tags-btn tags-btn--danger"
                       onClick={() => handleDelete(tag.id)}
                       aria-label={`Supprimer le tag ${tag.name}`}
                     >

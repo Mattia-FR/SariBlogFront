@@ -1,31 +1,98 @@
 .gallery-hub-page {
-  width: clamp(320px, 95vw, 1000px);
-  flex: 1;
-  padding: 2rem 0;
   display: flex;
   flex-direction: column;
-  justify-content: center;
-  align-items: center;
+  align-items: stretch;
+  width: clamp(320px, 95vw, 1000px);
+  gap: 1.5rem;
+  padding: 5rem 0;
 
-  .gallery-hub-categories {
+  @media (min-width: 720px) {
+    gap: 2.5rem;
+  }
+
+  .gallery-hub-header {
     display: flex;
     flex-direction: column;
-    gap: 2rem;
-    justify-content: center;
+    align-items: flex-start;
+    gap: 1rem;
+  }
 
-    .gallery-hub-categorie-title {
-      border: 1px solid var(--color-five);
-      padding: 1rem 2rem;
-      color: var(--color-five);
-      text-decoration: none;
-      font-size: var(--fs-md);
-      box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
-      font-family: var(--font-one);
+  .gallery-hub-heading {
+    display: flex;
+    flex-direction: column;
+    gap: 0.4rem;
+  }
+
+  .gallery-hub-kicker {
+    font-family: var(--font-one);
+    letter-spacing: 0.4em;
+    font-size: var(--fs-xs);
+    font-weight: 700;
+    color: var(--color-three);
+  }
+
+  .gallery-hub-title {
+    font-family: var(--font-one);
+    color: var(--color-five);
+    font-size: clamp(1.8rem, 2vw + 1rem, 3rem);
+  }
+
+  .gallery-hub-categories {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 1rem;
+
+    @media (min-width: 720px) {
+      grid-template-columns: repeat(2, 1fr);
+      gap: 1.5rem;
     }
+  }
 
-    .gallery-hub-categorie-title:hover {
-      background-color: var(--color-five);
+  .gallery-hub-card {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    align-items: flex-start;
+    gap: 1.5rem;
+    min-height: 9rem;
+    width: 100%;
+    border: 1px solid var(--color-five);
+    padding: 1.5rem 2rem;
+    text-decoration: none;
+    transition:
+      background-color 0.35s ease,
+      box-shadow 0.35s ease;
+  }
+
+  .gallery-hub-card-name {
+    font-family: var(--font-two);
+    font-size: var(--fs-lg);
+    color: var(--color-two);
+    transition: color 0.35s ease;
+  }
+
+  .gallery-hub-card-cta {
+    font-family: var(--font-one);
+    font-size: var(--fs-sm);
+    color: var(--color-three);
+    transition: color 0.35s ease;
+  }
+
+  .gallery-hub-card:hover,
+  .gallery-hub-card:focus-visible {
+    background-color: var(--color-five);
+    box-shadow: var(--box-shadow);
+    outline: none;
+
+    .gallery-hub-card-name,
+    .gallery-hub-card-cta {
       color: var(--color-one);
     }
+  }
+
+  .gallery-hub-empty {
+    font-family: var(--font-two);
+    color: var(--color-two);
+    font-size: var(--fs-sm);
   }
 }

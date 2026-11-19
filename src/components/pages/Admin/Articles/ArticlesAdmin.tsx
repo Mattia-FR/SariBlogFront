@@ -1,4 +1,3 @@
-import type { ChangeEvent } from "react";
 import { useCallback, useEffect, useState } from "react";
 import { Link, useSearchParams } from "react-router-dom";
 import type { Article } from "../../../../types/article";
@@ -71,24 +70,41 @@ function ArticlesAdmin() {
 
   const selectedTagId: number | "" = tagId === null ? "" : tagId;
 
-  function handleTagChange(e: ChangeEvent<HTMLSelectElement>) {
+  function handleTagChange(nextTagId: number | "") {
     const next = new URLSearchParams(searchParams);
-    const v = e.target.value;
-    if (v === "") {
+    if (nextTagId === "") {
       next.delete("tagId");
     } else {
-      next.set("tagId", v);
+      next.set("tagId", String(nextTagId));
     }
     next.set("page", "1");
     setSearchParams(next);
   }
 
-  if (loading) return <p>Chargement des articles…</p>;
-  if (error) return <p>{error}</p>;
+  if (loading) {
+    return (
+      <section className="articles-admin">
+        <p className="articles-admin-status">Chargement des articles…</p>
+      </section>
+    );
+  }
+
+  if (error) {
+    return (
+      <section className="articles-admin">
+        <p className="articles-admin-status">{error}</p>
+      </section>
+    );
+  }
 
   return (
     <section className="articles-admin">
-      <h2 className="articles-admin-title">Tous les articles</h2>
+      <header className="articles-admin-header">
+        <div className="articles-admin-heading">
+          <p className="articles-admin-kicker">Administration</p>
+          <h2 className="articles-admin-title">Tous les articles</h2>
+        </div>
+      </header>
       <TagFilter
         tags={tags}
         selectedTagId={selectedTagId}
@@ -99,7 +115,7 @@ function ArticlesAdmin() {
       </Link>
       <section className="articles-admin-grid">
         {articles.length === 0 ? (
-          <p>Aucun article.</p>
+          <p className="articles-admin-empty">Aucun article.</p>
         ) : (
           articles.map((article) => (
             <ArticleCard

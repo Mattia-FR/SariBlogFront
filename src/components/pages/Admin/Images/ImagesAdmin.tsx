@@ -1,4 +1,3 @@
-import type { ChangeEvent } from "react";
 import { useCallback, useEffect, useState } from "react";
 import { Link, useSearchParams } from "react-router-dom";
 import type { Image } from "../../../../types/image";
@@ -65,34 +64,52 @@ function ImagesAdmin() {
 
   const selectedTagId: number | "" = tagId === null ? "" : tagId;
 
-  function handleTagChange(e: ChangeEvent<HTMLSelectElement>) {
+  function handleTagChange(nextTagId: number | "") {
     const next = new URLSearchParams(searchParams);
-    const v = e.target.value;
-    if (v === "") {
+    if (nextTagId === "") {
       next.delete("tagId");
     } else {
-      next.set("tagId", v);
+      next.set("tagId", String(nextTagId));
     }
     next.set("page", "1");
     setSearchParams(next);
   }
 
-  if (loading) return <p>Chargement…</p>;
-  if (error) return <p>{error}</p>;
+  if (loading) {
+    return (
+      <section className="gallery-admin">
+        <p className="gallery-admin-status">Chargement…</p>
+      </section>
+    );
+  }
+  if (error) {
+    return (
+      <section className="gallery-admin">
+        <p className="gallery-admin-status gallery-admin-status--error">
+          {error}
+        </p>
+      </section>
+    );
+  }
 
   return (
     <section className="gallery-admin">
-      <h2>Gestion des images</h2>
-      <Link to="/admin/images/new" className="gallery-admin-new">
-        Ajouter une image
-      </Link>
+      <header className="gallery-admin-header">
+        <div className="gallery-admin-heading">
+          <p className="gallery-admin-kicker">Galerie</p>
+          <h2 className="gallery-admin-title">Gestion des images</h2>
+        </div>
+        <Link to="/admin/images/new" className="gallery-admin-new">
+          Ajouter une image
+        </Link>
+      </header>
       <TagFilter
         tags={tags}
         selectedTagId={selectedTagId}
         onTagChange={handleTagChange}
       />
       {images.length === 0 ? (
-        <p>Aucune image</p>
+        <p className="gallery-admin-empty">Aucune image</p>
       ) : (
         <section className="gallery-admin-grid">
           {images.map((image) => (

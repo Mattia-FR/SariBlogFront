@@ -1,33 +1,99 @@
 .article-detail {
   display: flex;
   flex-direction: column;
-  gap: 1rem;
-  padding: 3rem 0;
+  align-items: stretch;
+  width: clamp(320px, 95vw, 1000px);
+  gap: 1.5rem;
+  padding: 5rem 0;
+
+  @media (min-width: 720px) {
+    gap: 2.5rem;
+  }
+
+  .article-detail-header {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 1.5rem;
+  }
+
+  .article-detail-heading {
+    display: flex;
+    flex-direction: column;
+    gap: 0.4rem;
+  }
+
+  .article-detail-kicker {
+    font-family: var(--font-one);
+    letter-spacing: 0.4em;
+    font-size: var(--fs-xs);
+    font-weight: 700;
+    color: var(--color-three);
+  }
 
   .article-detail-title {
+    font-family: var(--font-one);
     color: var(--color-five);
-    font-family: var(--font-two);
-    font-size: clamp(2rem, 2vw + 1rem, 3.5rem);
+    font-size: clamp(1.8rem, 2vw + 1rem, 3rem);
+  }
+
+  .article-detail-back {
+    color: var(--color-five);
+    font-family: var(--font-one);
+    border: 1px solid var(--color-five);
+    padding: 1rem 2rem;
+    width: fit-content;
+    text-decoration: none;
+    transition:
+      background-color 0.35s ease,
+      color 0.35s ease,
+      box-shadow 0.35s ease;
+  }
+
+  .article-detail-back:hover,
+  .article-detail-back:focus-visible {
+    background-color: var(--color-five);
+    color: var(--color-one);
+    box-shadow: var(--box-shadow);
+    outline: none;
+  }
+
+  .article-detail-meta {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: 0.5rem 0.75rem;
+    color: var(--color-three);
+    font-size: var(--fs-xs);
   }
 
   .article-detail-date {
-    color: var(--color-four);
+    color: var(--color-three);
     font-size: var(--fs-xs);
   }
 
   .article-detail-tags {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 0.5rem;
-    color: var(--color-four);
+    display: contents;
+    color: var(--color-three);
     list-style: none;
+    margin: 0;
+    padding: 0;
 
     .article-detail-tag {
-      border: 1px solid var(--color-four);
-      padding: 0.5rem;
-      width: fit-content;
+      font-family: var(--font-one);
       font-size: var(--fs-xs);
+      color: var(--color-five);
     }
+
+    .article-detail-tag::before {
+      content: "·";
+      margin-right: 0.75rem;
+    }
+  }
+
+  .article-detail-meta > .article-detail-tags:first-child .article-detail-tag:first-child::before {
+    content: none;
+    margin-right: 0;
   }
 
   .article-detail-images {
@@ -42,42 +108,34 @@
       background: transparent;
       padding: 0;
       cursor: pointer;
+      overflow: hidden;
+      transition: box-shadow 0.35s ease;
 
       img {
         width: clamp(20rem, 90vw, 25rem);
         object-fit: contain;
         display: block;
+        transition: transform 0.35s ease;
+      }
+
+      &:hover,
+      &:focus-visible {
+        box-shadow: var(--box-shadow);
+        outline: none;
+
+        img {
+          transform: scale(1.08);
+        }
       }
     }
   }
 
-  .image-detail-modal {
-    display: flex;
-    flex-direction: column;
-    gap: 1rem;
-    max-height: 95vh;
-
-    img {
-      max-width: 85vw;
-      max-height: 80vh;
-      object-fit: contain;
-    }
-
-    .image-detail-modal-title {
-      color: var(--color-three);
-      font-family: var(--font-two);
-      font-size: var(--fs-sm);
-    }
-
-    .image-detail-modal-description {
-      color: var(--color-three);
-      font-family: var(--font-two);
-      font-size: var(--fs-xs);
-      font-style: italic;
-    }
-  }
-
   .article-detail-content {
+    color: var(--color-two);
+    font-family: var(--font-two);
+    font-size: var(--fs-sm);
+    line-height: 1.7;
+    max-width: 65ch;
     padding-bottom: 2rem;
   }
 
@@ -104,22 +162,32 @@
     }
 
     .article-detail-comments-title {
-      color: var(--color-three);
+      font-family: var(--font-one);
+      color: var(--color-five);
       font-size: var(--fs-md);
     }
 
     .article-detail-comments-btn {
-      background-color: var(--color-four);
-      border: 1px solid var(--color-four);
-      padding: 1rem;
-      color: var(--color-one);
-      font-family: var(--font-two);
+      background-color: transparent;
+      border: 1px solid var(--color-five);
+      padding: 1rem 2rem;
+      color: var(--color-five);
+      font-family: var(--font-one);
+      font-size: var(--fs-sm);
       width: fit-content;
+      cursor: pointer;
+      transition:
+        background-color 0.35s ease,
+        color 0.35s ease,
+        box-shadow 0.35s ease;
     }
 
-    .article-detail-comments-no {
-      font-size: var(--fs-xs);
-      font-style: italic;
+    .article-detail-comments-btn:hover,
+    .article-detail-comments-btn:focus-visible {
+      background-color: var(--color-five);
+      color: var(--color-one);
+      box-shadow: var(--box-shadow);
+      outline: none;
     }
 
     .article-detail-comments-list {
@@ -136,14 +204,30 @@
       .comment-card-meta {
         color: var(--color-three);
 
+        ul {
+          display: flex;
+          flex-wrap: wrap;
+          align-items: baseline;
+          gap: 0.5rem 0.75rem;
+          list-style: none;
+          margin: 0;
+          padding: 0;
+        }
+
+        .comment-card-meta-author {
+          font-family: var(--font-one);
+          color: var(--color-five);
+        }
+
         .comment-card-meta-date {
           font-style: italic;
           font-size: var(--fs-xs);
         }
-      }
 
-      ul {
-        list-style: none;
+        .comment-card-meta-date::before {
+          content: "·";
+          margin-right: 0.75rem;
+        }
       }
 
       .comment-card-date {
@@ -152,8 +236,35 @@
       }
 
       .comment-card-text {
-        font-size: var(--fs-xs);
+        font-size: var(--fs-sm);
+        font-style: italic;
+        color: var(--color-two);
       }
     }
+  }
+}
+
+.image-detail-modal {
+  display: flex;
+  flex-direction: column;
+  gap: 1rem;
+  max-height: 95vh;
+
+  img {
+    max-width: 85vw;
+    max-height: 80vh;
+    object-fit: contain;
+  }
+
+  .image-detail-modal-title {
+    color: var(--color-five);
+    font-family: var(--font-one);
+    font-size: var(--fs-md);
+  }
+
+  .image-detail-modal-description {
+    color: var(--color-two);
+    font-family: var(--font-two);
+    font-size: var(--fs-sm);
   }
 }

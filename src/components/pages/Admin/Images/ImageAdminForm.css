@@ -1,0 +1,181 @@
+.image-admin {
+  display: flex;
+  flex-direction: column;
+  width: clamp(320px, 95vw, 800px);
+  gap: 1.5rem;
+  padding: 2.5rem 0;
+}
+
+.image-admin-header {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 0.4rem;
+}
+
+.image-admin-kicker {
+  font-family: var(--font-one);
+  letter-spacing: 0.4em;
+  font-size: var(--fs-xs);
+  font-weight: 700;
+  color: var(--color-three);
+}
+
+.image-admin-title {
+  margin: 0;
+  font-family: var(--font-one);
+  color: var(--color-five);
+  font-size: clamp(1.8rem, 2vw + 1rem, 2.5rem);
+  line-height: 1.2;
+}
+
+.image-admin-preview,
+.image-admin-current {
+  width: min(20rem, 100%);
+  margin: 0 auto;
+  display: block;
+  border: 1px solid var(--color-five);
+}
+
+.image-admin-form {
+  display: flex;
+  flex-direction: column;
+  gap: 1.25rem;
+  width: 100%;
+}
+
+.image-admin-field {
+  display: flex;
+  flex-direction: column;
+  gap: 0.4rem;
+}
+
+.image-admin-field label {
+  font-family: var(--font-one);
+  color: var(--color-three);
+  font-size: var(--fs-xs);
+  font-weight: 700;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+}
+
+.image-admin-field input[type="text"],
+.image-admin-field input[type="file"],
+.image-admin-field textarea {
+  font-family: var(--font-two);
+  border: 1px solid var(--color-four);
+  padding: 0.75rem 1rem;
+  width: 100%;
+  box-sizing: border-box;
+  color: var(--color-two);
+  background-color: color-mix(in srgb, var(--color-two) 4%, var(--color-one));
+  font-size: var(--fs-sm);
+}
+
+.image-admin-field textarea {
+  min-height: 8rem;
+  resize: vertical;
+}
+
+.image-admin-field input:focus-visible,
+.image-admin-field textarea:focus-visible {
+  border-color: var(--color-three);
+  outline: 2px solid var(--color-three);
+  outline-offset: 2px;
+}
+
+.image-admin-field input:disabled,
+.image-admin-field textarea:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
+.image-admin-gallery {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.65rem;
+  width: fit-content;
+  font-family: var(--font-one);
+  font-size: var(--fs-sm);
+  color: var(--color-five);
+  cursor: pointer;
+}
+
+.image-admin-gallery input {
+  accent-color: var(--color-five);
+  width: 1rem;
+  height: 1rem;
+  margin: 0;
+  cursor: pointer;
+}
+
+.image-admin-buttons {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 1rem;
+  margin-top: 0.5rem;
+}
+
+.image-admin-buttons button {
+  color: var(--color-five);
+  font-family: var(--font-one);
+  font-size: var(--fs-sm);
+  border: 1px solid var(--color-five);
+  padding: 1rem 2rem;
+  width: fit-content;
+  background-color: transparent;
+  cursor: pointer;
+  transition:
+    background-color 0.35s ease,
+    color 0.35s ease,
+    box-shadow 0.35s ease,
+    border-color 0.35s ease;
+}
+
+.image-admin-buttons button:hover,
+.image-admin-buttons button:focus-visible {
+  background-color: var(--color-five);
+  color: var(--color-one);
+  box-shadow: var(--box-shadow);
+  outline: none;
+}
+
+.image-admin-buttons button:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+  box-shadow: none;
+}
+
+.image-admin-buttons button:disabled:hover,
+.image-admin-buttons button:disabled:focus-visible {
+  background-color: transparent;
+  color: var(--color-five);
+  box-shadow: none;
+}
+
+.image-admin-buttons .image-admin-delete {
+  background-color: var(--color-three);
+  border-color: var(--color-three);
+  color: var(--color-one);
+}
+
+.image-admin-buttons .image-admin-delete:hover,
+.image-admin-buttons .image-admin-delete:focus-visible {
+  background-color: var(--color-two);
+  border-color: var(--color-two);
+  color: var(--color-one);
+  box-shadow: var(--box-shadow);
+  outline: none;
+}
+
+.image-admin-status {
+  margin: 0;
+  font-family: var(--font-two);
+  font-size: var(--fs-sm);
+  color: var(--color-two);
+  line-height: 1.5;
+}
+
+.image-admin-status--error {
+  color: var(--color-three);
+}

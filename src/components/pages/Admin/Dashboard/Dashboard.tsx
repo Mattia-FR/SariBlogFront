@@ -24,6 +24,16 @@ interface DashboardStats {
   };
 }
 
+const quickActions = [
+  { to: "/admin/profile", label: "Profil" },
+  { to: "/admin/articles", label: "Articles" },
+  { to: "/admin/messages", label: "Messages" },
+  { to: "/admin/images", label: "Galerie" },
+  { to: "/admin/comments", label: "Commentaires" },
+  { to: "/admin/tags", label: "Tags" },
+  { to: "/admin/categories", label: "Catégories" },
+] as const;
+
 function Dashboard() {
   const [stats, setStats] = useState<DashboardStats | null>(null);
   const [isLoading, setIsLoading] = useState(true);
@@ -47,60 +57,93 @@ function Dashboard() {
 
   if (isLoading) {
     return (
-      <section>
-        <p>Chargement des statistiques...</p>
+      <section className="dashboard">
+        <header className="dashboard-header">
+          <div className="dashboard-heading">
+            <p className="dashboard-kicker">Administration</p>
+            <h1 className="dashboard-title">Tableau de bord</h1>
+          </div>
+        </header>
+        <p className="dashboard-loading">Chargement des statistiques…</p>
       </section>
     );
   }
 
   if (error) {
     return (
-      <section className="dashboard-error">
-        <p>{error}</p>
+      <section className="dashboard">
+        <header className="dashboard-header">
+          <div className="dashboard-heading">
+            <p className="dashboard-kicker">Administration</p>
+            <h1 className="dashboard-title">Tableau de bord</h1>
+          </div>
+        </header>
+        <p className="dashboard-error" role="alert">
+          {error}
+        </p>
       </section>
     );
   }
 
   return (
     <section className="dashboard">
+      <header className="dashboard-header">
+        <div className="dashboard-heading">
+          <p className="dashboard-kicker">Administration</p>
+          <h1 className="dashboard-title">Tableau de bord</h1>
+        </div>
+      </header>
+
       <section className="dashboard-actions">
-        <h2>Actions rapides</h2>
+        <h2 className="dashboard-section-title">Actions rapides</h2>
         <div className="dashboard-nav">
-          <Link to="/admin/profile">Gérer le profil</Link>
-          <Link to="/admin/articles">Gérer les articles</Link>
-          <Link to="/admin/messages">Gérer les messages</Link>
-          <Link to="/admin/images">Gérer la galerie</Link>
-          <Link to="/admin/comments">Gérer les commentaires</Link>
-          <Link to="/admin/tags">Gérer les tags</Link>
-          <Link to="/admin/categories">Gérer les catégories</Link>
+          {quickActions.map(({ to, label }) => (
+            <Link key={to} to={to} className="dashboard-nav-card">
+              <span className="dashboard-nav-card-name">{label}</span>
+              <span className="dashboard-nav-card-cta">Ouvrir →</span>
+            </Link>
+          ))}
         </div>
       </section>
 
       {stats && (
         <section className="dashboard-stats">
-          <div className="stat-card">
-            <h2>Articles</h2>
-            <p>Total : {stats.articles.total}</p>
-            <p>Publiés : {stats.articles.published}</p>
-            <p>Brouillons : {stats.articles.drafts}</p>
-          </div>
+          <h2 className="dashboard-section-title">Statistiques</h2>
+          <div className="dashboard-stats-grid">
+            <div className="stat-card">
+              <h3 className="stat-card-title">Articles</h3>
+              <p className="stat-card-row">Total : {stats.articles.total}</p>
+              <p className="stat-card-row">
+                Publiés : {stats.articles.published}
+              </p>
+              <p className="stat-card-row">
+                Brouillons : {stats.articles.drafts}
+              </p>
+            </div>
 
-          <div className="stat-card">
-            <h2>Images</h2>
-            <p>Total : {stats.images.total}</p>
-            <p>En galerie : {stats.images.inGallery}</p>
-          </div>
+            <div className="stat-card">
+              <h3 className="stat-card-title">Images</h3>
+              <p className="stat-card-row">Total : {stats.images.total}</p>
+              <p className="stat-card-row">
+                En galerie : {stats.images.inGallery}
+              </p>
+            </div>
 
-          <div className="stat-card">
-            <h2>Tags</h2>
-            <p>Total : {stats.tags.total}</p>
-          </div>
+            <div className="stat-card">
+              <h3 className="stat-card-title">Tags</h3>
+              <p className="stat-card-row">Total : {stats.tags.total}</p>
+            </div>
 
-          <div className="stat-card">
-            <h2>Messages</h2>
-            <p className="highlight">Non lus : {stats.messages.unread}</p>
-            <p>Lus : {stats.messages.read}</p>
-            <p>Archivés : {stats.messages.archived}</p>
+            <div className="stat-card">
+              <h3 className="stat-card-title">Messages</h3>
+              <p className="stat-card-row stat-card-highlight">
+                Non lus : {stats.messages.unread}
+              </p>
+              <p className="stat-card-row">Lus : {stats.messages.read}</p>
+              <p className="stat-card-row">
+                Archivés : {stats.messages.archived}
+              </p>
+            </div>
           </div>
         </section>
       )}

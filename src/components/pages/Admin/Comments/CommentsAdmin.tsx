@@ -121,8 +121,21 @@ function CommentsAdmin() {
     setSearchParams(next);
   }
 
-  if (loading) return <p>Chargement des commentaires…</p>;
-  if (error) return <p>{error}</p>;
+  if (loading) {
+    return (
+      <section className="comments-admin">
+        <p className="comments-admin-loading">Chargement des commentaires…</p>
+      </section>
+    );
+  }
+
+  if (error) {
+    return (
+      <section className="comments-admin">
+        <p className="comments-admin-error">{error}</p>
+      </section>
+    );
+  }
 
   const c = counts ?? {
     total: 0,
@@ -138,7 +151,10 @@ function CommentsAdmin() {
 
       <div className="comments-admin-filters">
         <button
-          className={statusFilter === null ? "active" : ""}
+          className={
+            statusFilter === null ? "comments-admin-filter--active" : ""
+          }
+          aria-pressed={statusFilter === null}
           onClick={() => setStatusTab(null)}
           type="button"
         >
@@ -147,7 +163,10 @@ function CommentsAdmin() {
         {STATUSES.map((status) => (
           <button
             key={status}
-            className={statusFilter === status ? "active" : ""}
+            className={
+              statusFilter === status ? "comments-admin-filter--active" : ""
+            }
+            aria-pressed={statusFilter === status}
             onClick={() => setStatusTab(status)}
             type="button"
           >
@@ -166,7 +185,7 @@ function CommentsAdmin() {
       )}
 
       {comments.length === 0 ? (
-        <p>Aucun commentaire</p>
+        <p className="comments-admin-empty">Aucun commentaire</p>
       ) : (
         <section className="comments-admin-grid">
           {comments.map((comment) => (
@@ -177,6 +196,7 @@ function CommentsAdmin() {
                 {comment.status !== "pending" && (
                   <button
                     type="button"
+                    className="comments-admin-btn"
                     onClick={() => handleStatusChange(comment.id, "pending")}
                   >
                     En attente
@@ -186,6 +206,7 @@ function CommentsAdmin() {
                 {comment.status !== "approved" && (
                   <button
                     type="button"
+                    className="comments-admin-btn"
                     onClick={() => handleStatusChange(comment.id, "approved")}
                   >
                     Approuver
@@ -195,6 +216,7 @@ function CommentsAdmin() {
                 {comment.status !== "rejected" && (
                   <button
                     type="button"
+                    className="comments-admin-btn"
                     onClick={() => handleStatusChange(comment.id, "rejected")}
                   >
                     Refuser
@@ -204,13 +226,18 @@ function CommentsAdmin() {
                 {comment.status !== "spam" && (
                   <button
                     type="button"
+                    className="comments-admin-btn"
                     onClick={() => handleStatusChange(comment.id, "spam")}
                   >
                     Spam
                   </button>
                 )}
 
-                <button type="button" onClick={() => handleDelete(comment.id)}>
+                <button
+                  type="button"
+                  className="comments-admin-btn comments-admin-btn--danger"
+                  onClick={() => handleDelete(comment.id)}
+                >
                   Supprimer
                 </button>
               </div>

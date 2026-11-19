@@ -1,4 +1,5 @@
 import type { Tag } from "../../types/tags";
+import "./TagCheckboxes.css";
 
 interface TagCheckboxesProps {
   tags: Tag[];

@@ -17,7 +17,7 @@ import {
 import { notifyError } from "../../../../utils/notifyError";
 import CategoryRadios from "../../../molecules/CategoryRadios";
 import TagCheckboxes from "../../../molecules/TagCheckboxes";
-import "./ImageCreate.css";
+import "./ImageAdminForm.css";
 
 function ImageCreate() {
   const navigate = useNavigate();
@@ -120,11 +120,14 @@ function ImageCreate() {
   }
 
   return (
-    <section className="image-admin-create">
-      <h2 className="image-admin-create-title">Nouvelle image</h2>
-      <form onSubmit={handleSubmit} className="image-admin-create-form">
-        <div className="image-admin-create-field">
-          <label htmlFor={`${id}-image`}>Fichier :</label>
+    <section className="image-admin">
+      <header className="image-admin-header">
+        <p className="image-admin-kicker">Galerie</p>
+        <h2 className="image-admin-title">Nouvelle image</h2>
+      </header>
+      <form onSubmit={handleSubmit} className="image-admin-form">
+        <div className="image-admin-field">
+          <label htmlFor={`${id}-image`}>Fichier</label>
           <input
             id={`${id}-image`}
             type="file"
@@ -137,12 +140,12 @@ function ImageCreate() {
             <img
               src={previewUrl}
               alt="Aperçu de l'image sélectionnée"
-              className="image-admin-create-preview"
+              className="image-admin-preview"
             />
           ) : null}
         </div>
-        <div className="image-admin-create-field">
-          <label htmlFor={`${id}-title`}>Titre :</label>
+        <div className="image-admin-field">
+          <label htmlFor={`${id}-title`}>Titre</label>
           <input
             id={`${id}-title`}
             type="text"
@@ -150,8 +153,8 @@ function ImageCreate() {
             placeholder="Titre de l'image"
           />
         </div>
-        <div className="image-admin-create-field">
-          <label htmlFor={`${id}-description`}>Description :</label>
+        <div className="image-admin-field">
+          <label htmlFor={`${id}-description`}>Description</label>
           <textarea
             id={`${id}-description`}
             name="description"
@@ -159,8 +162,8 @@ function ImageCreate() {
             rows={4}
           />
         </div>
-        <div className="image-admin-create-field">
-          <label htmlFor={`${id}-alt_descr`}>Texte alternatif (alt) :</label>
+        <div className="image-admin-field">
+          <label htmlFor={`${id}-alt_descr`}>Texte alternatif (alt)</label>
           <input
             id={`${id}-alt_descr`}
             type="text"
@@ -171,7 +174,7 @@ function ImageCreate() {
         <div>
           <label
             htmlFor={`${id}-is_in_gallery`}
-            className="image-admin-create-gallery"
+            className="image-admin-gallery"
           >
             <input
               id={`${id}-is_in_gallery`}
@@ -189,25 +192,21 @@ function ImageCreate() {
           </label>
         </div>
         {isInGallery ? (
-          <div>
-            <CategoryRadios
-              categories={categories}
-              selectedId={selectedCategoryId}
-              onChange={setSelectedCategoryId}
-              name={`${id}-image-category`}
-              idPrefix={`${id}-image-category`}
-            />
-          </div>
-        ) : null}
-        <div>
-          <TagCheckboxes
-            tags={tags}
-            selectedIds={selectedTagIds}
-            onChange={setSelectedTagIds}
-            idPrefix={`${id}-image-tag`}
+          <CategoryRadios
+            categories={categories}
+            selectedId={selectedCategoryId}
+            onChange={setSelectedCategoryId}
+            name={`${id}-image-category`}
+            idPrefix={`${id}-image-category`}
           />
-        </div>
-        <div className="image-admin-create-buttons">
+        ) : null}
+        <TagCheckboxes
+          tags={tags}
+          selectedIds={selectedTagIds}
+          onChange={setSelectedTagIds}
+          idPrefix={`${id}-image-tag`}
+        />
+        <div className="image-admin-buttons">
           <button type="submit" disabled={isSubmitting}>
             {isSubmitting ? "Envoi en cours…" : "Créer l'image"}
           </button>

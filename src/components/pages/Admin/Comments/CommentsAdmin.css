@@ -7,10 +7,24 @@
 
   .comments-admin-title {
     color: var(--color-five);
-    font-size: var(--fs-md);
+    font-family: var(--font-one);
+    font-size: clamp(1.25rem, 1.5vw + 0.75rem, var(--fs-md));
   }
 
-  /* Boutons filtres */
+  .comments-admin-loading,
+  .comments-admin-empty {
+    font-family: var(--font-two);
+    font-size: var(--fs-sm);
+    color: var(--color-two);
+  }
+
+  .comments-admin-error {
+    font-family: var(--font-two);
+    font-size: var(--fs-sm);
+    color: var(--color-three);
+  }
+
+  /* Boutons filtres — calque TagFilter */
 
   .comments-admin-filters {
     display: flex;
@@ -18,15 +32,29 @@
     gap: 0.5rem;
 
     button {
-      background-color: var(--color-one);
-      border: 1px solid var(--color-five);
-      color: var(--color-five);
-      padding: 0.25rem 0.75rem;
       font-family: var(--font-one);
       font-size: var(--fs-xs);
+      color: var(--color-five);
+      background-color: var(--color-one);
+      border: 1px solid var(--color-four);
+      padding: 0.5rem 0.85rem;
+      cursor: pointer;
+      transition:
+        background-color 0.35s ease,
+        border-color 0.35s ease,
+        color 0.35s ease;
 
-      &.active {
+      &:hover,
+      &:focus-visible {
+        background-color: var(--color-three);
+        border-color: var(--color-three);
+        color: var(--color-one);
+        outline: none;
+      }
+
+      &.comments-admin-filter--active {
         background-color: var(--color-five);
+        border-color: var(--color-five);
         color: var(--color-one);
       }
     }
@@ -38,6 +66,7 @@
     display: flex;
     align-items: center;
     gap: 1rem;
+    font-family: var(--font-one);
     font-size: var(--fs-xs);
     color: var(--color-three);
 
@@ -53,14 +82,17 @@
       font-size: var(--fs-xs);
       cursor: pointer;
       padding: 0;
+      transition: color 0.35s ease;
 
-      &:hover {
+      &:hover,
+      &:focus-visible {
         color: var(--color-five);
+        outline: none;
       }
     }
   }
 
-  /* Grid */
+  /* Liste */
 
   .comments-admin-grid {
     display: flex;
@@ -80,14 +112,42 @@
     display: flex;
     flex-wrap: wrap;
     gap: 0.5rem;
+  }
 
-    button {
-      background-color: var(--color-one);
-      border: 1px solid var(--color-five);
-      color: var(--color-five);
-      padding: 0.25rem 0.5rem;
-      font-family: var(--font-one);
-      font-size: var(--fs-xs);
+  .comments-admin-btn {
+    background-color: var(--color-one);
+    border: 1px solid var(--color-five);
+    color: var(--color-five);
+    padding: 0.4rem 0.85rem;
+    font-family: var(--font-one);
+    font-size: var(--fs-xs);
+    cursor: pointer;
+    transition:
+      background-color 0.35s ease,
+      color 0.35s ease,
+      box-shadow 0.35s ease,
+      border-color 0.35s ease;
+
+    &:hover,
+    &:focus-visible {
+      background-color: var(--color-five);
+      color: var(--color-one);
+      box-shadow: var(--box-shadow);
+      outline: none;
+    }
+  }
+
+  .comments-admin-btn--danger {
+    border-color: var(--color-three);
+    color: var(--color-three);
+
+    &:hover,
+    &:focus-visible {
+      background-color: var(--color-three);
+      border-color: var(--color-three);
+      color: var(--color-one);
+      box-shadow: var(--box-shadow);
+      outline: none;
     }
   }
 
@@ -99,37 +159,58 @@
     gap: 0.5rem;
     border: 1px solid var(--color-three);
     padding: 1rem;
-    font-size: var(--fs-xs);
+    background-color: var(--color-one);
+    transition: box-shadow 0.35s ease;
+
+    &:hover {
+      box-shadow: var(--box-shadow);
+    }
 
     .comment-card-meta {
-      padding-bottom: 0.5rem;
+      color: var(--color-three);
 
       ul {
         display: flex;
-        flex-direction: column;
-        gap: 0.5rem;
+        flex-wrap: wrap;
+        align-items: baseline;
+        gap: 0.5rem 0.75rem;
         list-style: none;
-        color: var(--color-three);
-        font-size: var(--fs-xs);
+        margin: 0;
+        padding: 0;
       }
 
       .comment-card-meta-author {
+        font-family: var(--font-one);
         font-size: var(--fs-xs);
+        color: var(--color-five);
       }
 
       .comment-card-meta-date {
+        font-style: italic;
+        font-size: var(--fs-xs);
+        color: var(--color-four);
+      }
+
+      .comment-card-meta-date::before {
+        content: "·";
+        margin-right: 0.75rem;
         color: var(--color-four);
       }
 
       .comment-card-meta-status {
-        color: var(--color-five);
+        font-family: var(--font-one);
+        font-size: var(--fs-xs);
         font-style: italic;
+        color: var(--color-five);
       }
     }
 
     .comment-card-text {
       position: relative;
-      padding: 1rem 0;
+      padding: 1rem 0 0;
+      font-family: var(--font-two);
+      font-size: var(--fs-sm);
+      font-style: italic;
       color: var(--color-two);
       white-space: pre-wrap;
     }
@@ -154,9 +235,32 @@
     background-color: var(--color-four);
 
     .comment-card-meta {
+      .comment-card-meta-author {
+        color: var(--color-two);
+      }
+
       .comment-card-meta-date {
         color: var(--color-one);
       }
+
+      .comment-card-meta-date::before {
+        color: var(--color-one);
+      }
+
+      .comment-card-meta-status {
+        color: var(--color-two);
+      }
     }
+  }
+
+  .comment-card--approved {
+    background-color: var(--color-one);
+    border-color: var(--color-three);
+  }
+
+  .comment-card--rejected,
+  .comment-card--spam {
+    border-color: var(--color-five);
+    background-color: color-mix(in srgb, var(--color-two) 6%, var(--color-one));
   }
 }

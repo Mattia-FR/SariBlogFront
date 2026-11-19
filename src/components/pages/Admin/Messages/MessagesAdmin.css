@@ -1,41 +1,63 @@
 .messages-admin {
   display: flex;
   flex-direction: column;
+  align-self: center;
   width: clamp(320px, 95vw, 800px);
   gap: 1.5rem;
   padding: 2rem 0;
 
   .messages-admin-title {
     color: var(--color-five);
+    font-family: var(--font-one);
     font-size: var(--fs-md);
   }
 
-  /* Boutons de filtrage */
   .messages-admin-filters {
     display: flex;
     flex-wrap: wrap;
     gap: 0.5rem;
 
     button {
-      background-color: var(--color-one);
-      border: 1px solid var(--color-five);
-      color: var(--color-five);
-      padding: 0.25rem 0.75rem;
       font-family: var(--font-one);
       font-size: var(--fs-xs);
+      color: var(--color-five);
+      background-color: var(--color-one);
+      border: 1px solid var(--color-four);
+      padding: 0.5rem 0.85rem;
+      cursor: pointer;
+      transition:
+        background-color 0.35s ease,
+        border-color 0.35s ease,
+        color 0.35s ease;
+
+      &:hover,
+      &:focus-visible {
+        background-color: var(--color-three);
+        border-color: var(--color-three);
+        color: var(--color-one);
+        outline: none;
+      }
 
       &.active {
         background-color: var(--color-five);
+        border-color: var(--color-five);
         color: var(--color-one);
+
+        &:hover,
+        &:focus-visible {
+          background-color: var(--color-five);
+          border-color: var(--color-five);
+          color: var(--color-one);
+        }
       }
     }
   }
 
-  /* Indicateur filtre actif */
   .messages-admin-filter-active {
     display: flex;
     align-items: center;
     gap: 1rem;
+    font-family: var(--font-one);
     font-size: var(--fs-xs);
     color: var(--color-three);
 
@@ -51,21 +73,30 @@
       font-size: var(--fs-xs);
       cursor: pointer;
       padding: 0;
+      transition: color 0.35s ease;
 
-      &:hover {
+      &:hover,
+      &:focus-visible {
         color: var(--color-five);
+        outline: none;
       }
     }
   }
 
-  /* Grille de messages */
+  .messages-admin-empty,
+  .messages-admin-status {
+    margin: 0;
+    font-family: var(--font-two);
+    font-size: var(--fs-sm);
+    color: var(--color-two);
+  }
+
   .messages-admin-grid {
     display: flex;
     flex-direction: column;
     gap: 1.5rem;
   }
 
-  /* Un message + ses boutons */
   .messages-admin-item {
     display: flex;
     flex-direction: column;
@@ -78,52 +109,94 @@
     gap: 0.5rem;
 
     button {
-      background-color: var(--color-one);
-      border: 1px solid var(--color-five);
-      color: var(--color-five);
-      padding: 0.25rem 0.5rem;
       font-family: var(--font-one);
       font-size: var(--fs-xs);
+      color: var(--color-five);
+      background-color: var(--color-one);
+      border: 1px solid var(--color-four);
+      padding: 0.5rem 0.85rem;
+      cursor: pointer;
+      transition:
+        background-color 0.35s ease,
+        border-color 0.35s ease,
+        color 0.35s ease,
+        box-shadow 0.35s ease;
+
+      &:hover,
+      &:focus-visible {
+        background-color: var(--color-three);
+        border-color: var(--color-three);
+        color: var(--color-one);
+        box-shadow: var(--box-shadow);
+        outline: none;
+      }
     }
   }
 
-  /* Styles de MessageCard scopés ici */
   .message-card {
     display: flex;
     flex-direction: column;
     gap: 0.5rem;
-    border: 1px solid var(--color-three);
+    border: 1px solid var(--color-five);
     padding: 1rem;
+    background-color: var(--color-one);
     font-size: var(--fs-xs);
+    transition: box-shadow 0.35s ease;
+
+    &:hover {
+      box-shadow: var(--box-shadow);
+    }
 
     .message-card-meta {
       padding-bottom: 0.5rem;
+
       ul {
         display: flex;
         flex-direction: column;
-        gap: 0.5rem;
+        gap: 0.35rem;
         list-style: none;
-        color: var(--color-three);
-        font-size: var(--fs-xs);
+        margin: 0;
+        padding: 0;
       }
 
       .message-card-meta-sender {
+        font-family: var(--font-one);
+        font-size: var(--fs-sm);
+        font-weight: 700;
+        color: var(--color-five);
+      }
+
+      .message-card-meta-email {
+        font-family: var(--font-one);
         font-size: var(--fs-xs);
+        color: var(--color-four);
       }
 
       .message-card-meta-date {
+        font-family: var(--font-one);
+        font-size: var(--fs-xs);
         color: var(--color-four);
       }
 
       .message-card-meta-status {
-        color: var(--color-five);
-        font-style: italic;
+        display: inline-block;
+        align-self: flex-start;
+        font-family: var(--font-one);
+        font-size: var(--fs-xs);
+        font-style: normal;
+        font-weight: 700;
+        letter-spacing: 0.08em;
+        text-transform: uppercase;
+        color: var(--color-three);
+        border: 1px solid var(--color-four);
+        padding: 0.25rem 0.5rem;
+        margin-top: 0.25rem;
       }
     }
 
     .message-card-message {
       position: relative;
-      padding: 1rem 0;
+      padding: 1rem 0 0;
     }
 
     .message-card-message::before {
@@ -142,6 +215,7 @@
     }
 
     .message-card-subject {
+      font-family: var(--font-one);
       color: var(--color-five);
       font-size: var(--fs-sm);
       margin: 0;
@@ -149,19 +223,46 @@
     }
 
     .message-card-text {
+      font-family: var(--font-two);
       color: var(--color-two);
+      font-size: var(--fs-sm);
+      line-height: 1.7;
       margin: 0;
       white-space: pre-wrap;
     }
   }
 
   .message-card--unread {
-    background-color: var(--color-four);
+    border-color: var(--color-three);
+    background-color: color-mix(in srgb, var(--color-three) 10%, var(--color-one));
+    box-shadow: inset 3px 0 0 var(--color-three);
 
-    .message-card-meta {
-      .message-card-meta-date {
-        color: var(--color-one);
-      }
+    .message-card-meta-status {
+      border-color: var(--color-three);
+      background-color: var(--color-three);
+      color: var(--color-one);
+    }
+  }
+
+  .message-card--read {
+    .message-card-meta-status {
+      color: var(--color-five);
+      border-color: var(--color-five);
+    }
+  }
+
+  .message-card--archived {
+    border-color: var(--color-four);
+    opacity: 0.78;
+
+    .message-card-meta-status {
+      color: var(--color-four);
+      border-color: var(--color-four);
+    }
+
+    .message-card-subject,
+    .message-card-text {
+      color: color-mix(in srgb, var(--color-two) 70%, var(--color-one));
     }
   }
 }
