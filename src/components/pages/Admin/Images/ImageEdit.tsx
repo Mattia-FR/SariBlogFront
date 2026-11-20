@@ -5,6 +5,7 @@ import type { Category } from "../../../../types/categories";
 import type { Image } from "../../../../types/image";
 import type { Tag } from "../../../../types/tags";
 import { api } from "../../../../utils/apiClient";
+import { isAbortError } from "../../../../utils/apiError";
 import { notifyError } from "../../../../utils/notifyError";
 import CategoryRadios from "../../../molecules/CategoryRadios";
 import TagCheckboxes from "../../../molecules/TagCheckboxes";
@@ -26,13 +27,15 @@ function ImageEdit() {
   const [error, setError] = useState<string | null>(null);
 
   useEffect(() => {
+    const ac = new AbortController();
+
     async function fetchData() {
       if (!id) return;
       try {
         const [imageData, tagsData, categoriesData] = await Promise.all([
-          api.get<Image>(`/admin/images/${id}`),
-          api.get<Tag[]>("/admin/tags"),
-          api.get<Category[]>("/admin/categories"),
+          api.get<Image>(`/admin/images/${id}`, { signal: ac.signal }),
+          api.get<Tag[]>("/admin/tags", { signal: ac.signal }),
+          api.get<Category[]>("/admin/categories", { signal: ac.signal }),
         ]);
         setImage(imageData);
         setTags(tagsData);
@@ -44,15 +47,19 @@ function ImageEdit() {
         );
         setSelectedCategoryId(imageData.category_id ?? null);
         setIsInGallery(imageData.is_in_gallery);
-        const imageTags = await api.get<Tag[]>(`/tags/image/${id}`);
+        const imageTags = await api.get<Tag[]>(`/tags/image/${id}`, {
+          signal: ac.signal,
+        });
         setSelectedTagIds(imageTags.map((t) => t.id));
       } catch (err) {
+        if (isAbortError(err)) return;
         setError(notifyError(err, "Erreur lors du chargement de l'image"));
       } finally {
-        setLoading(false);
+        if (!ac.signal.aborted) setLoading(false);
       }
     }
-    fetchData();
+    void fetchData();
+    return () => ac.abort();
   }, [id]);
 
   async function handleSubmit(event: FormEvent<HTMLFormElement>) {

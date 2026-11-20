@@ -1,3 +1,4 @@
+import type { LoaderFunctionArgs } from "react-router-dom";
 import type { Article } from "../../../types/article";
 import type { Tag } from "../../../types/tags";
 import { loaderFetch, loaderFetchOptional } from "../../../utils/loaderFetch";
@@ -5,9 +6,8 @@ import type { BlogLoaderData } from "./blogTypes";
 
 export async function blogLoader({
   request,
-}: {
-  request: Request;
-}): Promise<BlogLoaderData> {
+}: LoaderFunctionArgs): Promise<BlogLoaderData> {
+  const { signal } = request;
   const url = new URL(request.url);
   const page = Number(url.searchParams.get("page")) || 1;
   const tagIdRaw = url.searchParams.get("tagId");
@@ -28,8 +28,9 @@ export async function blogLoader({
   const [{ articles, total, limit }, tags] = await Promise.all([
     loaderFetch<{ articles: Article[]; total: number; limit: number }>(
       `/articles/published?${publishedQuery.toString()}`,
+      signal,
     ),
-    loaderFetchOptional<Tag[]>("/tags/published-articles", []),
+    loaderFetchOptional<Tag[]>("/tags/published-articles", [], signal),
   ]);
 
   const totalPages = Math.ceil(total / limit);

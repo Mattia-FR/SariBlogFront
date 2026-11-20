@@ -39,7 +39,25 @@ describe("loaderFetch", () => {
     // Assert : je vérifie que la donnée reçue est bien celle retournée par l'API,
     // et que l'URL appelée est correcte.
     expect(result).toEqual({ id: 1, title: "ok" });
-    expect(mockedApiGet).toHaveBeenCalledWith("/articles");
+    expect(mockedApiGet).toHaveBeenCalledWith("/articles", undefined);
+  });
+
+  it("forwards AbortSignal to api.get", async () => {
+    const ac = new AbortController();
+    mockedApiGet.mockResolvedValueOnce({ id: 1 } as never);
+
+    await loaderFetch("/articles", ac.signal);
+
+    expect(mockedApiGet).toHaveBeenCalledWith("/articles", {
+      signal: ac.signal,
+    });
+  });
+
+  it("rethrows AbortError without mapping to Response", async () => {
+    const abortErr = new DOMException("Aborted", "AbortError");
+    mockedApiGet.mockRejectedValueOnce(abortErr);
+
+    await expect(loaderFetch("/articles")).rejects.toBe(abortErr);
   });
 
   // Test d'une erreur HTTP 404 : la fonction doit transformer l'erreur en Response avec le bon statut.
@@ -109,5 +127,21 @@ describe("loaderFetchOptional", () => {
   it("returns the fallback instead of throwing", async () => {
     mockedApiGet.mockRejectedValueOnce(new ApiError(500, "Erreur serveur"));
     await expect(loaderFetchOptional("/tags", [])).resolves.toEqual([]);
+  });
+
+  it("forwards AbortSignal to api.get", async () => {
+    const ac = new AbortController();
+    mockedApiGet.mockResolvedValueOnce([{ id: 1 }] as never);
+
+    await loaderFetchOptional("/tags", [], ac.signal);
+
+    expect(mockedApiGet).toHaveBeenCalledWith("/tags", { signal: ac.signal });
+  });
+
+  it("rethrows AbortError instead of returning the fallback", async () => {
+    const abortErr = new DOMException("Aborted", "AbortError");
+    mockedApiGet.mockRejectedValueOnce(abortErr);
+
+    await expect(loaderFetchOptional("/tags", [])).rejects.toBe(abortErr);
   });
 });

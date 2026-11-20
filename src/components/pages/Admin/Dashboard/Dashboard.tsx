@@ -1,6 +1,7 @@
 import { useEffect, useState } from "react";
 import { Link } from "react-router-dom";
 import { api } from "../../../../utils/apiClient";
+import { isAbortError } from "../../../../utils/apiError";
 import { notifyError } from "../../../../utils/notifyError";
 import "./Dashboard.css";
 
@@ -40,19 +41,25 @@ function Dashboard() {
   const [error, setError] = useState<string | null>(null);
 
   useEffect(() => {
+    const ac = new AbortController();
+
     const fetchStats = async () => {
       try {
         setIsLoading(true);
-        const data = await api.get<DashboardStats>("/admin/dashboard/stats");
+        const data = await api.get<DashboardStats>("/admin/dashboard/stats", {
+          signal: ac.signal,
+        });
         setStats(data);
       } catch (err) {
+        if (isAbortError(err)) return;
         setError(notifyError(err, "Impossible de charger les statistiques"));
       } finally {
-        setIsLoading(false);
+        if (!ac.signal.aborted) setIsLoading(false);
       }
     };
 
-    fetchStats();
+    void fetchStats();
+    return () => ac.abort();
   }, []);
 
   if (isLoading) {

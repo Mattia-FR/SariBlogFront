@@ -10,6 +10,7 @@ import { api } from "../../../../utils/apiClient";
 import {
   ApiError,
   fieldErrorsFromApiDetails,
+  isAbortError,
 } from "../../../../utils/apiError";
 import { notifyError } from "../../../../utils/notifyError";
 import "./ProfilePage.css";
@@ -33,19 +34,25 @@ function ProfilePage() {
   const [isSubmitting, setIsSubmitting] = useState(false);
 
   useEffect(() => {
+    const ac = new AbortController();
+
     async function fetchProfile() {
       try {
         setLoading(true);
-        const data = await api.get<User>("/admin/users/me");
+        const data = await api.get<User>("/admin/users/me", {
+          signal: ac.signal,
+        });
         setProfile(data);
       } catch (err) {
+        if (isAbortError(err)) return;
         setError(notifyError(err, "Erreur lors du chargement du profil"));
       } finally {
-        setLoading(false);
+        if (!ac.signal.aborted) setLoading(false);
       }
     }
 
-    fetchProfile();
+    void fetchProfile();
+    return () => ac.abort();
   }, []);
 
   async function handleUpdate(event: React.FormEvent<HTMLFormElement>) {

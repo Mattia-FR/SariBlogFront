@@ -1,5 +1,13 @@
-import { ApiError, type ErrorCode, NETWORK_ERROR_MESSAGE } from "./apiError";
+import {
+  ApiError,
+  type ErrorCode,
+  isAbortError,
+  NETWORK_ERROR_MESSAGE,
+} from "./apiError";
 import { logger } from "./logger";
+
+/** Options fetch hors method/body (ex. `signal`), fusionnées par les helpers `api.*`. */
+type ApiRequestInit = Omit<RequestInit, "method" | "body">;
 
 const API_BASE_URL =
   import.meta.env.VITE_API_URL || "http://localhost:4242/api";
@@ -41,7 +49,7 @@ async function fetchOrThrow(url: string, init: RequestInit): Promise<Response> {
   try {
     return await fetch(url, init);
   } catch (err) {
-    if (err instanceof DOMException && err.name === "AbortError") throw err;
+    if (isAbortError(err)) throw err;
     logger.error("[apiClient] Erreur réseau :", err);
     throw new ApiError(0, NETWORK_ERROR_MESSAGE, "NETWORK_ERROR");
   }
@@ -171,14 +179,19 @@ function jsonBody(data: unknown): string | undefined {
 
 // Méthodes utilitaires : lèvent une ApiError sur toute réponse non-OK ou panne réseau.
 export const api = {
-  async get<T>(endpoint: string): Promise<T> {
-    const response = await apiClient(endpoint, { method: "GET" });
+  async get<T>(endpoint: string, init?: ApiRequestInit): Promise<T> {
+    const response = await apiClient(endpoint, { ...init, method: "GET" });
     await throwIfNotOk(response);
     return parseBody<T>(response);
   },
 
-  async post<T>(endpoint: string, data?: unknown): Promise<T> {
+  async post<T>(
+    endpoint: string,
+    data?: unknown,
+    init?: ApiRequestInit,
+  ): Promise<T> {
     const response = await apiClient(endpoint, {
+      ...init,
       method: "POST",
       body: jsonBody(data),
     });
@@ -189,8 +202,13 @@ export const api = {
   /* POST avec FormData (ex. upload de fichier avec multer) : on n'envoie pas Content-Type
   pour que le navigateur mette multipart/form-data + boundary
   apiClient ne met pas application/json quand le body est un FormData */
-  async postFormData<T>(endpoint: string, formData: FormData): Promise<T> {
+  async postFormData<T>(
+    endpoint: string,
+    formData: FormData,
+    init?: ApiRequestInit,
+  ): Promise<T> {
     const response = await apiClient(endpoint, {
+      ...init,
       method: "POST",
       body: formData,
     });
@@ -198,8 +216,13 @@ export const api = {
     return parseBody<T>(response);
   },
 
-  async patch<T>(endpoint: string, data?: unknown): Promise<T> {
+  async patch<T>(
+    endpoint: string,
+    data?: unknown,
+    init?: ApiRequestInit,
+  ): Promise<T> {
     const response = await apiClient(endpoint, {
+      ...init,
       method: "PATCH",
       body: jsonBody(data),
     });
@@ -207,8 +230,8 @@ export const api = {
     return parseBody<T>(response);
   },
 
-  async delete<T>(endpoint: string): Promise<T> {
-    const response = await apiClient(endpoint, { method: "DELETE" });
+  async delete<T>(endpoint: string, init?: ApiRequestInit): Promise<T> {
+    const response = await apiClient(endpoint, { ...init, method: "DELETE" });
     await throwIfNotOk(response);
     return parseBody<T>(response);
   },

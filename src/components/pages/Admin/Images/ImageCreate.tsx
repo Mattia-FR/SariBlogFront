@@ -10,6 +10,7 @@ import { toast } from "react-toastify";
 import type { Category } from "../../../../types/categories";
 import type { Tag } from "../../../../types/tags";
 import { api } from "../../../../utils/apiClient";
+import { isAbortError } from "../../../../utils/apiError";
 import {
   getImageFileError,
   IMAGE_ACCEPT,
@@ -33,9 +34,10 @@ function ImageCreate() {
   const [isSubmitting, setIsSubmitting] = useState(false);
 
   useEffect(() => {
+    const ac = new AbortController();
     Promise.all([
-      api.get<Tag[]>("/admin/tags"),
-      api.get<Category[]>("/admin/categories"),
+      api.get<Tag[]>("/admin/tags", { signal: ac.signal }),
+      api.get<Category[]>("/admin/categories", { signal: ac.signal }),
     ])
       .then(([tagsData, categoriesData]) => {
         setTags(tagsData);
@@ -46,9 +48,11 @@ function ImageCreate() {
           ),
         );
       })
-      .catch((err) =>
-        notifyError(err, "Impossible de charger les tags et catégories"),
-      );
+      .catch((err) => {
+        if (isAbortError(err)) return;
+        notifyError(err, "Impossible de charger les tags et catégories");
+      });
+    return () => ac.abort();
   }, []);
 
   useEffect(() => {

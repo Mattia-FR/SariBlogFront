@@ -135,6 +135,18 @@ describe("apiClient", () => {
     });
   });
 
+  it("transmet le signal AbortSignal à fetch", async () => {
+    const ac = new AbortController();
+    fetchMock.mockResolvedValue(jsonResponse({ ok: true }));
+
+    await api.get("/articles", { signal: ac.signal });
+
+    expect(fetchMock).toHaveBeenCalledWith(
+      expect.stringContaining("/articles"),
+      expect.objectContaining({ signal: ac.signal }),
+    );
+  });
+
   it("lit le message, le code et les détails du contrat d'erreur", async () => {
     const details = [{ path: ["email"], message: "Email invalide" }];
     fetchMock.mockResolvedValue(

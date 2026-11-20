@@ -3,6 +3,7 @@ import { Link, useSearchParams } from "react-router-dom";
 import type { Image } from "../../../../types/image";
 import type { Tag } from "../../../../types/tags";
 import { api } from "../../../../utils/apiClient";
+import { isAbortError } from "../../../../utils/apiError";
 import { notifyError } from "../../../../utils/notifyError";
 import ImageCard from "../../../molecules/ImageCard";
 import NavigationPagination from "../../../molecules/NavigationPagination";
@@ -34,7 +35,7 @@ function ImagesAdmin() {
     }
   }, [tagIdParam, tagId, searchParams, setSearchParams]);
 
-  const fetchData = useCallback(async () => {
+  const fetchData = useCallback(async (signal?: AbortSignal) => {
     setLoading(true);
     setError(null);
     try {
@@ -42,24 +43,29 @@ function ImagesAdmin() {
       if (tagId != null) {
         q.set("tagId", String(tagId));
       }
+      const init = signal ? { signal } : undefined;
       const [imgRes, tagsRes] = await Promise.all([
         api.get<{ images: Image[]; total: number; limit: number }>(
           `/admin/images?${q.toString()}`,
+          init,
         ),
-        api.get<Tag[]>("/admin/tags/used-on-images"),
+        api.get<Tag[]>("/admin/tags/used-on-images", init),
       ]);
       setImages(imgRes.images);
       setTotalPages(Math.ceil(imgRes.total / imgRes.limit));
       setTags(tagsRes);
     } catch (err) {
+      if (isAbortError(err)) return;
       setError(notifyError(err, "Erreur lors du chargement"));
     } finally {
-      setLoading(false);
+      if (!signal?.aborted) setLoading(false);
     }
   }, [page, tagId]);
 
   useEffect(() => {
-    fetchData();
+    const ac = new AbortController();
+    void fetchData(ac.signal);
+    return () => ac.abort();
   }, [fetchData]);
 
   const selectedTagId: number | "" = tagId === null ? "" : tagId;

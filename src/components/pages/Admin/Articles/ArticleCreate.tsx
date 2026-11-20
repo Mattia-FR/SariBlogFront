@@ -10,7 +10,7 @@ import { toast } from "react-toastify";
 import type { Article, ArticleStatus } from "../../../../types/article";
 import type { Tag } from "../../../../types/tags";
 import { api } from "../../../../utils/apiClient";
-import { getErrorMessage } from "../../../../utils/apiError";
+import { getErrorMessage, isAbortError } from "../../../../utils/apiError";
 import {
   getImageFileError,
   IMAGE_ACCEPT,
@@ -29,10 +29,15 @@ function ArticleCreate() {
   const [isSubmitting, setIsSubmitting] = useState(false);
 
   useEffect(() => {
+    const ac = new AbortController();
     api
-      .get<Tag[]>("/admin/tags")
+      .get<Tag[]>("/admin/tags", { signal: ac.signal })
       .then(setTags)
-      .catch((err) => notifyError(err, "Impossible de charger les tags"));
+      .catch((err) => {
+        if (isAbortError(err)) return;
+        notifyError(err, "Impossible de charger les tags");
+      });
+    return () => ac.abort();
   }, []);
 
   useEffect(() => {

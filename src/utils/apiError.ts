@@ -48,6 +48,13 @@ export function isApiError(err: unknown): err is ApiError {
   return err instanceof ApiError;
 }
 
+export function isAbortError(err: unknown): boolean {
+  return (
+    (err instanceof DOMException || err instanceof Error) &&
+    err.name === "AbortError"
+  );
+}
+
 // Message à afficher à l'utilisateur : celui du backend (ou de l'Error), sinon le repli.
 export function getErrorMessage(err: unknown, fallback: string): string {
   if (err instanceof Error && err.message) return err.message;

@@ -3,6 +3,7 @@ import { Link, useSearchParams } from "react-router-dom";
 import type { Article } from "../../../../types/article";
 import type { Tag } from "../../../../types/tags";
 import { api } from "../../../../utils/apiClient";
+import { isAbortError } from "../../../../utils/apiError";
 import { notifyError } from "../../../../utils/notifyError";
 import ArticleCard from "../../../molecules/ArticleCard";
 import NavigationPagination from "../../../molecules/NavigationPagination";
@@ -42,7 +43,7 @@ function ArticlesAdmin() {
     }
   }, [tagIdParam, tagId, searchParams, setSearchParams]);
 
-  const fetchData = useCallback(async () => {
+  const fetchData = useCallback(async (signal?: AbortSignal) => {
     setLoading(true);
     setError(null);
     try {
@@ -50,22 +51,29 @@ function ArticlesAdmin() {
       if (tagId != null) {
         q.set("tagId", String(tagId));
       }
+      const init = signal ? { signal } : undefined;
       const [listRes, tagsRes] = await Promise.all([
-        api.get<ArticlesListResponse>(`/admin/articles?${q.toString()}`),
-        api.get<Tag[]>("/admin/tags/used-on-articles"),
+        api.get<ArticlesListResponse>(
+          `/admin/articles?${q.toString()}`,
+          init,
+        ),
+        api.get<Tag[]>("/admin/tags/used-on-articles", init),
       ]);
       setArticles(listRes.articles);
       setTotalPages(Math.ceil(listRes.total / listRes.limit));
       setTags(tagsRes);
     } catch (err) {
+      if (isAbortError(err)) return;
       setError(notifyError(err, "Erreur lors du chargement"));
     } finally {
-      setLoading(false);
+      if (!signal?.aborted) setLoading(false);
     }
   }, [page, tagId]);
 
   useEffect(() => {
-    fetchData();
+    const ac = new AbortController();
+    void fetchData(ac.signal);
+    return () => ac.abort();
   }, [fetchData]);
 
   const selectedTagId: number | "" = tagId === null ? "" : tagId;

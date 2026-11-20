@@ -9,6 +9,7 @@ export async function galleryCategoryLoader({
   params,
   request,
 }: LoaderFunctionArgs): Promise<GalleryLoaderData> {
+  const { signal } = request;
   const slug = params.slug;
   if (!slug) {
     throw new Response("Slug manquant", { status: 404 });
@@ -25,7 +26,7 @@ export async function galleryCategoryLoader({
     tagId = n;
   }
 
-  const category = await loaderFetch<Category>(`/categories/${slug}`);
+  const category = await loaderFetch<Category>(`/categories/${slug}`, signal);
 
   const imagesQuery = new URLSearchParams({ page: String(page), limit: "9" });
   if (tagId != null) {
@@ -35,8 +36,9 @@ export async function galleryCategoryLoader({
   const [{ images, total, limit }, tags] = await Promise.all([
     loaderFetch<{ images: Image[]; total: number; limit: number }>(
       `/images/category/${category.id}?${imagesQuery.toString()}`,
+      signal,
     ),
-    loaderFetchOptional<Tag[]>(`/tags/category/${category.id}`, []),
+    loaderFetchOptional<Tag[]>(`/tags/category/${category.id}`, [], signal),
   ]);
 
   const totalPages = Math.ceil(total / limit);

@@ -3,6 +3,7 @@ import { useSearchParams } from "react-router-dom";
 import { toast } from "react-toastify";
 import type { Message, MessageStatus } from "../../../../types/messages";
 import { api } from "../../../../utils/apiClient";
+import { isAbortError } from "../../../../utils/apiError";
 import { notifyError } from "../../../../utils/notifyError";
 import MessageCard from "../../../molecules/MessageCard";
 import NavigationPagination from "../../../molecules/NavigationPagination";
@@ -63,7 +64,7 @@ function MessagesAdmin() {
     }
   }, [statusParam, searchParams, setSearchParams]);
 
-  const fetchMessages = useCallback(async () => {
+  const fetchMessages = useCallback(async (signal?: AbortSignal) => {
     setLoading(true);
     setError(null);
     try {
@@ -73,19 +74,23 @@ function MessagesAdmin() {
       }
       const data = await api.get<MessagesListResponse>(
         `/admin/messages?${q.toString()}`,
+        signal ? { signal } : undefined,
       );
       setMessages(data.messages);
       setTotalPages(Math.ceil(data.total / data.limit));
       setCounts(data.counts);
     } catch (err) {
+      if (isAbortError(err)) return;
       setError(notifyError(err, "Erreur lors du chargement"));
     } finally {
-      setLoading(false);
+      if (!signal?.aborted) setLoading(false);
     }
   }, [page, statusFilter]);
 
   useEffect(() => {
-    fetchMessages();
+    const ac = new AbortController();
+    void fetchMessages(ac.signal);
+    return () => ac.abort();
   }, [fetchMessages]);
 
   async function handleStatusChange(messageId: number, status: MessageStatus) {

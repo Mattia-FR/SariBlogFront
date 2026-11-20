@@ -3,6 +3,7 @@ import { useSearchParams } from "react-router-dom";
 import { toast } from "react-toastify";
 import type { Comment, CommentStatus } from "../../../../types/comment";
 import { api } from "../../../../utils/apiClient";
+import { isAbortError } from "../../../../utils/apiError";
 import { notifyError } from "../../../../utils/notifyError";
 import CommentCard from "../../../molecules/CommentCard";
 import NavigationPagination from "../../../molecules/NavigationPagination";
@@ -65,7 +66,7 @@ function CommentsAdmin() {
     }
   }, [statusParam, searchParams, setSearchParams]);
 
-  const fetchComments = useCallback(async () => {
+  const fetchComments = useCallback(async (signal?: AbortSignal) => {
     setLoading(true);
     setError(null);
     try {
@@ -75,19 +76,23 @@ function CommentsAdmin() {
       }
       const data = await api.get<CommentsListResponse>(
         `/admin/comments?${q.toString()}`,
+        signal ? { signal } : undefined,
       );
       setComments(data.comments);
       setTotalPages(Math.ceil(data.total / data.limit));
       setCounts(data.counts);
     } catch (err) {
+      if (isAbortError(err)) return;
       setError(notifyError(err, "Erreur lors du chargement"));
     } finally {
-      setLoading(false);
+      if (!signal?.aborted) setLoading(false);
     }
   }, [page, statusFilter]);
 
   useEffect(() => {
-    fetchComments();
+    const ac = new AbortController();
+    void fetchComments(ac.signal);
+    return () => ac.abort();
   }, [fetchComments]);
 
   async function handleStatusChange(commentId: number, status: CommentStatus) {

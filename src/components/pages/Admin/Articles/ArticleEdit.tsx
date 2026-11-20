@@ -5,6 +5,7 @@ import type { Article } from "../../../../types/article";
 import type { Image } from "../../../../types/image";
 import type { Tag } from "../../../../types/tags";
 import { api } from "../../../../utils/apiClient";
+import { isAbortError } from "../../../../utils/apiError";
 import { notifyError } from "../../../../utils/notifyError";
 import TagCheckboxes from "../../../molecules/TagCheckboxes";
 import "./ArticleForm.css";
@@ -23,27 +24,33 @@ function ArticleEdit() {
   const [isEditing, setIsEditing] = useState(false);
 
   useEffect(() => {
+    const ac = new AbortController();
+
     async function fetchArticle() {
       if (!id) return;
       try {
         setLoading(true);
         const [data, tagsData] = await Promise.all([
-          api.get<Article>(`/admin/articles/${id}`),
-          api.get<Tag[]>("/admin/tags"),
+          api.get<Article>(`/admin/articles/${id}`, { signal: ac.signal }),
+          api.get<Tag[]>("/admin/tags", { signal: ac.signal }),
         ]);
         setArticle(data);
         setTags(tagsData);
         setSelectedTagIds(data.tags?.map((t) => t.id) ?? []);
-        const images = await api.get<Image[]>(`/images/article/${data.id}`);
+        const images = await api.get<Image[]>(`/images/article/${data.id}`, {
+          signal: ac.signal,
+        });
         setArticleImages(images);
       } catch (err) {
+        if (isAbortError(err)) return;
         setError(notifyError(err, "Erreur lors du chargement de l'article"));
       } finally {
-        setLoading(false);
+        if (!ac.signal.aborted) setLoading(false);
       }
     }
 
-    fetchArticle();
+    void fetchArticle();
+    return () => ac.abort();
   }, [id]);
 
   async function handleUpdate(event: React.FormEvent<HTMLFormElement>) {

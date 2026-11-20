@@ -2,6 +2,7 @@ import { type FormEvent, useCallback, useEffect, useId, useState } from "react";
 import { toast } from "react-toastify";
 import type { Tag } from "../../../../types/tags";
 import { api } from "../../../../utils/apiClient";
+import { isAbortError } from "../../../../utils/apiError";
 import { notifyError } from "../../../../utils/notifyError";
 import "./TagsAdmin.css";
 
@@ -12,19 +13,25 @@ function TagsAdmin() {
   const [error, setError] = useState<string | null>(null);
   const [editingId, setEditingId] = useState<number | null>(null);
 
-  const fetchTags = useCallback(async () => {
+  const fetchTags = useCallback(async (signal?: AbortSignal) => {
     try {
-      const data = await api.get<Tag[]>("/admin/tags");
+      const data = await api.get<Tag[]>(
+        "/admin/tags",
+        signal ? { signal } : undefined,
+      );
       setTags(data);
     } catch (err) {
+      if (isAbortError(err)) return;
       setError(notifyError(err, "Erreur lors du chargement"));
     } finally {
-      setLoading(false);
+      if (!signal?.aborted) setLoading(false);
     }
   }, []);
 
   useEffect(() => {
-    fetchTags();
+    const ac = new AbortController();
+    void fetchTags(ac.signal);
+    return () => ac.abort();
   }, [fetchTags]);
 
   if (loading) {

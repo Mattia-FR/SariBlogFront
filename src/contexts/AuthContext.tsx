@@ -9,6 +9,7 @@ import {
   setAccessToken,
   setOnAuthFailure,
 } from "../utils/apiClient";
+import { isAbortError } from "../utils/apiError";
 import { logger } from "../utils/logger";
 
 interface AuthContextValue {
@@ -45,25 +46,32 @@ export function AuthProvider({ children }: AuthProviderProps) {
 
   // Vérifier si une session existe au chargement.
   // `refreshAccessToken` est single-flight : le double effet du StrictMode ne lance qu'un refresh.
+  // On n'abort que le GET /me (pas le refresh partagé).
   useEffect(() => {
+    const ac = new AbortController();
+
     async function checkSession() {
       try {
         const token = await refreshAccessToken();
-        if (!token) return; // Visiteur sans session : cas normal
+        if (!token || ac.signal.aborted) return; // Visiteur sans session : cas normal
 
-        const currentUser = await api.get<User>("/admin/users/me");
+        const currentUser = await api.get<User>("/admin/users/me", {
+          signal: ac.signal,
+        });
         setUser(currentUser);
       } catch (err) {
+        if (isAbortError(err)) return;
         // Session présente mais profil illisible : on repart d'un état déconnecté cohérent
         logger.error("[AuthContext] Restauration de session impossible :", err);
         clearAccessToken();
         setUser(null);
       } finally {
-        setIsInitializing(false);
+        if (!ac.signal.aborted) setIsInitializing(false);
       }
     }
 
-    checkSession();
+    void checkSession();
+    return () => ac.abort();
   }, []);
 
   async function login(identifier: string, password: string) {

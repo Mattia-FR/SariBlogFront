@@ -5,6 +5,7 @@ import type {
   CategoryUpdateData,
 } from "../../../../types/categories";
 import { api } from "../../../../utils/apiClient";
+import { isAbortError } from "../../../../utils/apiError";
 import { notifyError } from "../../../../utils/notifyError";
 import "./CategoriesAdmin.css";
 
@@ -15,19 +16,25 @@ function CategoriesAdmin() {
   const [error, setError] = useState<string | null>(null);
   const [editingId, setEditingId] = useState<number | null>(null);
 
-  const fetchCategories = useCallback(async () => {
+  const fetchCategories = useCallback(async (signal?: AbortSignal) => {
     try {
-      const data = await api.get<Category[]>("/admin/categories");
+      const data = await api.get<Category[]>(
+        "/admin/categories",
+        signal ? { signal } : undefined,
+      );
       setCategories(data);
     } catch (err) {
+      if (isAbortError(err)) return;
       setError(notifyError(err, "Erreur lors du chargement"));
     } finally {
-      setLoading(false);
+      if (!signal?.aborted) setLoading(false);
     }
   }, []);
 
   useEffect(() => {
-    fetchCategories();
+    const ac = new AbortController();
+    void fetchCategories(ac.signal);
+    return () => ac.abort();
   }, [fetchCategories]);
 
   if (loading) {
