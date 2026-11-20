@@ -109,9 +109,13 @@
       page-break-inside: avoid;
       overflow: hidden;
       text-decoration: none;
-      transition:
-        transform 0.35s ease,
-        box-shadow 0.35s ease;
+      transition: box-shadow 0.35s ease;
+
+      @media (prefers-reduced-motion: no-preference) {
+        transition:
+          transform 0.35s ease,
+          box-shadow 0.35s ease;
+      }
 
       .image-card-img {
         width: 100%;
@@ -157,9 +161,12 @@
 
       &:hover,
       &:focus-visible {
-        transform: scale(1.03);
         box-shadow: var(--box-shadow);
         outline: none;
+
+        @media (prefers-reduced-motion: no-preference) {
+          transform: scale(1.03);
+        }
 
         .image-card-img {
           filter: brightness(0.85);

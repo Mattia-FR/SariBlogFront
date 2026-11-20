@@ -1,35 +1,96 @@
-/** biome-ignore-all lint/a11y/noStaticElementInteractions: modal */
-/** biome-ignore-all lint/a11y/useButtonType: modal */
-/** biome-ignore-all lint/a11y/useKeyWithClickEvents: modal */
-import { useEffect } from "react";
-import { createPortal } from "react-dom";
+import { useEffect, useRef } from "react";
 import "./Modal.css";
 import type { ModalProps } from "../../types/modal";
 
-export default function Modal({ isOpen, onClose, children }: ModalProps) {
-  useEffect(() => {
-    if (isOpen) {
-      document.body.style.overflow = "hidden";
-    } else {
-      document.body.style.overflow = "";
-    }
+function isPointerOutside(
+  event: PointerEvent,
+  dialog: HTMLDialogElement,
+): boolean {
+  const rect = dialog.getBoundingClientRect();
+  return (
+    event.clientX < rect.left ||
+    event.clientX > rect.right ||
+    event.clientY < rect.top ||
+    event.clientY > rect.bottom
+  );
+}
 
-    return () => {
-      document.body.style.overflow = "";
-    };
+export default function Modal({
+  isOpen,
+  onClose,
+  ariaLabel,
+  children,
+}: ModalProps) {
+  const dialogRef = useRef<HTMLDialogElement>(null);
+  const onCloseRef = useRef(onClose);
+  onCloseRef.current = onClose;
+
+  useEffect(() => {
+    const dialog = dialogRef.current;
+    if (!dialog) return;
+
+    if (isOpen && !dialog.open) {
+      dialog.showModal();
+    } else if (!isOpen && dialog.open) {
+      dialog.close();
+    }
   }, [isOpen]);
 
-  if (!isOpen) return null;
+  useEffect(() => {
+    const dialog = dialogRef.current;
+    if (!dialog) return;
 
-  return createPortal(
-    <div className="modal-overlay" onClick={onClose}>
-      <div className="modal-content" onClick={(e) => e.stopPropagation()}>
-        <button className="modal-close" onClick={onClose}>
-          ×
-        </button>
-        {children}
-      </div>
-    </div>,
-    document.body,
+    const handleClose = () => {
+      onCloseRef.current();
+    };
+
+    dialog.addEventListener("close", handleClose);
+    return () => {
+      dialog.removeEventListener("close", handleClose);
+    };
+  }, []);
+
+  useEffect(() => {
+    const dialog = dialogRef.current;
+    if (!dialog || "closedBy" in HTMLDialogElement.prototype) return;
+
+    let pressedOutside = false;
+
+    const handlePointerDown = (event: PointerEvent) => {
+      pressedOutside = isPointerOutside(event, dialog);
+    };
+
+    const handlePointerUp = (event: PointerEvent) => {
+      if (pressedOutside && isPointerOutside(event, dialog)) {
+        dialog.close();
+      }
+      pressedOutside = false;
+    };
+
+    dialog.addEventListener("pointerdown", handlePointerDown);
+    dialog.addEventListener("pointerup", handlePointerUp);
+    return () => {
+      dialog.removeEventListener("pointerdown", handlePointerDown);
+      dialog.removeEventListener("pointerup", handlePointerUp);
+    };
+  }, []);
+
+  return (
+    <dialog
+      ref={dialogRef}
+      className="modal"
+      aria-label={ariaLabel}
+      {...({ closedby: "any" } as Record<string, string>)}
+    >
+      {children}
+      <button
+        type="button"
+        className="modal-close"
+        aria-label="Fermer"
+        onClick={() => dialogRef.current?.close()}
+      >
+        ×
+      </button>
+    </dialog>
   );
 }

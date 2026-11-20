@@ -66,6 +66,7 @@ function ArticlePage() {
       <Modal
         isOpen={selectedImage !== null}
         onClose={() => setSelectedImage(null)}
+        ariaLabel="Détail de l'image"
       >
         {selectedImage && (
           <div className="image-detail-modal">
@@ -107,6 +108,7 @@ function ArticlePage() {
         <Modal
           isOpen={isCommentModalOpen}
           onClose={() => setIsCommentModalOpen(false)}
+          ariaLabel="Laisser un commentaire"
         >
           <CommentForm
             articleId={article.id}

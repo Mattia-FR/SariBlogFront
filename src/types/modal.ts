@@ -3,6 +3,7 @@ import type { ReactNode } from "react";
 export interface ModalProps {
   isOpen: boolean;
   onClose: () => void;
+  ariaLabel: string;
   children: React.ReactNode;
 }
 

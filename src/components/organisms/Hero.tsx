@@ -32,6 +32,7 @@ function Hero({ image }: { image: Image | null }) {
             className="hero-image"
             src={image.imageUrl}
             alt={image.alt_descr || image.title || "Image du jour"}
+            fetchPriority="high"
             aria-describedby={hasCaption ? "hero-caption" : undefined}
           />
         )}

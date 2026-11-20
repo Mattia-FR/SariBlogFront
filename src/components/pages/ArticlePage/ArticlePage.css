@@ -115,7 +115,10 @@
         width: clamp(20rem, 90vw, 25rem);
         object-fit: contain;
         display: block;
-        transition: transform 0.35s ease;
+
+        @media (prefers-reduced-motion: no-preference) {
+          transition: transform 0.35s ease;
+        }
       }
 
       &:hover,
@@ -123,8 +126,10 @@
         box-shadow: var(--box-shadow);
         outline: none;
 
-        img {
-          transform: scale(1.08);
+        @media (prefers-reduced-motion: no-preference) {
+          img {
+            transform: scale(1.08);
+          }
         }
       }
     }

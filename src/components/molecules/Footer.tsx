@@ -15,8 +15,15 @@ function Footer() {
                 src={instagramNormal}
                 alt=""
                 className="icon-normal"
+                loading="lazy"
               />
-              <img src={instagramHover} alt="" className="icon-hover" />
+              <img
+                src={instagramHover}
+                alt=""
+                className="icon-hover"
+                loading="lazy"
+                fetchPriority="low"
+              />
             </span>
             <span className="icon-label">Instagram</span>
           </a>

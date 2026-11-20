@@ -71,6 +71,7 @@ function GalleryPage() {
       <Modal
         isOpen={selectedImage !== null}
         onClose={() => setSelectedImage(null)}
+        ariaLabel="Détail de l'image"
       >
         {selectedImage && (
           <div className="image-detail-modal">

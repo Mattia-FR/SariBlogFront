@@ -10,7 +10,7 @@
 
   .header-logo {
     height: 5rem;
-    margin-left: 2cqi;
+    margin-left: clamp(0.5rem, 2vw, 2rem);
   }
 
   .nav-links {
@@ -40,9 +40,12 @@
         width: 0;
         height: 2px;
         background-color: currentColor;
-        transition:
-          width 0.35s ease,
-          left 0.35s ease;
+
+        @media (prefers-reduced-motion: no-preference) {
+          transition:
+            width 0.35s ease,
+            left 0.35s ease;
+        }
       }
 
       &:hover::after {
@@ -100,10 +103,14 @@
   width: 1.8rem;
   height: 2px;
   background-color: var(--color-five);
-  transition:
-    transform 0.3s ease,
-    opacity 0.3s ease;
+  transition: opacity 0.3s ease;
   position: relative;
+
+  @media (prefers-reduced-motion: no-preference) {
+    transition:
+      transform 0.3s ease,
+      opacity 0.3s ease;
+  }
 
   &::before,
   &::after {
@@ -114,9 +121,13 @@
     background-color: var(--color-five);
     position: absolute;
     left: 0;
-    transition:
-      transform 0.3s ease,
-      opacity 0.3s ease;
+    transition: opacity 0.3s ease;
+
+    @media (prefers-reduced-motion: no-preference) {
+      transition:
+        transform 0.3s ease,
+        opacity 0.3s ease;
+    }
   }
 
   &::before {
